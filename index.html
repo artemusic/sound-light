@@ -1,1 +1,28 @@
-<!-- Contenuto della pagina index.html sarà qui -->
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARTEMUSIC</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    @keyframes fadeZoom {
+      0% { opacity: 0; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .logo-animato {
+      width: 60%;
+      max-width: 500px;
+      animation: fadeZoom 2s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <img src="logo-bianco.png" alt="ARTEMUSIC" class="logo-animato">
+  </div>
+  <a class="floating-button" href="contatti.html">Contattaci</a>
+</body>
+</html>

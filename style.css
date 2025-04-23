@@ -1,1 +1,33 @@
-<!-- Contenuto della pagina style.css sarà qui -->
+
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: radial-gradient(ellipse at center, #1a1a1a 0%, #000 100%);
+  color: white;
+}
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('https://images.unsplash.com/photo-1557682260-967d6cc117a0?auto=format&fit=crop&w=1950&q=80');
+  background-size: cover;
+  background-position: center;
+}
+.floating-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #f44336;
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 0 10px #f44336;
+  transition: background-color 0.3s;
+  z-index: 999;
+}
+.floating-button:hover {
+  background-color: #d32f2f;
+}
