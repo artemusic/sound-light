@@ -1,1 +1,93 @@
-<!DOCTYPE html><html><head><title>Contatti</title></head><body><h1>Contattaci</h1></body></html>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contatti - ARTEMUSIC</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('bg2.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      min-height: 100vh;
+      padding-top: 80px;
+    }
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px 0;
+      text-align: center;
+      z-index: 1000;
+    }
+    nav a {
+      margin: 0 20px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .content {
+      max-width: 700px;
+      margin: auto;
+      padding: 40px;
+      background: rgba(0, 0, 0, 0.65);
+      border-radius: 10px;
+      text-align: center;
+    }
+    h1 {
+      color: #ff4747;
+      margin-bottom: 30px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    input, textarea {
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+    }
+    input[type="submit"] {
+      background-color: #ff4747;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .info {
+      margin-top: 30px;
+      font-size: 1.1em;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="chi-siamo.html">Chi siamo</a>
+    <a href="eventi.html">Eventi</a>
+    <a href="contatti.html">Contatti</a>
+    <a href="area-riservata.html">Area Riservata</a>
+  </nav>
+  <div class="content">
+    <h1>Contattaci</h1>
+    <form action="https://formspree.io/f/xwkgrpjp" method="POST">
+      <input type="text" name="nome" placeholder="Il tuo nome" required>
+      <input type="email" name="email" placeholder="La tua email" required>
+      <textarea name="messaggio" rows="5" placeholder="Il tuo messaggio..." required></textarea>
+      <input type="submit" value="Invia richiesta">
+    </form>
+    <div class="info">
+      <p>Email: <strong>info@artemusic.it</strong></p>
+      <p>WhatsApp: <strong>3488430272</strong></p>
+      <p>Manduria (TA) – P.IVA: 03436690733</p>
+      <p>PEC: serviceartemusic@pec.it</p>
+    </div>
+  </div>
+</body>
+</html>
