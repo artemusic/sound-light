@@ -1,48 +1,44 @@
 
 body {
   margin: 0;
-  font-family: 'Arial', sans-serif;
+  font-family: Arial, sans-serif;
   background: black;
   color: white;
 }
-.navbar {
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-top: 2rem;
+}
+.contatti-center {
+  max-width: 600px;
+  margin: auto;
+  padding: 2rem;
+  text-align: center;
+}
+.contatti-center form {
   display: flex;
-  justify-content: center;
-  gap: 2rem;
-  padding: 1.5rem;
-  background: #111;
+  flex-direction: column;
+  gap: 1rem;
 }
-.navbar a {
-  color: white;
-  text-decoration: none;
-  font-size: 1.3rem;
-  font-weight: bold;
+.contatti-center input,
+.contatti-center textarea {
+  padding: 1rem;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  border: none;
 }
-.navbar a:hover {
-  color: #f44336;
-}
-.hero {
-  height: 88vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(ellipse at center, #1a1a1a 0%, #000 100%);
-}
-.floating-button {
-  position: fixed;
+.contatti-center button {
+  padding: 1rem;
+  font-size: 1.2rem;
   background-color: #f44336;
   color: white;
-  padding: 1rem 1.8rem;
-  font-size: 1.2rem;
-  border-radius: 50px;
-  text-decoration: none;
+  border: none;
+  border-radius: 10px;
   font-weight: bold;
-  box-shadow: 0 0 12px #f44336;
-  transition: background-color 0.3s;
-  z-index: 1000;
 }
-.floating-button:hover {
-  background-color: #d32f2f;
+.info {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  line-height: 2rem;
 }
-.bottom-left { bottom: 25px; left: 25px; }
-.bottom-right { bottom: 25px; right: 25px; }
