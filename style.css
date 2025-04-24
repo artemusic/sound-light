@@ -1,1 +1,52 @@
-body { background-color: black; color: white; text-align: center; font-family: Arial; } h1 { color: red; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: black;
+  color: white;
+}
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1.2rem;
+  background: #000;
+}
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.navbar a:hover {
+  color: #f44336;
+}
+.hero {
+  height: 85vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.logo {
+  width: 70%;
+  max-width: 700px;
+}
+.floating-button {
+  position: fixed;
+  padding: 1rem 1.5rem;
+  background-color: #f44336;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 40px;
+  text-decoration: none;
+  box-shadow: 0 0 15px #f44336;
+}
+.bottom-left {
+  bottom: 20px;
+  left: 20px;
+}
+.bottom-right {
+  bottom: 20px;
+  right: 20px;
+}
