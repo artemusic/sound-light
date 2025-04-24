@@ -1,21 +1,25 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ARTEMUSIC</title>
+  <title>Artemusic</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body, html {
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
       height: 100%;
       font-family: Arial, sans-serif;
+      
       color: white;
       overflow: hidden;
-      background: black;
     }
     .background {
       position: fixed;
-      top: 0; left: 0;
       width: 100vw;
       height: 100vh;
       z-index: -1;
@@ -43,7 +47,6 @@
       text-decoration: none;
       margin: 0 20px;
       font-size: 18px;
-      font-weight: bold;
     }
     .logo-container {
       position: absolute;
@@ -54,7 +57,7 @@
     }
     .logo-container img {
       max-width: 500px;
-      width: 80vw;
+      width: 90vw;
     }
     .buttons {
       position: absolute;
@@ -73,7 +76,9 @@
       border-radius: 10px;
       font-size: 16px;
     }
-    audio { display: none; }
+    audio {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -83,22 +88,20 @@
     <img src="bg3.jpg" />
   </div>
 
-  
-<nav>
-  <a href="index.html">Home</a>
-  <a href="chi-siamo.html">Chi siamo</a>
-  <a href="eventi.html">Eventi</a>
-  <a href="contatti.html">Contatti</a>
-  <a href="area-riservata.html">Area Riservata</a>
-</nav>
-
-
-  <audio autoplay loop>
+  <audio autoplay loop id="bg-audio">
     <source src="focus-loop-corporate-music-114297.mp3" type="audio/mpeg">
   </audio>
 
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="chi-siamo.html">Chi siamo</a>
+    <a href="eventi.html">Eventi</a>
+    <a href="contatti.html">Contatti</a>
+    <a href="area-riservata.html">Area Riservata</a>
+  </nav>
+
   <div class="logo-container">
-    <img src="logo-bianco.png" alt="ARTEMUSIC Logo">
+    <img src="logo-bianco.png" alt="ARTEMUSIC logo" />
   </div>
 
   <div class="buttons">
@@ -107,13 +110,13 @@
   </div>
 
   <script>
-    const images = document.querySelectorAll('.background img');
+    const images = document.querySelectorAll(".background img");
     let current = 0;
     setInterval(() => {
-      images[current].classList.remove('active');
+      images[current].classList.remove("active");
       current = (current + 1) % images.length;
-      images[current].classList.add('active');
-    }, 5000);
+      images[current].classList.add("active");
+    }, 6000);
   </script>
 </body>
 </html>
