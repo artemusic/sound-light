@@ -1,1 +1,88 @@
-<!DOCTYPE html><html><head><title>Eventi</title></head><body><h1>I nostri eventi</h1></body></html>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eventi - ARTEMUSIC</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('bg3.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      min-height: 100vh;
+      padding-top: 80px;
+    }
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px 0;
+      text-align: center;
+      z-index: 1000;
+    }
+    nav a {
+      margin: 0 20px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .content {
+      max-width: 900px;
+      margin: auto;
+      padding: 40px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+    }
+    h1 {
+      text-align: center;
+      color: #ff4747;
+      margin-bottom: 30px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    li {
+      font-size: 1.2em;
+      padding: 15px 25px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      text-align: center;
+      transition: transform 0.3s ease, background 0.3s ease;
+      cursor: pointer;
+    }
+    li:hover {
+      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="chi-siamo.html">Chi siamo</a>
+    <a href="eventi.html">Eventi</a>
+    <a href="contatti.html">Contatti</a>
+    <a href="area-riservata.html">Area Riservata</a>
+  </nav>
+  <div class="content">
+    <h1>I nostri eventi</h1>
+    <ul>
+      <li>🎶 Baccano Rusticano - Manduria 2023</li>
+      <li>🎶 Baccano Rusticano - Manduria 2024</li>
+      <li>🏛️ Fiera Pessima - Manduria 2025</li>
+      <li>🎉 Concerto di Capodanno - San Marzano 2024</li>
+      <li>🎬 Comedy Film Fest - Manduria 2024</li>
+      <li>🍽️ Qcine - Incontri tra Cinema e Cibo - Francavilla Fontana 2024</li>
+      <li>🌍 G7 Side Event - Manduria 2024</li>
+    </ul>
+  </div>
+</body>
+</html>
