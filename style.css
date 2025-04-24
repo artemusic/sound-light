@@ -1,1 +1,48 @@
-body{background:#121212;color:white;font-family:Arial,sans-serif;margin:0;padding:0}.navbar{display:flex;justify-content:center;gap:1rem;padding:1rem;background:#000}.navbar a{color:white;text-decoration:none;font-weight:bold}.hero{height:90vh;display:flex;justify-content:center;align-items:center}.logo{width:60%;max-width:500px;animation:fadeZoom 2s ease-out}@keyframes fadeZoom{0%{opacity:0;transform:scale(0.8)}100%{opacity:1;transform:scale(1)}}.floating-button{position:fixed;padding:0.7rem 1.2rem;background-color:#f44336;color:white;border-radius:30px;text-decoration:none;font-weight:bold}.bottom-left{bottom:20px;left:20px}.bottom-right{bottom:20px;right:20px}.testo,.gallery{padding:2rem}.gallery-row{display:flex;gap:1rem;flex-wrap:wrap}.gallery-row img{width:300px;border-radius:10px}form input,form textarea{width:100%;margin-bottom:1rem;padding:0.5rem}form button{padding:0.7rem 1.5rem;background:#f44336;color:white;border:none;border-radius:5px}
+
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: black;
+  color: white;
+}
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: #111;
+}
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+.navbar a:hover {
+  color: #f44336;
+}
+.hero {
+  height: 88vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, #1a1a1a 0%, #000 100%);
+}
+.floating-button {
+  position: fixed;
+  background-color: #f44336;
+  color: white;
+  padding: 1rem 1.8rem;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 0 12px #f44336;
+  transition: background-color 0.3s;
+  z-index: 1000;
+}
+.floating-button:hover {
+  background-color: #d32f2f;
+}
+.bottom-left { bottom: 25px; left: 25px; }
+.bottom-right { bottom: 25px; right: 25px; }
