@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARTEMUSIC</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body, html {
+      height: 100%;
+      font-family: Arial, sans-serif;
+      color: white;
+      overflow: hidden;
+      background: black;
+    }
+    .background {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+    }
+    .background img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+    }
+    .background img.active {
+      opacity: 1;
+    }
+    nav {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      text-align: center;
+      z-index: 10;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .logo-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+    .logo-container img {
+      max-width: 500px;
+      width: 80vw;
+    }
+    .buttons {
+      position: absolute;
+      bottom: 30px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      z-index: 10;
+    }
+    .buttons a {
+      color: white;
+      text-decoration: none;
+      padding: 14px 24px;
+      border: 2px solid white;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+    audio { display: none; }
+  </style>
+</head>
+<body>
+  <div class="background">
+    <img src="bg1.jpg" class="active" />
+    <img src="bg2.jpg" />
+    <img src="bg3.jpg" />
+  </div>
+
+  <audio autoplay loop>
+    <source src="focus-loop-corporate-music-114297.mp3" type="audio/mpeg">
+  </audio>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="chi-siamo.html">Chi siamo</a>
+    <a href="eventi.html">Eventi</a>
+    <a href="contatti.html">Contatti</a>
+    <a href="area-riservata.html">Area Riservata</a>
+  </nav>
+
+  <div class="logo-container">
+    <img src="logo-bianco.png" alt="ARTEMUSIC Logo">
+  </div>
+
+  <div class="buttons">
+    <a href="brochure.pdf" download>Scarica la brochure 2025</a>
+    <a href="contatti.html">Contattaci</a>
+  </div>
+
+  <script>
+    const images = document.querySelectorAll('.background img');
+    let current = 0;
+    setInterval(() => {
+      images[current].classList.remove('active');
+      current = (current + 1) % images.length;
+      images[current].classList.add('active');
+    }, 5000);
+  </script>
+</body>
+</html>
