@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chi siamo - ARTEMUSIC</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: url('bg2.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 40px;
+      border-radius: 15px;
+      max-width: 900px;
+      animation: fadeIn 2s ease-in-out;
+    }
+    h1 {
+      color: #f44336;
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="morricone-style.mp3" type="audio/mpeg">
+    Il tuo browser non supporta l'audio HTML5.
+  </audio>
+  <div class="container">
+    <h1>Chi siamo</h1>
+    <p>
+      ARTEMUSIC F.lli Digiacomo nasce da una passione familiare per la musica, l'illuminazione e gli eventi. 
+      Con anni di esperienza nel settore, offriamo servizi di noleggio e allestimento audio, luci, video e strutture 
+      per spettacoli dal vivo, concerti, feste private, eventi aziendali e cerimonie.
+    </p>
+    <p>
+      Il nostro obiettivo è rendere ogni evento indimenticabile grazie a tecnologie di ultima generazione e a 
+      uno staff altamente qualificato. Collaboriamo con enti pubblici, pro loco, associazioni e privati per dare 
+      vita a spettacoli curati nei minimi dettagli.
+    </p>
+    <p>
+      Dal cuore di Manduria, portiamo il nostro know-how in tutta la Puglia, adattandoci alle esigenze del cliente 
+      e offrendo soluzioni personalizzate, sicure e professionali.
+    </p>
+  </div>
+</body>
+</html>
