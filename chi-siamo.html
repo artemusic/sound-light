@@ -2,53 +2,64 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chi siamo - ARTEMUSIC</title>
-  <link href="style.css" rel="stylesheet" />
   <style>
     body {
       margin: 0;
-      font-family: 'Helvetica Neue', sans-serif;
+      font-family: Arial, sans-serif;
       background: url('bg2.jpg') no-repeat center center fixed;
       background-size: cover;
       color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       min-height: 100vh;
-      padding: 40px;
-      box-sizing: border-box;
+      padding-top: 80px;
     }
-
-    .container {
-      background-color: rgba(0, 0, 0, 0.75);
-      padding: 40px;
-      border-radius: 12px;
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px 0;
+      text-align: center;
+      z-index: 1000;
+    }
+    nav a {
+      margin: 0 20px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .content {
       max-width: 900px;
-      animation: fadeIn 2s ease-in-out;
+      margin: auto;
+      padding: 40px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 10px;
     }
-
     h1 {
       text-align: center;
       font-size: 2.5em;
       margin-bottom: 20px;
-      color: #ff0000;
+      color: #ff4747;
     }
-
     p {
       font-size: 1.1em;
-      line-height: 1.7em;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      line-height: 1.7;
+      text-align: justify;
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="chi-siamo.html">Chi siamo</a>
+    <a href="eventi.html">Eventi</a>
+    <a href="contatti.html">Contatti</a>
+    <a href="area-riservata.html">Area Riservata</a>
+  </nav>
+  <div class="content">
     <h1>Chi siamo</h1>
     <p>
       ARTEMUSIC F.lli Digiacomo nasce da una passione familiare per la musica, l'illuminazione e gli eventi. 
