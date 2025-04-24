@@ -1,1 +1,104 @@
-<!DOCTYPE html><html><head><title>Area Riservata</title></head><body><h1>Accesso riservato</h1></body></html>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Area Riservata - ARTEMUSIC</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('bg3.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      min-height: 100vh;
+      padding-top: 80px;
+    }
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px 0;
+      text-align: center;
+      z-index: 1000;
+    }
+    nav a {
+      margin: 0 20px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .content {
+      max-width: 700px;
+      margin: auto;
+      padding: 40px;
+      background: rgba(0, 0, 0, 0.65);
+      border-radius: 10px;
+      text-align: center;
+    }
+    h1 {
+      color: #ff4747;
+      margin-bottom: 30px;
+    }
+    input[type="password"], input[type="submit"] {
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 15px;
+    }
+    input[type="submit"] {
+      background-color: #ff4747;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .folders {
+      display: none;
+      margin-top: 30px;
+    }
+    .folders a {
+      display: block;
+      margin: 10px 0;
+      font-size: 18px;
+      color: white;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="chi-siamo.html">Chi siamo</a>
+    <a href="eventi.html">Eventi</a>
+    <a href="contatti.html">Contatti</a>
+    <a href="area-riservata.html">Area Riservata</a>
+  </nav>
+  <div class="content">
+    <h1>Accesso Area Riservata</h1>
+    <p>Inserisci la password per accedere ai documenti tecnici.</p>
+    <input type="password" id="password" placeholder="Password">
+    <input type="submit" value="Accedi" onclick="checkPassword()">
+
+    <div class="folders" id="protected-content">
+      <h2>Documenti:</h2>
+      <a href="documenti/Collaudi/">📁 COLLAUDI</a>
+      <a href="documenti/Manuali/">📁 MANUALI</a>
+      <a href="documenti/Schede Tecniche/">📁 SCHEDE TECNICHE</a>
+    </div>
+  </div>
+
+  <script>
+    function checkPassword() {
+      const password = document.getElementById('password').value;
+      if (password === "Allestimenti2025") {
+        document.getElementById('protected-content').style.display = 'block';
+      } else {
+        alert("Password errata.");
+      }
+    }
+  </script>
+</body>
+</html>
