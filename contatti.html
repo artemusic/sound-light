@@ -5,7 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contattaci - Artemusic</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("1fU7xLDeJ2qGXbsNT"); // TUA PUBLIC KEY
+    })();
+
+    function sendEmail(event) {
+      event.preventDefault();
+
+      emailjs.send("service_bphokc1", "template_l5xhtvo", {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        message: document.getElementById('message').value,
+        title: "Nuovo messaggio da Artemusic",
+        time: new Date().toLocaleString()
+      })
+      .then(function(response) {
+        alert("Grazie per averci contattato! Ti risponderemo a breve.");
+        document.getElementById("contact-form").reset();
+      }, function(error) {
+        alert("Errore durante l'invio. Riprova più tardi.");
+      });
+    }
+  </script>
 </head>
 <body>
 
@@ -21,69 +45,27 @@
   </nav>
 </header>
 
-<main>
+<section style="padding: 100px 20px; text-align: center; background-image: url('sfondo.jpg'); background-size: cover;">
   <h1>Contattaci</h1>
 
-  <form id="contact-form">
-    <input type="hidden" name="title" value="Nuovo messaggio da Artemusic">
-
-    <label for="name">Nome:</label><br>
-    <input type="text" id="name" name="name" required><br><br>
-
-    <label for="email">Email:</label><br>
-    <input type="email" id="email" name="email" required><br><br>
-
-    <label for="phone">Telefono:</label><br>
-    <input type="text" id="phone" name="phone"><br><br>
-
-    <label for="message">Messaggio:</label><br>
-    <textarea id="message" name="message" required></textarea><br><br>
-
+  <form id="contact-form" onsubmit="sendEmail(event)" style="max-width: 500px; margin: auto;">
+    <input type="text" id="name" name="name" placeholder="Nome" required><br><br>
+    <input type="email" id="email" name="email" placeholder="Email" required><br><br>
+    <input type="text" id="phone" name="phone" placeholder="Telefono (facoltativo)"><br><br>
+    <textarea id="message" name="message" placeholder="Messaggio" required></textarea><br><br>
     <button type="submit">Invia</button>
-
-    <div id="form-status" style="margin-top: 20px;"></div>
   </form>
 
-  <div style="margin-top: 40px;">
-    <h2>Dati Società</h2>
-    <p>Artemusic Sound&Light Srls</p>
-    <p>Via Pio La Torre n.7 - 74024 Manduria (TA)</p>
-    <p>P.IVA / C.F.: 03436690733</p>
-    <p>Codice Univoco: SZLUBAI</p>
-    <p>PEC: serviceartemusic@pec.it</p>
+  <div style="margin-top: 50px; font-size: 14px;">
+    <strong>Dati società:</strong><br>
+    Artemusic Sound&Light Srls<br>
+    Via Pio La Torre n.7 - 74024 Manduria (TA)<br>
+    P.iva/C.F.: 03436690733<br>
+    Cod. Univoco: SZLUBAI<br>
+    PEC: serviceartemusic@pec.it
   </div>
-</main>
 
-<footer>
-  <p>© 2025 Artemusic Sound&Light</p>
-</footer>
-
-<script>
-  (function(){
-    emailjs.init("1fU7xLDeJ2qGXbsNT"); // tua Public Key
-  })();
-
-  document.getElementById('contact-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const now = new Date();
-    const time = now.toLocaleString(); // genera orario e data automatico
-
-    emailjs.send("service_bphokc1", "template_l5xhtvo", {
-      title: "Nuovo messaggio da Artemusic",
-      name: document.getElementById('name').value,
-      email: document.getElementById('email').value,
-      phone: document.getElementById('phone').value,
-      message: document.getElementById('message').value,
-      time: time
-    }).then(function(response) {
-      document.getElementById('form-status').innerHTML = "Grazie per averci contattato! Ti risponderemo a breve.";
-      document.getElementById('contact-form').reset();
-    }, function(error) {
-      document.getElementById('form-status').innerHTML = "Errore durante l'invio. Riprova più tardi.";
-    });
-  });
-</script>
+</section>
 
 </body>
 </html>
