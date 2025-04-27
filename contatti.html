@@ -3,81 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contattaci - ARTEMUSIC</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <title>Contatti | Artemusic</title>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    (function(){
-      emailjs.init("1fU7xLDeJ2qGXbsNT"); // Public Key
+    (function() {
+      emailjs.init("1fU7xLDeJ2qGXbsNT"); // La tua Public Key
     })();
+
+    function sendEmail(event) {
+      event.preventDefault();
+      emailjs.sendForm('service_bphokc1', 'template_l5xhtvo', event.target)
+        .then(function() {
+          document.getElementById('messaggio-risposta').innerHTML = "<p style='color: green;'>Grazie per averci contattato! Ti risponderemo a breve.</p>";
+          document.getElementById('form-contatti').reset();
+        }, function(error) {
+          document.getElementById('messaggio-risposta').innerHTML = "<p style='color: red;'>Errore durante l'invio. Riprova più tardi.</p>";
+        });
+    }
   </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('https://www.artemusic.it/sfondo.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      text-align: center;
+    }
+    nav {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 15px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-size: 18px;
+    }
+    .form-container {
+      margin-top: 150px;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 30px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="chi-siamo.html">Chi siamo</a></li>
-      <li><a href="eventi.html">Eventi</a></li>
-      <li><a href="contatti.html">Contatti</a></li>
-      <li><a href="area-riservata.html">Area Riservata</a></li>
-    </ul>
-  </nav>
-</header>
+<nav>
+  <a href="index.html">Home</a>
+  <a href="chi-siamo.html">Chi siamo</a>
+  <a href="eventi.html">Eventi</a>
+  <a href="contatti.html">Contatti</a>
+  <a href="area-riservata.html">Area Riservata</a>
+</nav>
 
-<div class="background">
-  <!-- Le tue immagini animate come nello sfondo della home -->
-</div>
-
-<main style="text-align: center; margin-top: 100px;">
+<div class="form-container">
   <h1>Contattaci</h1>
-
-  <form id="contact-form" style="max-width: 500px; margin: auto;">
-    <input type="text" name="name" placeholder="Il tuo nome" required><br><br>
-    <input type="email" name="email" placeholder="La tua email" required><br><br>
-    <input type="text" name="phone" placeholder="Il tuo telefono (facoltativo)"><br><br>
-    <textarea name="message" rows="5" placeholder="Il tuo messaggio" required></textarea><br><br>
+  <form id="form-contatti" onsubmit="sendEmail(event)">
+    <input type="text" name="name" placeholder="Nome" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="text" name="phone" placeholder="Telefono (facoltativo)">
+    <textarea name="message" placeholder="Messaggio" required></textarea>
     <button type="submit">Invia</button>
   </form>
+  <div id="messaggio-risposta" style="margin-top: 20px;"></div>
 
-  <p id="result-message" style="margin-top:20px;"></p>
-
-  <div style="margin-top: 40px; font-size: 14px;">
-    <strong>Dati Società:</strong><br>
+  <div style="margin-top: 30px; font-size: 14px;">
+    <p><strong>Dati Società:</strong><br>
     Artemusic Sound&Light Srls<br>
     Via Pio La Torre n.7 - 74024 Manduria (TA)<br>
     P.iva/C.F.: 03436690733<br>
     Cod.Univoco: SZLUBAI<br>
-    Pec: serviceartemusic@pec.it
+    PEC: serviceartemusic@pec.it</p>
   </div>
-</main>
-
-<audio id="background-music" autoplay loop>
-  <source src="focus-loop-corporate-music-114297.mp3" type="audio/mpeg">
-</audio>
-
-<script>
-  const form = document.getElementById("contact-form");
-  const resultMessage = document.getElementById("result-message");
-
-  form.addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    emailjs.send("service_bphokc1", "template_l5xhtvo", {
-      name: form.name.value,
-      email: form.email.value,
-      phone: form.phone.value,
-      message: form.message.value
-    })
-    .then(function() {
-      resultMessage.innerHTML = "<span style='color: green;'>Grazie per averci contattato! Ti risponderemo a breve.</span>";
-      form.reset();
-    }, function(error) {
-      resultMessage.innerHTML = "<span style='color: red;'>Errore durante l'invio. Riprova più tardi.</span>";
-    });
-  });
-</script>
+</div>
 
 </body>
 </html>
