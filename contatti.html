@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contatti - ARTEMUSIC</title>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
   <style>
     body {
       margin: 0;
@@ -59,6 +60,27 @@
       font-weight: bold;
       cursor: pointer;
     }
+    #loader {
+      display: none;
+      margin: 20px auto;
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #ff4747;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    #message-success {
+      display: none;
+      margin-top: 20px;
+      color: #4CAF50;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
     .info {
       margin-top: 30px;
       font-size: 1.1em;
@@ -76,25 +98,45 @@
   </nav>
   <div class="content">
     <h1>Contattaci</h1>
-   <form action="https://formsubmit.io/send/info@artemusic.it" method="POST">
-  <input name="_formsubmit_id" type="text" style="display:none">
-  <input type="hidden" name="_redirect" value="https://www.artemusic.it/contatti.html">
-  
-  <input type="text" name="nome" placeholder="Il tuo nome" required>
-  <input type="email" name="email" placeholder="La tua email" required>
-  <textarea name="messaggio" rows="5" placeholder="Il tuo messaggio..." required></textarea>
-  
-  <input type="submit" value="Invia richiesta">
-</form>
+    <form id="contact-form">
+      <input type="text" name="nome" placeholder="Il tuo nome" required>
+      <input type="email" name="email" placeholder="La tua email" required>
+      <input type="text" name="telefono" placeholder="Il tuo telefono (facoltativo)">
+      <textarea name="messaggio" rows="5" placeholder="Il tuo messaggio..." required></textarea>
+      <input type="submit" value="Invia richiesta">
+    </form>
+    <div id="loader"></div>
+    <div id="message-success">✅ Grazie per averci contattato! Ti risponderemo a breve.</div>
     <div class="info">
       <p>Email: <strong>info@artemusic.it</strong></p>
       <p>WhatsApp: <strong>3488430272</strong></p>
-      <p>Dati societa: <strong>Artemusic Sound&Light Srls</strong><br>
+      <p>Dati società: <strong>Artemusic Sound&Light Srls</strong><br>
       Via Pio La Torre n.7 - 74024 Manduria (TA)<br>
       P.iva/C.F.: 03436690733<br>
       Cod.Univoco: SZLUBAI<br>
       PEC: serviceartemusic@pec.it</p>
     </div>
   </div>
+
+<script>
+  (function(){
+    emailjs.init("1fU7xLDeJ2qGXbsNT"); // La tua Public Key EmailJS
+  })();
+
+  document.getElementById('contact-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    document.getElementById('loader').style.display = 'block';
+    emailjs.sendForm('service_bphokc1', 'template_default', this)
+      .then(function() {
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('message-success').style.display = 'block';
+        document.getElementById('contact-form').reset();
+      }, function(error) {
+        document.getElementById('loader').style.display = 'none';
+        alert('Errore durante l'invio. Riprova più tardi.');
+      });
+  });
+</script>
+
 </body>
 </html>
