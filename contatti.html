@@ -3,82 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contattaci</title>
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script>
-    (function(){
-      emailjs.init('1fU7xLDeJ2qGXbsNT'); // QUI la tua Public Key
-    })();
-  </script>
-  <style>
-    body {
-      background-color: black;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-    form {
-      max-width: 500px;
-      margin: auto;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 10px;
-    }
-    input, textarea {
-      width: 90%;
-      padding: 10px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 5px;
-    }
-    button {
-      padding: 10px 20px;
-      border: none;
-      background-color: red;
-      color: white;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    #messaggio-successo {
-      margin-top: 20px;
-      color: green;
-      font-weight: bold;
-    }
-  </style>
+  <title>Contattaci - Artemusic</title>
 </head>
-<body>
+<body style="background-color: black; color: white; font-family: Arial, sans-serif; text-align: center; padding: 20px;">
 
   <h1>Contattaci</h1>
 
-  <form id="contact-form">
-    <input type="text" name="name" placeholder="Il tuo nome" required><br>
-    <input type="email" name="email" placeholder="La tua email" required><br>
-    <input type="text" name="phone" placeholder="Il tuo telefono (facoltativo)"><br>
-    <textarea name="message" rows="5" placeholder="Il tuo messaggio" required></textarea><br>
-    <button type="submit">Invia</button>
+  <form id="contact-form" style="max-width: 500px; margin: auto;">
+    <input type="text" name="name" placeholder="Nome" required style="width: 100%; padding: 10px; margin: 10px 0;">
+    <input type="email" name="email" placeholder="Email" required style="width: 100%; padding: 10px; margin: 10px 0;">
+    <input type="text" name="phone" placeholder="Telefono" style="width: 100%; padding: 10px; margin: 10px 0;">
+    <textarea name="message" placeholder="Il tuo messaggio" required style="width: 100%; padding: 10px; margin: 10px 0; height: 150px;"></textarea>
+    <button type="submit" style="padding: 12px 30px; margin-top: 10px;">Invia</button>
   </form>
 
-  <div id="messaggio-successo" style="display:none;">
+  <div id="messaggio-successo" style="display:none; color: lightgreen; font-size: 18px; margin-top: 20px;">
     Grazie per averci contattato! Ti risponderemo a breve.
   </div>
 
+  <!-- Dati Azienda -->
+  <div style="margin-top: 40px; font-size: 14px; color: gray;">
+    <strong>Dati società:</strong><br>
+    Artemusic Sound&Light Srls<br>
+    Via Pio La Torre n.7 - 74024 Manduria (TA)<br>
+    P.IVA / C.F.: 03436690733<br>
+    Codice Univoco: SZLUBAI<br>
+    PEC: serviceartemusic@pec.it
+  </div>
+
+  <!-- EmailJS Script -->
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <script>
+    (function() {
+      emailjs.init('1fU7xLDeJ2qGXbsNT'); // TUA PUBLIC KEY
+    })();
+
     const form = document.getElementById('contact-form');
     const messaggioSuccesso = document.getElementById('messaggio-successo');
 
     form.addEventListener('submit', function(event) {
       event.preventDefault();
 
-      emailjs.sendForm('service_bphokc1', 'template_anvfimf', this)
+      emailjs.sendForm('service_bphokc1', 'template_l5xhtvo', this) // TUO SERVICE ID e TEMPLATE ID
         .then(function() {
           console.log('Messaggio inviato con successo!');
           messaggioSuccesso.style.display = 'block';
           form.reset();
         }, function(error) {
-          console.log('Errore nell’invio del messaggio...', error);
-          alert('Errore durante l’invio, riprova.');
+          console.log('Errore nell’invio...', error);
+          alert('Errore durante l’invio. Riprova!');
         });
     });
   </script>
