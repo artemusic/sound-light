@@ -3,93 +3,119 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contatti - Artemusic</title>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <title>Contattaci - Artemusic</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    (function() {
-      emailjs.init('1fU7xLDeJ2qGXbsNT'); // <-- La tua PUBLIC KEY
+    (function(){
+      emailjs.init("1fU7xLDeJ2qGXbsNT"); // tua PUBLIC KEY
     })();
+
+    function sendEmail(event) {
+      event.preventDefault();
+
+      emailjs.send("service_bphokc1", "template_l5xhtvo", {
+        title: "Richiesta di contatto dal sito Artemusic",
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        message: document.getElementById("message").value,
+        time: new Date().toLocaleString('it-IT')
+      })
+      .then(function(response) {
+        document.getElementById("status").innerHTML = "<p style='color: lightgreen;'>Grazie per averci contattato! Ti risponderemo a breve.</p>";
+        document.getElementById("contact-form").reset();
+      }, function(error) {
+        document.getElementById("status").innerHTML = "<p style='color: red;'>Errore durante l'invio. Riprova più tardi.</p>";
+      });
+    }
   </script>
   <style>
     body {
-      background-color: black;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: url('bg1.jpg') no-repeat center center fixed;
+      background-size: cover;
       color: white;
-      font-family: system-ui, Arial, sans-serif;
+    }
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.7);
+      padding: 10px 0;
       text-align: center;
-      padding: 30px;
+      z-index: 1000;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 120px;
+      text-align: center;
     }
     input, textarea {
-      width: 300px;
-      margin: 10px 0;
       padding: 10px;
+      margin: 10px;
       border-radius: 5px;
       border: none;
+      width: 300px;
     }
     button {
-      background-color: red;
+      background: red;
       color: white;
-      border: none;
       padding: 10px 20px;
+      border: none;
       border-radius: 5px;
+      margin-top: 10px;
+      font-size: 18px;
       cursor: pointer;
     }
-    .error-message, .success-message {
-      margin-top: 10px;
+    .dati-societa {
+      margin-top: 40px;
       font-size: 14px;
+      color: white;
+      text-align: center;
     }
   </style>
 </head>
-
 <body>
-
   <nav>
-    <a href="index.html" style="margin: 10px; color: white;">Home</a>
-    <a href="chi-siamo.html" style="margin: 10px; color: white;">Chi Siamo</a>
-    <a href="eventi.html" style="margin: 10px; color: white;">Eventi</a>
-    <a href="contatti.html" style="margin: 10px; color: white;">Contatti</a>
-    <a href="area-riservata.html" style="margin: 10px; color: white;">Area Riservata</a>
+    <a href="index.html">Home</a>
+    <a href="chi-siamo.html">Chi Siamo</a>
+    <a href="eventi.html">Eventi</a>
+    <a href="contatti.html">Contatti</a>
+    <a href="area-riservata.html">Area Riservata</a>
   </nav>
 
-  <h1>Contattaci</h1>
+  <div class="container">
+    <h1>Contattaci</h1>
+    <form id="contact-form" onsubmit="sendEmail(event)">
+      <input type="text" id="name" placeholder="Nome" required><br>
+      <input type="email" id="email" placeholder="Email" required><br>
+      <input type="text" id="phone" placeholder="Telefono (facoltativo)"><br>
+      <textarea id="message" placeholder="Messaggio" rows="4" required></textarea><br>
+      <button type="submit">Invia</button>
+    </form>
+    <div id="status"></div>
 
-  <form id="contact-form">
-    <input type="text" name="name" placeholder="Nome" required><br>
-    <input type="email" name="email" placeholder="Email" required><br>
-    <textarea name="message" placeholder="Messaggio" required></textarea><br>
-    <button type="submit">Invia</button>
-  </form>
-
-  <div class="error-message" id="error-message" style="color:red;"></div>
-  <div class="success-message" id="success-message" style="color:green;"></div>
-
-  <br><br>
-  <div style="font-size: 14px;">
-    <b>Dati Società:</b><br>
-    Artemusic Sound&Light Srls<br>
-    Via Pio La Torre n.7 - 74024 Manduria (TA)<br>
-    P.IVA / C.F.: 03436690733<br>
-    Codice Univoco: SZLUBAI<br>
-    PEC: serviceartemusic@pec.it
+    <div class="dati-societa">
+      <p><strong>Dati Società:</strong><br>
+      Artemusic Sound&amp;Light Srls<br>
+      Via Pio La Torre n.7 - 74024 Manduria (TA)<br>
+      P.IVA / C.F.: 03436690733<br>
+      Codice Univoco: SZLUBAI<br>
+      PEC: serviceartemusic@pec.it</p>
+    </div>
   </div>
-
-  <script>
-    document.getElementById('contact-form').addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      emailjs.sendForm('service_bphokc1', 'template_l5xhtvo', this)
-        .then(function() {
-          document.getElementById('success-message').textContent = "Grazie per averci contattato!";
-          document.getElementById('error-message').textContent = "";
-          document.getElementById('contact-form').reset();
-        }, function(error) {
-          document.getElementById('error-message').textContent = "Errore durante l'invio. Riprova più tardi.";
-          document.getElementById('success-message').textContent = "";
-        });
-    });
-  </script>
-
-</body>
-</html>
-
 </body>
 </html>
