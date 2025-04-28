@@ -1,121 +1,115 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contattaci - Artemusic</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script>
-    (function(){
-      emailjs.init("1fU7xLDeJ2qGXbsNT"); // tua PUBLIC KEY
-    })();
-
-    function sendEmail(event) {
-      event.preventDefault();
-
-      emailjs.send("service_bphokc1", "template_l5xhtvo", {
-        title: "Richiesta di contatto dal sito Artemusic",
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-        phone: document.getElementById("phone").value,
-        message: document.getElementById("message").value,
-        time: new Date().toLocaleString('it-IT')
-      })
-      .then(function(response) {
-        document.getElementById("status").innerHTML = "<p style='color: lightgreen;'>Grazie per averci contattato! Ti risponderemo a breve.</p>";
-        document.getElementById("contact-form").reset();
-      }, function(error) {
-        document.getElementById("status").innerHTML = "<p style='color: red;'>Errore durante l'invio. Riprova più tardi.</p>";
-      });
-    }
-  </script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background: url('bg1.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-    }
-    nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(0,0,0,0.7);
-      padding: 10px 0;
-      text-align: center;
-      z-index: 1000;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: bold;
-      font-size: 18px;
-    }
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-top: 120px;
-      text-align: center;
-    }
-    input, textarea {
-      padding: 10px;
-      margin: 10px;
-      border-radius: 5px;
-      border: none;
-      width: 300px;
-    }
-    button {
-      background: red;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      margin-top: 10px;
-      font-size: 18px;
-      cursor: pointer;
-    }
-    .dati-societa {
-      margin-top: 40px;
-      font-size: 14px;
-      color: white;
-      text-align: center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Contattaci</title>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        (function(){
+            emailjs.init("1fU7xLDeJ2qGXbsNT"); // la tua Public Key
+        })();
+    </script>
+    <style>
+        body {
+            margin: 0;
+            background: black;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+        }
+        nav {
+            margin-top: 10px;
+        }
+        nav a {
+            margin: 0 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        form {
+            margin-top: 40px;
+        }
+        input, textarea {
+            display: block;
+            margin: 15px auto;
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+        }
+        button {
+            margin-top: 20px;
+            background-color: red;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #message-status {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .dati-societa {
+            margin-top: 50px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-  <nav>
+
+<nav>
     <a href="index.html">Home</a>
     <a href="chi-siamo.html">Chi Siamo</a>
     <a href="eventi.html">Eventi</a>
     <a href="contatti.html">Contatti</a>
     <a href="area-riservata.html">Area Riservata</a>
-  </nav>
+</nav>
 
-  <div class="container">
-    <h1>Contattaci</h1>
-    <form id="contact-form" onsubmit="sendEmail(event)">
-      <input type="text" id="name" placeholder="Nome" required><br>
-      <input type="email" id="email" placeholder="Email" required><br>
-      <input type="text" id="phone" placeholder="Telefono (facoltativo)"><br>
-      <textarea id="message" placeholder="Messaggio" rows="4" required></textarea><br>
-      <button type="submit">Invia</button>
-    </form>
-    <div id="status"></div>
+<h1>Contattaci</h1>
 
-    <div class="dati-societa">
-      <p><strong>Dati Società:</strong><br>
-      Artemusic Sound&amp;Light Srls<br>
-      Via Pio La Torre n.7 - 74024 Manduria (TA)<br>
-      P.IVA / C.F.: 03436690733<br>
-      Codice Univoco: SZLUBAI<br>
-      PEC: serviceartemusic@pec.it</p>
-    </div>
-  </div>
+<form id="contact-form">
+    <input type="text" id="user_name" placeholder="Nome" required>
+    <input type="email" id="user_email" placeholder="Email" required>
+    <input type="text" id="user_title" placeholder="Titolo" required>
+    <textarea id="user_message" placeholder="Messaggio" required></textarea>
+    <button type="submit">Invia</button>
+</form>
+
+<div id="message-status"></div>
+
+<div class="dati-societa">
+    <strong>Dati Società:</strong><br>
+    Artemusic Sound&Light Srls<br>
+    Via Pio La Torre n.7 - 74024 Manduria (TA)<br>
+    P.IVA / C.F.: 03436690733<br>
+    Codice Univoco: SZLUBAI<br>
+    PEC: serviceartemusic@pec.it
+</div>
+
+<script>
+document.getElementById('contact-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    emailjs.send("service_bphokc1", "template_l5xhtvo", {
+        name: document.getElementById('user_name').value,
+        email: document.getElementById('user_email').value,
+        title: document.getElementById('user_title').value,
+        message: document.getElementById('user_message').value,
+        time: new Date().toLocaleString()
+    })
+    .then(function(response) {
+        document.getElementById('message-status').innerHTML = "Grazie per averci contattato!";
+        document.getElementById('message-status').style.color = "lightgreen";
+        document.getElementById('contact-form').reset();
+    }, function(error) {
+        document.getElementById('message-status').innerHTML = "Errore durante l'invio. Riprova più tardi.";
+        document.getElementById('message-status').style.color = "red";
+    });
+});
+</script>
+
 </body>
 </html>
