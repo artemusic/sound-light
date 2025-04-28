@@ -1,115 +1,43 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <title>Contattaci</title>
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-    <script>
-        (function(){
-            emailjs.init("1fU7xLDeJ2qGXbsNT"); // la tua Public Key
-        })();
-    </script>
-    <style>
-        body {
-            margin: 0;
-            background: black;
-            font-family: Arial, sans-serif;
-            color: white;
-            text-align: center;
-        }
-        nav {
-            margin-top: 10px;
-        }
-        nav a {
-            margin: 0 20px;
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-        }
-        form {
-            margin-top: 40px;
-        }
-        input, textarea {
-            display: block;
-            margin: 15px auto;
-            width: 300px;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: none;
-        }
-        button {
-            margin-top: 20px;
-            background-color: red;
-            color: white;
-            padding: 10px 20px;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #message-status {
-            margin-top: 20px;
-            font-size: 16px;
-        }
-        .dati-societa {
-            margin-top: 50px;
-            font-size: 14px;
-        }
-    </style>
-</head>
-<body>
+<!-- CONTATTI.HTML CORRETTO -->
 
-<nav>
-    <a href="index.html">Home</a>
-    <a href="chi-siamo.html">Chi Siamo</a>
-    <a href="eventi.html">Eventi</a>
-    <a href="contatti.html">Contatti</a>
-    <a href="area-riservata.html">Area Riservata</a>
-</nav>
+<section style="text-align: center; padding: 50px; color: white;">
+  <h2>Contattaci</h2>
+  <form action="sendmail.php" method="POST" style="display: flex; flex-direction: column; align-items: center; gap: 15px; max-width: 400px; margin: auto;">
+    <input type="text" name="name" placeholder="Nome" required style="width: 100%; padding: 10px; background: #e6eeff; border: none;">
+    <input type="email" name="email" placeholder="Email" required style="width: 100%; padding: 10px; background: #e6eeff; border: none;">
+    <input type="text" name="title" placeholder="Titolo" required style="width: 100%; padding: 10px; background: #e6eeff; border: none;">
+    <textarea name="message" placeholder="Messaggio" required style="width: 100%; padding: 10px; background: #e6eeff; border: none; height: 150px;"></textarea>
+    <button type="submit" style="background-color: red; color: white; padding: 10px 20px; border: none; cursor: pointer;">Invia</button>
+  </form>
+  <div id="response-message" style="margin-top: 20px; font-size: 16px;"></div>
 
-<h1>Contattaci</h1>
-
-<form id="contact-form">
-    <input type="text" id="user_name" placeholder="Nome" required>
-    <input type="email" id="user_email" placeholder="Email" required>
-    <input type="text" id="user_title" placeholder="Titolo" required>
-    <textarea id="user_message" placeholder="Messaggio" required></textarea>
-    <button type="submit">Invia</button>
-</form>
-
-<div id="message-status"></div>
-
-<div class="dati-societa">
+  <!-- Qui rimane il tuo blocco Dati Società -->
+  <div style="margin-top: 50px;">
     <strong>Dati Società:</strong><br>
     Artemusic Sound&Light Srls<br>
     Via Pio La Torre n.7 - 74024 Manduria (TA)<br>
-    P.IVA / C.F.: 03436690733<br>
+    P.IVA / C.F.: 03436990733<br>
     Codice Univoco: SZLUBAI<br>
     PEC: serviceartemusic@pec.it
-</div>
+  </div>
+</section>
 
 <script>
-document.getElementById('contact-form').addEventListener('submit', function(event) {
-    event.preventDefault();
+  const form = document.querySelector('form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
 
-    emailjs.send("service_bphokc1", "template_l5xhtvo", {
-        name: document.getElementById('user_name').value,
-        email: document.getElementById('user_email').value,
-        title: document.getElementById('user_title').value,
-        message: document.getElementById('user_message').value,
-        time: new Date().toLocaleString()
-    })
-    .then(function(response) {
-        document.getElementById('message-status').innerHTML = "Grazie per averci contattato!";
-        document.getElementById('message-status').style.color = "lightgreen";
-        document.getElementById('contact-form').reset();
-    }, function(error) {
-        document.getElementById('message-status').innerHTML = "Errore durante l'invio. Riprova più tardi.";
-        document.getElementById('message-status').style.color = "red";
-    });
-});
+    try {
+      const response = await fetch('sendmail.php', {
+        method: 'POST',
+        body: formData
+      });
+      const result = await response.text();
+      document.getElementById('response-message').innerHTML = result;
+      form.reset();
+    } catch (error) {
+      document.getElementById('response-message').innerHTML = "Errore durante l'invio. Riprova più tardi.";
+    }
+  });
 </script>
-
-</body>
-</html>
