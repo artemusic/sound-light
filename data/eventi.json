@@ -62,5 +62,21 @@
     "colore": "#3498db",
     "importo": "5500.00",
     "creatoIl": "2026-04-18T22:44:29.250Z"
+  },
+  {
+    "id": "mo4xqf3s86805baa",
+    "titolo": "Test Importo",
+    "data": "2026-06-01",
+    "oraInizio": "",
+    "oraFine": "",
+    "luogo": "",
+    "indirizzo": "",
+    "orarioLavoro": "",
+    "dipendenti": "",
+    "merce": "",
+    "note": "",
+    "colore": "#e81c2e",
+    "importo": "3500.00",
+    "creatoIl": "2026-04-18T22:55:10.840Z"
   }
 ]

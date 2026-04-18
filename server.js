@@ -18,9 +18,10 @@ const PORT = 3000;
 // ──────────────────────────────────────────────
 // CONFIGURAZIONE PASSWORDS
 // ──────────────────────────────────────────────
-const ADMIN_PASSWORD    = 'Admin2025!';
-const USER_PASSWORD     = 'Allestimenti2025';
-const FRATELLI_PASSWORD = 'Famiglia2025!';  // vede anche l'importo
+const ADMIN_PASSWORD    = '260264';       // admin: accesso totale + importo
+const USER_PASSWORD     = 'ing260264';    // area riservata documenti
+const CALENDAR_PASSWORD = 'tecnico260264'; // calendario tecnici (solo lettura)
+const FRATELLI_PASSWORD = '260264';       // stessa del admin (stesso accesso)
 
 // ──────────────────────────────────────────────
 // CARTELLA DOCUMENTI (root del file manager)
@@ -77,14 +78,17 @@ function relToDocs(absPath) {
 // POST /api/login
 app.post('/api/login', (req, res) => {
   const { password } = req.body;
+  // Admin: accesso totale (file manager + calendario + importo)
   if (password === ADMIN_PASSWORD) {
     req.session.role = 'admin';
     return res.json({ ok: true, role: 'admin' });
   }
-  if (password === FRATELLI_PASSWORD) {
-    req.session.role = 'fratelli';
-    return res.json({ ok: true, role: 'fratelli' });
+  // Tecnico calendario: vede solo il calendario (no importo, no file manager)
+  if (password === CALENDAR_PASSWORD) {
+    req.session.role = 'tecnico';
+    return res.json({ ok: true, role: 'tecnico' });
   }
+  // Ingegnere area riservata: accede ai documenti (no calendario admin, no importo)
   if (password === USER_PASSWORD) {
     req.session.role = 'user';
     return res.json({ ok: true, role: 'user' });
@@ -117,17 +121,17 @@ function requireAdmin(req, res, next) {
   next();
 }
 
-// Può accedere ai dati finanziari (importo): solo admin e fratelli
+// Può accedere ai dati finanziari (importo): solo admin
 function requireFinance(req, res, next) {
   const r = req.session.role;
-  if (r !== 'admin' && r !== 'fratelli') return res.status(403).json({ ok: false, message: 'Accesso negato' });
+  if (r !== 'admin') return res.status(403).json({ ok: false, message: 'Accesso negato' });
   next();
 }
 
-// Può creare/modificare eventi: admin e fratelli
+// Può creare/modificare eventi: solo admin
 function requireEventManager(req, res, next) {
   const r = req.session.role;
-  if (r !== 'admin' && r !== 'fratelli') return res.status(403).json({ ok: false, message: 'Solo admin o fratelli' });
+  if (r !== 'admin') return res.status(403).json({ ok: false, message: 'Solo admin' });
   next();
 }
 
@@ -349,9 +353,9 @@ function newId() {
 }
 
 // GET /api/eventi — tutti gli eventi (auth richiesta)
-// L'importo viene restituito solo ad admin e fratelli
+// L'importo viene restituito solo all'admin
 app.get('/api/eventi', requireAuth, (req, res) => {
-  const canSeeFinance = (req.session.role === 'admin' || req.session.role === 'fratelli');
+  const canSeeFinance = (req.session.role === 'admin');
   const eventi = readEvents().map(e => {
     if (!canSeeFinance) {
       const { importo, ...rest } = e;
@@ -375,7 +379,7 @@ app.post('/api/eventi', requireEventManager, (req, res) => {
 
   if (!titolo || !data) return res.status(400).json({ ok: false, message: 'Titolo e data sono obbligatori' });
 
-  const canSeeFinance = (req.session.role === 'admin' || req.session.role === 'fratelli');
+  const canSeeFinance = (req.session.role === 'admin');
 
   const evento = {
     id:            newId(),
@@ -420,7 +424,7 @@ app.put('/api/eventi/:id', requireEventManager, (req, res) => {
 
   if (!titolo || !data) return res.status(400).json({ ok: false, message: 'Titolo e data sono obbligatori' });
 
-  const canSeeFinance = (req.session.role === 'admin' || req.session.role === 'fratelli');
+  const canSeeFinance = (req.session.role === 'admin');
 
   events[idx] = {
     ...events[idx],
