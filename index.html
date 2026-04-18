@@ -1,122 +1,421 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Artemusic</title>
+  <title>Artemusic – Sound & Light</title>
+  <link rel="icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --red: #e81c2e;
+      --red-dark: #b51020;
+      --white: #ffffff;
+      --black: #0a0a0a;
+      --glass: rgba(10,10,10,0.55);
+      --glass-border: rgba(255,255,255,0.10);
     }
+
     html, body {
       height: 100%;
-      font-family: Arial, sans-serif;
-      
-      color: white;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--white);
       overflow: hidden;
+      background: var(--black);
     }
-    .background {
+
+    /* ─── SLIDESHOW ─── */
+    .bg-slideshow {
       position: fixed;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
+      inset: 0;
+      z-index: 0;
     }
-    .background img {
+    .bg-slideshow img {
       position: absolute;
-      width: 100%;
-      height: 100%;
+      inset: 0;
+      width: 100%; height: 100%;
       object-fit: cover;
       opacity: 0;
-      transition: opacity 2s ease-in-out;
+      transition: opacity 1.8s ease-in-out;
+      filter: brightness(0.45);
     }
-    .background img.active {
-      opacity: 1;
+    .bg-slideshow img.active { opacity: 1; }
+
+    /* overlay gradient */
+    .bg-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.35) 0%,
+        rgba(0,0,0,0.10) 40%,
+        rgba(0,0,0,0.60) 100%
+      );
     }
+
+    /* ─── NAVBAR ─── */
     nav {
-      position: absolute;
-      top: 20px;
-      width: 100%;
-      text-align: center;
-      z-index: 10;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      background: var(--glass);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--glass-border);
+      transition: background 0.3s;
     }
-    nav a {
-      color: white;
+    .nav-logo {
+      height: 44px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.82);
       text-decoration: none;
-      margin: 0 20px;
-      font-size: 18px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      position: relative;
+      transition: color 0.25s;
     }
-    .logo-container {
+    .nav-links a::after {
+      content: '';
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--red);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      z-index: 200;
+    }
+    .hamburger span {
+      display: block;
+      width: 26px; height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: all 0.35s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10,10,10,0.97);
+      z-index: 150;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--red); }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
       z-index: 10;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 24px;
     }
-    .logo-container img {
-      max-width: 500px;
-      width: 90vw;
+    .hero-logo {
+      width: min(440px, 82vw);
+      animation: fadeDown 1s ease both;
     }
-    .buttons {
-      position: absolute;
-      bottom: 30px;
-      width: 100%;
+    .hero-tagline {
+      margin-top: 18px;
+      font-size: clamp(11px, 1.6vw, 14px);
+      font-weight: 300;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.68);
+      animation: fadeDown 1s 0.2s ease both;
+    }
+    .hero-divider {
+      width: 60px; height: 2px;
+      background: var(--red);
+      margin: 22px auto 0;
+      animation: fadeIn 1s 0.4s ease both;
+    }
+
+    /* ─── BOTTOM BUTTONS ─── */
+    .hero-actions {
+      position: fixed;
+      bottom: 36px;
+      left: 0; right: 0;
+      z-index: 20;
       display: flex;
       justify-content: center;
-      gap: 40px;
-      z-index: 10;
+      gap: 20px;
+      padding: 0 16px;
+      flex-wrap: wrap;
+      animation: fadeUp 1s 0.6s ease both;
     }
-    .buttons a {
-      color: white;
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 30px;
+      border-radius: 50px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
       text-decoration: none;
-      padding: 14px 24px;
-      border: 2px solid white;
-      border-radius: 10px;
-      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
     }
-    audio {
-      display: none;
+    .btn-primary {
+      background: var(--red);
+      color: var(--white);
+      border: 2px solid var(--red);
+    }
+    .btn-primary:hover {
+      background: var(--red-dark);
+      border-color: var(--red-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(232,28,46,0.45);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,0.55);
+      backdrop-filter: blur(6px);
+    }
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    /* ─── AUDIO TOGGLE ─── */
+    .audio-toggle {
+      position: fixed;
+      bottom: 38px;
+      right: 40px;
+      z-index: 30;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(10px);
+      border-radius: 50%;
+      width: 46px; height: 46px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+      transition: background 0.25s, transform 0.25s;
+    }
+    .audio-toggle:hover { background: rgba(255,255,255,0.15); transform: scale(1.08); }
+
+    /* ─── SLIDE INDICATORS ─── */
+    .slide-dots {
+      position: fixed;
+      right: 44px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .slide-dots span {
+      display: block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.35);
+      transition: background 0.4s, transform 0.4s;
+      cursor: pointer;
+    }
+    .slide-dots span.active {
+      background: var(--red);
+      transform: scale(1.4);
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .slide-dots { display: none; }
+      .audio-toggle { right: 20px; bottom: 100px; }
     }
   </style>
 </head>
 <body>
-  <div class="background">
-    <img src="bg1.jpg" class="active" />
-    <img src="bg2.jpg" />
-    <img src="bg3.jpg" />
-  </div>
 
-  <audio autoplay loop id="bg-audio">
+  <!-- Slideshow background -->
+  <div class="bg-slideshow" id="slideshow">
+    <img src="bg1.jpg" class="active" alt="" />
+    <img src="bg2.jpg" alt="" />
+    <img src="bg3.jpg" alt="" />
+  </div>
+  <div class="bg-overlay"></div>
+
+  <!-- Audio -->
+  <audio id="bg-audio" loop>
     <source src="focus-loop-corporate-music-114297.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- Navbar -->
   <nav>
-    <a href="index.html">Home</a>
-    <a href="chi-siamo.html">Chi siamo</a>
-    <a href="eventi.html">Eventi</a>
-    <a href="contatti.html">Contatti</a>
-    <a href="area-riservata.html">Area Riservata</a>
+    <img src="logo-bianco.png" alt="Artemusic" class="nav-logo" />
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="chi-siamo.html">Chi siamo</a></li>
+      <li><a href="eventi.html">Eventi</a></li>
+      <li><a href="contatti.html">Contatti</a></li>
+      <li><a href="area-riservata.html">Area Riservata</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
   </nav>
 
-  <div class="logo-container">
-    <img src="logo-bianco.png" alt="ARTEMUSIC logo" />
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html" onclick="closeMobile()">Home</a>
+    <a href="chi-siamo.html" onclick="closeMobile()">Chi siamo</a>
+    <a href="eventi.html" onclick="closeMobile()">Eventi</a>
+    <a href="contatti.html" onclick="closeMobile()">Contatti</a>
+    <a href="area-riservata.html" onclick="closeMobile()">Area Riservata</a>
   </div>
 
-  <div class="buttons">
-    <a href="brochure.pdf" download>Scarica la brochure 2025</a>
-    <a href="contatti.html">Contattaci</a>
+  <!-- Hero -->
+  <div class="hero">
+    <img src="logo-bianco.png" alt="ARTEMUSIC" class="hero-logo" />
+    <p class="hero-tagline">Sound &amp; Light · Manduria, Puglia</p>
+    <div class="hero-divider"></div>
   </div>
+
+  <!-- Slide dots -->
+  <div class="slide-dots" id="dots">
+    <span class="active" onclick="goToSlide(0)"></span>
+    <span onclick="goToSlide(1)"></span>
+    <span onclick="goToSlide(2)"></span>
+  </div>
+
+  <!-- Bottom actions -->
+  <div class="hero-actions">
+    <a href="brochure.pdf" download class="btn btn-primary">
+      ⬇ Scarica la Brochure 2025
+    </a>
+    <a href="contatti.html" class="btn btn-outline">
+      ✉ Contattaci
+    </a>
+  </div>
+
+  <!-- Audio toggle -->
+  <div class="audio-toggle" id="audioToggle" title="Musica on/off">🔇</div>
 
   <script>
-    const images = document.querySelectorAll(".background img");
-    let current = 0;
-    setInterval(() => {
-      images[current].classList.remove("active");
-      current = (current + 1) % images.length;
-      images[current].classList.add("active");
-    }, 6000);
+    // ─── Slideshow ───
+    const slides = document.querySelectorAll('#slideshow img');
+    const dots   = document.querySelectorAll('#dots span');
+    let current  = 0;
+    let timer;
+
+    function goToSlide(n) {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = n;
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+      clearInterval(timer);
+      timer = setInterval(nextSlide, 6000);
+    }
+    function nextSlide() {
+      goToSlide((current + 1) % slides.length);
+    }
+    timer = setInterval(nextSlide, 6000);
+
+    // ─── Audio ───
+    const audio  = document.getElementById('bg-audio');
+    const toggle = document.getElementById('audioToggle');
+    let playing  = false;
+
+    document.addEventListener('click', function startAudio() {
+      if (!playing) {
+        audio.volume = 0.35;
+        audio.play().then(() => {
+          playing = true;
+          toggle.textContent = '🔊';
+        }).catch(() => {});
+        document.removeEventListener('click', startAudio);
+      }
+    }, { once: false });
+
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (playing) {
+        audio.pause(); playing = false; toggle.textContent = '🔇';
+      } else {
+        audio.volume = 0.35;
+        audio.play(); playing = true; toggle.textContent = '🔊';
+      }
+    });
+
+    // ─── Hamburger ───
+    const hamburger   = document.getElementById('hamburger');
+    const mobileMenu  = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    function closeMobile() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
   </script>
 </body>
 </html>

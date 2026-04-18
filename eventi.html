@@ -1,88 +1,312 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eventi - ARTEMUSIC</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eventi – Artemusic</title>
+  <link rel="icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: url('bg3.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-      min-height: 100vh;
-      padding-top: 80px;
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --red: #e81c2e;
+      --white: #ffffff;
+      --black: #0a0a0a;
+      --glass-border: rgba(255,255,255,0.10);
     }
+    html, body {
+      min-height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--white);
+      background: var(--black);
+    }
+
+    .bg-fixed {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: url('bg3.jpg') no-repeat center center / cover;
+      filter: brightness(0.28);
+    }
+
+    /* NAV */
     nav {
       position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 20px 0;
-      text-align: center;
-      z-index: 1000;
-    }
-    nav a {
-      margin: 0 20px;
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 18px;
-    }
-    .content {
-      max-width: 900px;
-      margin: auto;
-      padding: 40px;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 10px;
-    }
-    h1 {
-      text-align: center;
-      color: #ff4747;
-      margin-bottom: 30px;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
       display: flex;
-      flex-direction: column;
-      gap: 15px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(10,10,10,0.70);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--glass-border);
     }
-    li {
-      font-size: 1.2em;
-      padding: 15px 25px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
+    .nav-logo { height: 40px; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.78);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      position: relative;
+      transition: color 0.25s;
+    }
+    .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:var(--red); transition:width 0.3s; }
+    .nav-links a:hover { color:var(--white); }
+    .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
+    .nav-links a.active { color:var(--white); }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; z-index:200; }
+    .hamburger span { display:block; width:26px; height:2px; background:var(--white); border-radius:2px; transition:all 0.35s; }
+    .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+    .mobile-menu { display:none; position:fixed; inset:0; background:rgba(10,10,10,0.97); z-index:150; flex-direction:column; align-items:center; justify-content:center; gap:36px; }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { color:var(--white); text-decoration:none; font-size:22px; font-weight:700; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+    .mobile-menu a:hover { color:var(--red); }
+
+    /* PAGE */
+    .page-wrap {
+      position: relative;
+      z-index: 10;
+      padding-top: 110px;
+      padding-bottom: 80px;
+    }
+
+    .page-hero {
       text-align: center;
-      transition: transform 0.3s ease, background 0.3s ease;
-      cursor: pointer;
+      padding: 60px 24px 40px;
     }
-    li:hover {
-      transform: scale(1.05);
-      background: rgba(255, 255, 255, 0.2);
+    .page-hero .label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 14px;
+    }
+    .page-hero h1 {
+      font-size: clamp(34px, 6vw, 64px);
+      font-weight: 900;
+      line-height: 1.1;
+    }
+    .page-hero .divider {
+      width: 56px; height: 3px;
+      background: var(--red);
+      margin: 22px auto 0;
+      border-radius: 2px;
+    }
+
+    /* FILTER TABS */
+    .filter-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 40px 24px 0;
+    }
+    .tab-btn {
+      padding: 10px 24px;
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: transparent;
+      color: rgba(255,255,255,0.65);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .tab-btn:hover, .tab-btn.active {
+      background: var(--red);
+      border-color: var(--red);
+      color: var(--white);
+    }
+
+    /* EVENTS GRID */
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      margin: 40px auto 0;
+      padding: 0 32px;
+    }
+
+    .event-card {
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 28px 26px;
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s, background 0.3s, border-color 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .event-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--red);
+      border-radius: 16px 0 0 16px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .event-card:hover {
+      transform: translateY(-6px);
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(232,28,46,0.35);
+    }
+    .event-card:hover::before { opacity: 1; }
+
+    .event-emoji {
+      font-size: 32px;
+      margin-bottom: 14px;
+      display: block;
+    }
+    .event-year {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .event-title {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .event-location {
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .events-grid { padding: 0 20px; grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
+
+  <div class="bg-fixed"></div>
+
   <nav>
+    <a href="index.html"><img src="logo-bianco.png" alt="Artemusic" class="nav-logo" /></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="chi-siamo.html">Chi siamo</a></li>
+      <li><a href="eventi.html" class="active">Eventi</a></li>
+      <li><a href="contatti.html">Contatti</a></li>
+      <li><a href="area-riservata.html">Area Riservata</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
     <a href="index.html">Home</a>
     <a href="chi-siamo.html">Chi siamo</a>
     <a href="eventi.html">Eventi</a>
     <a href="contatti.html">Contatti</a>
     <a href="area-riservata.html">Area Riservata</a>
-  </nav>
-  <div class="content">
-    <h1>I nostri eventi</h1>
-    <ul>
-      <li>🎶 Baccano Rusticano - Manduria 2023</li>
-      <li>🎶 Baccano Rusticano - Manduria 2024</li>
-      <li>🏛️ Fiera Pessima - Manduria 2025</li>
-      <li>🎉 Concerto di Capodanno - San Marzano 2024</li>
-      <li>🎬 Comedy Film Fest - Manduria 2024</li>
-      <li>🍽️ Qcine - Incontri tra Cinema e Cibo - Francavilla Fontana 2024</li>
-      <li>🌍 G7 Side Event - Manduria 2024</li>
-    </ul>
   </div>
+
+  <div class="page-wrap">
+    <div class="page-hero">
+      <span class="label">Il nostro portfolio</span>
+      <h1>I Nostri Eventi</h1>
+      <div class="divider"></div>
+    </div>
+
+    <div class="filter-tabs">
+      <button class="tab-btn active" onclick="filterCards('all', this)">Tutti</button>
+      <button class="tab-btn" onclick="filterCards('2023', this)">2023</button>
+      <button class="tab-btn" onclick="filterCards('2024', this)">2024</button>
+      <button class="tab-btn" onclick="filterCards('2025', this)">2025</button>
+    </div>
+
+    <div class="events-grid" id="eventsGrid">
+      <div class="event-card" data-year="2023">
+        <span class="event-emoji">🎶</span>
+        <span class="event-year">2023</span>
+        <div class="event-title">Baccano Rusticano</div>
+        <div class="event-location">📍 Manduria (TA)</div>
+      </div>
+      <div class="event-card" data-year="2024">
+        <span class="event-emoji">🎶</span>
+        <span class="event-year">2024</span>
+        <div class="event-title">Baccano Rusticano</div>
+        <div class="event-location">📍 Manduria (TA)</div>
+      </div>
+      <div class="event-card" data-year="2024">
+        <span class="event-emoji">🎉</span>
+        <span class="event-year">2024</span>
+        <div class="event-title">Concerto di Capodanno</div>
+        <div class="event-location">📍 San Marzano di San Giuseppe (TA)</div>
+      </div>
+      <div class="event-card" data-year="2024">
+        <span class="event-emoji">🎬</span>
+        <span class="event-year">2024</span>
+        <div class="event-title">Comedy Film Fest</div>
+        <div class="event-location">📍 Manduria (TA)</div>
+      </div>
+      <div class="event-card" data-year="2024">
+        <span class="event-emoji">🍽️</span>
+        <span class="event-year">2024</span>
+        <div class="event-title">Qcine – Incontri tra Cinema e Cibo</div>
+        <div class="event-location">📍 Francavilla Fontana (BR)</div>
+      </div>
+      <div class="event-card" data-year="2024">
+        <span class="event-emoji">🌍</span>
+        <span class="event-year">2024</span>
+        <div class="event-title">G7 Side Event</div>
+        <div class="event-location">📍 Manduria (TA)</div>
+      </div>
+      <div class="event-card" data-year="2025">
+        <span class="event-emoji">🏛️</span>
+        <span class="event-year">2025</span>
+        <div class="event-title">Fiera Pessima</div>
+        <div class="event-location">📍 Manduria (TA)</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const hamburger  = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
+    function filterCards(year, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.event-card').forEach(card => {
+        if (year === 'all' || card.dataset.year === year) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
 </body>
 </html>

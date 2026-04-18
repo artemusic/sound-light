@@ -1,79 +1,335 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>Contattaci - Artemusic</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contatti – Artemusic</title>
+  <link rel="icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
   <style>
-    body {
-      background: black url('bg1.jpg') no-repeat center center fixed;
-      background-size: cover;
-      font-family: Arial, sans-serif;
-      color: white;
-      text-align: center;
-      margin: 0;
-      padding: 0;
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --red: #e81c2e;
+      --red-dark: #b51020;
+      --white: #ffffff;
+      --black: #0a0a0a;
+      --glass-border: rgba(255,255,255,0.10);
     }
+    html, body {
+      min-height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--white);
+      background: var(--black);
+    }
+
+    .bg-fixed {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: url('bg1.jpg') no-repeat center center / cover;
+      filter: brightness(0.28);
+    }
+
+    /* NAV */
     nav {
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.8);
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(10,10,10,0.70);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--glass-border);
     }
-    nav a {
-      color: white;
-      margin: 0 15px;
+    .nav-logo { height: 40px; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.78);
       text-decoration: none;
-      font-size: 18px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      position: relative;
+      transition: color 0.25s;
     }
-    form {
-      margin-top: 100px;
+    .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:var(--red); transition:width 0.3s; }
+    .nav-links a:hover { color:var(--white); }
+    .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
+    .nav-links a.active { color:var(--white); }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; z-index:200; }
+    .hamburger span { display:block; width:26px; height:2px; background:var(--white); border-radius:2px; transition:all 0.35s; }
+    .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+    .mobile-menu { display:none; position:fixed; inset:0; background:rgba(10,10,10,0.97); z-index:150; flex-direction:column; align-items:center; justify-content:center; gap:36px; }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { color:var(--white); text-decoration:none; font-size:22px; font-weight:700; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+    .mobile-menu a:hover { color:var(--red); }
+
+    /* PAGE */
+    .page-wrap {
+      position: relative;
+      z-index: 10;
+      padding-top: 110px;
+      padding-bottom: 80px;
     }
-    input, textarea {
-      width: 300px;
-      padding: 10px;
-      margin: 10px;
-      border-radius: 5px;
+
+    .page-hero {
+      text-align: center;
+      padding: 60px 24px 40px;
+    }
+    .page-hero .label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 14px;
+    }
+    .page-hero h1 {
+      font-size: clamp(34px, 6vw, 64px);
+      font-weight: 900;
+      line-height: 1.1;
+    }
+    .page-hero .divider {
+      width: 56px; height: 3px;
+      background: var(--red);
+      margin: 22px auto 0;
+      border-radius: 2px;
+    }
+
+    /* TWO COLUMNS */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      max-width: 1060px;
+      margin: 60px auto 0;
+      padding: 0 32px;
+    }
+
+    /* INFO PANEL */
+    .info-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .info-card {
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 14px;
+      padding: 26px 24px;
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+    }
+    .info-card .icon {
+      font-size: 26px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .info-card h4 {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 6px;
+    }
+    .info-card p, .info-card a {
+      font-size: 14px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.65;
+      text-decoration: none;
+    }
+    .info-card a:hover { color: var(--white); }
+
+    /* FORM PANEL */
+    .form-panel {
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 40px 36px;
+      backdrop-filter: blur(8px);
+    }
+    .form-panel h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 28px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 8px;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: rgba(255,255,255,0.30);
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--red);
+      background: rgba(255,255,255,0.10);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 15px;
       border: none;
-    }
-    button {
-      background-color: red;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
+      border-radius: 10px;
+      background: var(--red);
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
       cursor: pointer;
+      margin-top: 6px;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-submit:hover {
+      background: var(--red-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(232,28,46,0.40);
+    }
+
+    @media (max-width: 900px) {
+      .contact-layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .contact-layout { padding: 0 20px; }
+      .form-panel { padding: 28px 20px; }
     }
   </style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html">Home</a>
-  <a href="chi-siamo.html">Chi Siamo</a>
-  <a href="eventi.html">Eventi</a>
-  <a href="contatti.html">Contatti</a>
-  <a href="area-riservata.html">Area Riservata</a>
-</nav>
+  <div class="bg-fixed"></div>
 
-<h1>Contattaci</h1>
+  <nav>
+    <a href="index.html"><img src="logo-bianco.png" alt="Artemusic" class="nav-logo" /></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="chi-siamo.html">Chi siamo</a></li>
+      <li><a href="eventi.html">Eventi</a></li>
+      <li><a href="contatti.html" class="active">Contatti</a></li>
+      <li><a href="area-riservata.html">Area Riservata</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </nav>
 
-<form action="https://formsubmit.co/info@artemusic.it" method="POST">
-  <input type="hidden" name="_next" value="https://www.artemusic.it/thankyou.html">
-  <input type="hidden" name="_captcha" value="false">
-  
-  <input type="text" name="name" placeholder="Nome" required><br>
-  <input type="email" name="email" placeholder="Email" required><br>
-  <input type="text" name="title" placeholder="Titolo" required><br>
-  <textarea name="message" placeholder="Messaggio" required></textarea><br>
-  <button type="submit">Invia</button>
-</form>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="chi-siamo.html">Chi siamo</a>
+    <a href="eventi.html">Eventi</a>
+    <a href="contatti.html">Contatti</a>
+    <a href="area-riservata.html">Area Riservata</a>
+  </div>
 
-<div style="margin-top:50px; font-size:14px;">
-  <b>Dati Società:</b><br>
-  Artemusic Sound&Light Srls<br>
-  Via Pio La Torre n.7 - 74024 Manduria (TA)<br>
-  P.IVA / C.F.: 03436690733<br>
-  Codice Univoco: SZLUBAI<br>
-  PEC: serviceartemusic@pec.it
-</div>
+  <div class="page-wrap">
+    <div class="page-hero">
+      <span class="label">Scrivici</span>
+      <h1>Contattaci</h1>
+      <div class="divider"></div>
+    </div>
 
+    <div class="contact-layout">
+
+      <!-- Info -->
+      <div class="info-panel">
+        <div class="info-card">
+          <div class="icon">🏢</div>
+          <div>
+            <h4>Sede</h4>
+            <p>Artemusic Sound&amp;Light Srls<br>Via Pio La Torre n.7<br>74024 Manduria (TA)</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="icon">📧</div>
+          <div>
+            <h4>Email</h4>
+            <a href="mailto:info@artemusic.it">info@artemusic.it</a><br>
+            <a href="mailto:serviceartemusic@pec.it" style="margin-top:4px;display:block;">serviceartemusic@pec.it</a>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="icon">🧾</div>
+          <div>
+            <h4>Dati Fiscali</h4>
+            <p>P.IVA / C.F.: 03436690733<br>Codice Univoco: SZLUBAI</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="form-panel">
+        <h2>Inviaci un messaggio</h2>
+        <form action="https://formsubmit.co/info@artemusic.it" method="POST">
+          <input type="hidden" name="_next" value="https://www.artemusic.it/thankyou.html">
+          <input type="hidden" name="_captcha" value="false">
+
+          <div class="form-group">
+            <label>Nome</label>
+            <input type="text" name="name" placeholder="Il tuo nome" required />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="La tua email" required />
+          </div>
+          <div class="form-group">
+            <label>Oggetto</label>
+            <input type="text" name="title" placeholder="Oggetto del messaggio" required />
+          </div>
+          <div class="form-group">
+            <label>Messaggio</label>
+            <textarea name="message" placeholder="Descrivi il tuo evento o la tua richiesta…" required></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Invia Messaggio →</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const hamburger  = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+  </script>
 </body>
 </html>

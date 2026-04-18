@@ -1,116 +1,351 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Area Riservata - ARTEMUSIC</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Area Riservata – Artemusic</title>
+  <link rel="icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: url('bg3.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-      min-height: 100vh;
-      padding-top: 80px;
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --red: #e81c2e;
+      --red-dark: #b51020;
+      --white: #ffffff;
+      --black: #0a0a0a;
+      --glass-border: rgba(255,255,255,0.10);
     }
+    html, body {
+      min-height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--white);
+      background: var(--black);
+    }
+
+    .bg-fixed {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: url('bg3.jpg') no-repeat center center / cover;
+      filter: brightness(0.25);
+    }
+
+    /* NAV */
     nav {
       position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 20px 0;
-      text-align: center;
-      z-index: 1000;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(10,10,10,0.70);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--glass-border);
     }
-    nav a {
-      margin: 0 20px;
-      color: white;
+    .nav-logo { height: 40px; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.78);
       text-decoration: none;
-      font-weight: bold;
-      font-size: 18px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      position: relative;
+      transition: color 0.25s;
     }
-    .content {
-      max-width: 700px;
-      margin: auto;
-      padding: 40px;
-      background: rgba(0, 0, 0, 0.65);
-      border-radius: 10px;
+    .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:var(--red); transition:width 0.3s; }
+    .nav-links a:hover { color:var(--white); }
+    .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
+    .nav-links a.active { color:var(--white); }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; z-index:200; }
+    .hamburger span { display:block; width:26px; height:2px; background:var(--white); border-radius:2px; transition:all 0.35s; }
+    .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+    .mobile-menu { display:none; position:fixed; inset:0; background:rgba(10,10,10,0.97); z-index:150; flex-direction:column; align-items:center; justify-content:center; gap:36px; }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { color:var(--white); text-decoration:none; font-size:22px; font-weight:700; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+    .mobile-menu a:hover { color:var(--red); }
+
+    /* PAGE */
+    .page-wrap {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 24px 60px;
+    }
+
+    /* LOGIN CARD */
+    .login-card {
+      width: 100%;
+      max-width: 440px;
+      background: rgba(15,15,15,0.80);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 48px 40px;
+      backdrop-filter: blur(16px);
       text-align: center;
     }
-    h1 {
-      color: #ff4747;
-      margin-bottom: 30px;
+    .login-icon {
+      font-size: 44px;
+      margin-bottom: 16px;
     }
-    h2 {
-      color: #ff4747;
-      margin-top: 30px;
+    .login-card h1 {
+      font-size: 22px;
+      font-weight: 900;
+      margin-bottom: 8px;
     }
-    input[type="password"], input[type="submit"] {
-      padding: 12px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: none;
-      margin-bottom: 15px;
+    .login-card p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.50);
+      margin-bottom: 32px;
+      line-height: 1.6;
     }
-    input[type="submit"] {
-      background-color: #ff4747;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .folders {
-      display: none;
-      margin-top: 30px;
+
+    .form-group {
+      margin-bottom: 20px;
       text-align: left;
     }
-    .folders a {
+    .form-group label {
       display: block;
-      margin: 6px 0;
-      font-size: 16px;
-      color: white;
-      text-decoration: underline;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.50);
+      margin-bottom: 8px;
+    }
+    .pwd-wrap {
+      position: relative;
+    }
+    .form-group input[type="password"],
+    .form-group input[type="text"] {
+      width: 100%;
+      padding: 14px 44px 14px 16px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .form-group input:focus {
+      border-color: var(--red);
+      background: rgba(255,255,255,0.10);
+    }
+    .toggle-pwd {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 17px;
+      color: rgba(255,255,255,0.40);
+      user-select: none;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      background: var(--red);
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-login:hover {
+      background: var(--red-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(232,28,46,0.40);
+    }
+
+    .error-msg {
+      display: none;
+      background: rgba(232,28,46,0.15);
+      border: 1px solid rgba(232,28,46,0.40);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #ff8080;
+      margin-top: 14px;
+    }
+
+    /* DOCUMENTS PANEL */
+    .docs-panel {
+      display: none;
+      width: 100%;
+      max-width: 700px;
+      margin-top: 32px;
+    }
+    .docs-panel h2 {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 18px;
+      text-align: center;
+    }
+    .docs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .doc-item {
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 12px;
+      padding: 18px 16px;
+      text-decoration: none;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.25s, border-color 0.25s, transform 0.25s;
+    }
+    .doc-item:hover {
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(232,28,46,0.40);
+      transform: translateY(-3px);
+    }
+    .doc-item .doc-icon { font-size: 22px; flex-shrink: 0; }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .login-card { padding: 36px 24px; }
+      .docs-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
 <body>
+
+  <div class="bg-fixed"></div>
+
   <nav>
+    <a href="index.html"><img src="logo-bianco.png" alt="Artemusic" class="nav-logo" /></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="chi-siamo.html">Chi siamo</a></li>
+      <li><a href="eventi.html">Eventi</a></li>
+      <li><a href="contatti.html">Contatti</a></li>
+      <li><a href="area-riservata.html" class="active">Area Riservata</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
     <a href="index.html">Home</a>
     <a href="chi-siamo.html">Chi siamo</a>
     <a href="eventi.html">Eventi</a>
     <a href="contatti.html">Contatti</a>
     <a href="area-riservata.html">Area Riservata</a>
-  </nav>
-  <div class="content">
-    <h1>Accesso Area Riservata</h1>
-    <p>Inserisci la password per accedere ai documenti tecnici.</p>
-    <input type="password" id="password" placeholder="Password">
-    <input type="submit" value="Accedi" onclick="checkPassword()">
+  </div>
 
-    <div class="folders" id="protected-content">
-      <h2>Documenti:</h2>
-      <a href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/AMERICANA%20TRABES%20FOLDING/" target="_blank">📁 AMERICANA TRABES FOLDING</a>
-      <a href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/ANTIPANICO/" target="_blank">📁 ANTIPANICO</a>
-      <a href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/AUDIO/" target="_blank">📁 AUDIO</a>
-      <a href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/CASETTE%20IN%20LEGNO/" target="_blank">📁 CASETTE IN LEGNO</a>
-      <a href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/COPERTURA%20RING%20DA%2030/" target="_blank">📁 COPERTURA RING DA 30</a>
-      <a href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/GAZEBO%203%20X%203/" target="_blank">📁 GAZEBO 3 X 3</a>
-      <a href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/GUIL/" target="_blank">📁 GUIL</a>
-      <a href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/LEDWALL/" target="_blank">📁 LEDWALL</a>
-      <a href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/LUCI/" target="_blank">📁 LUCI</a>
-      <a href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/POWERBOX/" target="_blank">📁 POWERBOX</a>
-      <a href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/SEDIE/" target="_blank">📁 SEDIE</a>
+  <div class="page-wrap">
+
+    <!-- Login -->
+    <div class="login-card" id="loginCard">
+      <div class="login-icon">🔐</div>
+      <h1>Area Riservata</h1>
+      <p>Inserisci la password per accedere ai documenti tecnici e alle dichiarazioni di conformità.</p>
+
+      <div class="form-group">
+        <label>Password</label>
+        <div class="pwd-wrap">
+          <input type="password" id="pwdInput" placeholder="••••••••••••" onkeydown="if(event.key==='Enter')checkPassword()" />
+          <span class="toggle-pwd" onclick="togglePwd()">👁</span>
+        </div>
+      </div>
+
+      <button class="btn-login" onclick="checkPassword()">Accedi →</button>
+      <div class="error-msg" id="errorMsg">Password errata. Riprova.</div>
     </div>
+
+    <!-- Documenti -->
+    <div class="docs-panel" id="docsPanel">
+      <h2>📂 Collaudi &amp; Dichiarazioni di Conformità</h2>
+      <div class="docs-grid">
+        <a class="doc-item" href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/AMERICANA%20TRABES%20FOLDING/" target="_blank">
+          <span class="doc-icon">📁</span> Americana Trabes Folding
+        </a>
+        <a class="doc-item" href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/ANTIPANICO/" target="_blank">
+          <span class="doc-icon">📁</span> Antipanico
+        </a>
+        <a class="doc-item" href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/AUDIO/" target="_blank">
+          <span class="doc-icon">📁</span> Audio
+        </a>
+        <a class="doc-item" href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/CASETTE%20IN%20LEGNO/" target="_blank">
+          <span class="doc-icon">📁</span> Casette in Legno
+        </a>
+        <a class="doc-item" href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/COPERTURA%20RING%20DA%2030/" target="_blank">
+          <span class="doc-icon">📁</span> Copertura Ring da 30
+        </a>
+        <a class="doc-item" href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/GAZEBO%203%20X%203/" target="_blank">
+          <span class="doc-icon">📁</span> Gazebo 3×3
+        </a>
+        <a class="doc-item" href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/GUIL/" target="_blank">
+          <span class="doc-icon">📁</span> Guil
+        </a>
+        <a class="doc-item" href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/LEDWALL/" target="_blank">
+          <span class="doc-icon">📁</span> LED Wall
+        </a>
+        <a class="doc-item" href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/LUCI/" target="_blank">
+          <span class="doc-icon">📁</span> Luci
+        </a>
+        <a class="doc-item" href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/POWERBOX/" target="_blank">
+          <span class="doc-icon">📁</span> Powerbox
+        </a>
+        <a class="doc-item" href="documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/SEDIE/" target="_blank">
+          <span class="doc-icon">📁</span> Sedie
+        </a>
+      </div>
+    </div>
+
   </div>
 
   <script>
+    const hamburger  = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
     function checkPassword() {
-      const password = document.getElementById('password').value;
-      if (password === "Allestimenti2025") {
-        document.getElementById('protected-content').style.display = 'block';
+      const pwd = document.getElementById('pwdInput').value;
+      if (pwd === 'Allestimenti2025') {
+        document.getElementById('loginCard').style.display = 'none';
+        document.getElementById('docsPanel').style.display = 'block';
       } else {
-        alert("Password errata.");
+        const err = document.getElementById('errorMsg');
+        err.style.display = 'block';
+        document.getElementById('pwdInput').value = '';
+        document.getElementById('pwdInput').focus();
+        setTimeout(() => { err.style.display = 'none'; }, 3500);
       }
+    }
+
+    function togglePwd() {
+      const inp = document.getElementById('pwdInput');
+      inp.type = (inp.type === 'password') ? 'text' : 'password';
     }
   </script>
 </body>

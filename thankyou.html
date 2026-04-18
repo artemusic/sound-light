@@ -1,65 +1,140 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>Grazie per averci contattato</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grazie – Artemusic</title>
+  <link rel="icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
   <style>
-    body {
-      background: black url('bg1.jpg') no-repeat center center fixed;
-      background-size: cover;
-      font-family: Arial, sans-serif;
-      color: white;
-      text-align: center;
-      margin: 0;
-      padding: 0;
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --red: #e81c2e;
+      --white: #ffffff;
+      --black: #0a0a0a;
+    }
+    html, body {
+      height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--white);
+      background: var(--black);
+      overflow: hidden;
+    }
+    .bg-fixed {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: url('bg1.jpg') no-repeat center center / cover;
+      filter: brightness(0.28);
     }
     nav {
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.8);
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(10,10,10,0.70);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.10);
     }
-    nav a {
-      color: white;
-      margin: 0 15px;
+    .nav-logo { height: 40px; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.78);
       text-decoration: none;
-      font-size: 18px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      transition: color 0.25s;
     }
-    .container {
-      margin-top: 150px;
+    .nav-links a:hover { color: var(--white); }
+
+    .center {
+      position: relative;
+      z-index: 10;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 24px;
+      animation: fadeIn 0.8s ease both;
     }
-    .container h1 {
-      font-size: 36px;
-      margin-bottom: 20px;
+    .check-icon {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: rgba(232,28,46,0.15);
+      border: 2px solid var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      margin-bottom: 28px;
     }
-    .container p {
-      font-size: 20px;
+    h1 {
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 900;
+      margin-bottom: 14px;
     }
-    .back-home {
-      margin-top: 40px;
-      display: inline-block;
-      background-color: red;
-      color: white;
-      padding: 10px 20px;
+    p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.62);
+      max-width: 440px;
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      border-radius: 50px;
+      background: var(--red);
+      color: var(--white);
       text-decoration: none;
-      border-radius: 5px;
-      font-size: 18px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-home:hover {
+      background: #b51020;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(232,28,46,0.40);
+    }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
     }
   </style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html">Home</a>
-  <a href="chi-siamo.html">Chi Siamo</a>
-  <a href="eventi.html">Eventi</a>
-  <a href="contatti.html">Contatti</a>
-  <a href="area-riservata.html">Area Riservata</a>
-</nav>
+  <div class="bg-fixed"></div>
 
-<div class="container">
-  <h1>Grazie per averci contattato!</h1>
-  <p>Abbiamo ricevuto il tuo messaggio e ti risponderemo il prima possibile.</p>
-  <a href="index.html" class="back-home">Torna alla Home</a>
-</div>
+  <nav>
+    <a href="index.html"><img src="logo-bianco.png" alt="Artemusic" class="nav-logo" /></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="chi-siamo.html">Chi siamo</a></li>
+      <li><a href="eventi.html">Eventi</a></li>
+      <li><a href="contatti.html">Contatti</a></li>
+    </ul>
+  </nav>
+
+  <div class="center">
+    <div class="check-icon">✅</div>
+    <h1>Grazie per averci contattato!</h1>
+    <p>Abbiamo ricevuto il tuo messaggio. Ti risponderemo al più presto possibile.</p>
+    <a href="index.html" class="btn-home">← Torna alla Home</a>
+  </div>
 
 </body>
 </html>
