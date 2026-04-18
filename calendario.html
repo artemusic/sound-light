@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendario Eventi – Artemusic</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --red:#e81c2e; --red-dark:#b51020;
+      --white:#ffffff; --black:#0a0a0a;
+      --glass:rgba(10,10,10,0.65);
+      --glass-border:rgba(255,255,255,0.10);
+      --nav-h:70px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{min-height:100vh;font-family:'Montserrat',sans-serif;color:var(--white);background:var(--black)}
+
+    /* ── BG ── */
+    .bg-fixed{position:fixed;inset:0;z-index:0;background:url('bg2.jpg') center/cover no-repeat;filter:brightness(.22)}
+
+    /* ── NAV ── */
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 40px;
+      background:rgba(10,10,10,.85);backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--glass-border);
+    }
+    nav .logo img{height:42px}
+    .nav-links{list-style:none;display:flex;gap:26px;align-items:center}
+    .nav-links a{color:rgba(255,255,255,.75);text-decoration:none;font-size:.82rem;font-weight:600;
+      letter-spacing:.07em;text-transform:uppercase;transition:color .2s;position:relative}
+    .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;
+      background:var(--red);transition:width .3s}
+    .nav-links a:hover,.nav-links a.active{color:var(--white)}
+    .nav-links a:hover::after,.nav-links a.active::after{width:100%}
+    .nav-right{display:flex;align-items:center;gap:14px}
+    .nav-social a{color:rgba(255,255,255,.65);display:inline-flex;transition:color .2s,transform .2s}
+    .nav-social a:hover{color:var(--red);transform:scale(1.15)}
+    .nav-social svg{width:20px;height:20px}
+    .nav-cta{background:var(--red);color:var(--white);border:none;padding:7px 16px;border-radius:50px;
+      font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+      text-decoration:none;transition:background .2s}
+    .nav-cta:hover{background:var(--red-dark)}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+    .hamburger span{display:block;width:24px;height:2px;background:var(--white);border-radius:2px;transition:.3s}
+    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .hamburger.open span:nth-child(2){opacity:0}
+    .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .mobile-menu{display:none;position:fixed;inset:0;z-index:99;background:rgba(10,10,10,.97);
+      flex-direction:column;align-items:center;justify-content:center;gap:30px}
+    .mobile-menu.open{display:flex}
+    .mobile-menu a{color:var(--white);text-decoration:none;font-size:1.2rem;font-weight:700;
+      letter-spacing:.08em;text-transform:uppercase}
+    .mobile-menu a:hover{color:var(--red)}
+    .mobile-social{display:flex;gap:20px;margin-top:8px}
+    .mobile-social a{color:var(--white);display:inline-flex;transition:color .2s}
+    .mobile-social a:hover{color:var(--red)}
+    .mobile-social svg{width:26px;height:26px}
+
+    /* ── PAGE WRAP ── */
+    .page-wrap{position:relative;z-index:10;min-height:100vh;padding-top:var(--nav-h)}
+
+    /* ── LOGIN ── */
+    #login-section{
+      display:flex;align-items:center;justify-content:center;
+      min-height:calc(100vh - var(--nav-h));padding:40px 20px;
+    }
+    .login-card{
+      background:var(--glass);border:1px solid var(--glass-border);
+      border-radius:18px;padding:40px 36px;backdrop-filter:blur(18px);
+      max-width:380px;width:100%;text-align:center;
+    }
+    .login-card h2{font-size:1.1rem;font-weight:700;margin-bottom:8px}
+    .login-card p{font-size:.82rem;color:rgba(255,255,255,.5);margin-bottom:24px}
+    .pw-wrap{position:relative;display:flex}
+    .pw-wrap input{
+      flex:1;background:rgba(255,255,255,.07);border:1px solid var(--glass-border);
+      color:var(--white);border-radius:8px;padding:11px 44px 11px 14px;
+      font-family:'Montserrat',sans-serif;font-size:.93rem;outline:none;
+    }
+    .pw-wrap button{position:absolute;right:0;top:0;bottom:0;background:transparent;border:none;
+      color:rgba(255,255,255,.45);cursor:pointer;padding:0 12px;font-size:1rem;transition:color .2s}
+    .pw-wrap button:hover{color:var(--white)}
+    .btn-login{width:100%;margin-top:14px;padding:12px;background:var(--red);border:none;
+      border-radius:8px;color:var(--white);font-weight:700;font-size:.9rem;
+      font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:.07em;
+      cursor:pointer;transition:background .2s}
+    .btn-login:hover{background:var(--red-dark)}
+    .login-error{color:#ff6b6b;font-size:.8rem;margin-top:10px;min-height:16px}
+
+    /* ── CALENDARIO ── */
+    #cal-section{display:none;padding:32px 24px 80px}
+
+    /* top bar */
+    .cal-topbar{
+      max-width:1200px;margin:0 auto 24px;
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    }
+    .cal-topbar-left{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    .role-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;
+      font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+    .role-badge.admin{background:rgba(232,28,46,.22);border:1px solid var(--red);color:var(--red)}
+    .role-badge.user {background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:#bbb}
+    .btn-logout{background:transparent;border:1px solid rgba(255,255,255,.22);
+      color:rgba(255,255,255,.6);border-radius:6px;padding:5px 13px;
+      font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+    .btn-logout:hover{border-color:var(--red);color:var(--red)}
+    .btn-new-event{
+      background:var(--red);color:var(--white);border:none;border-radius:8px;
+      padding:9px 18px;font-size:.8rem;font-weight:700;letter-spacing:.06em;
+      text-transform:uppercase;cursor:pointer;transition:background .2s;
+      font-family:'Montserrat',sans-serif;display:inline-flex;align-items:center;gap:7px;
+    }
+    .btn-new-event:hover{background:var(--red-dark)}
+
+    /* nav mese */
+    .month-nav{
+      max-width:1200px;margin:0 auto 20px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    }
+    .month-nav button{
+      background:rgba(255,255,255,.08);border:1px solid var(--glass-border);color:var(--white);
+      border-radius:8px;padding:8px 14px;cursor:pointer;transition:all .2s;font-size:.85rem;
+    }
+    .month-nav button:hover{background:rgba(255,255,255,.16)}
+    .month-title{font-size:clamp(1.1rem,3vw,1.6rem);font-weight:900;text-transform:uppercase;
+      letter-spacing:.06em;text-align:center;flex:1}
+    .view-toggle{display:flex;gap:0}
+    .view-toggle button{
+      background:rgba(255,255,255,.07);border:1px solid var(--glass-border);
+      color:rgba(255,255,255,.6);padding:7px 14px;cursor:pointer;font-size:.75rem;
+      font-weight:700;letter-spacing:.05em;text-transform:uppercase;transition:all .2s;
+    }
+    .view-toggle button:first-child{border-radius:8px 0 0 8px}
+    .view-toggle button:last-child{border-radius:0 8px 8px 0}
+    .view-toggle button.active{background:var(--red);border-color:var(--red);color:#fff}
+
+    /* ── VISTA MENSILE (griglia) ── */
+    #view-month{display:block}
+    .cal-grid-wrap{max-width:1200px;margin:0 auto}
+    .cal-week-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
+    .cal-week-days div{text-align:center;font-size:.68rem;font-weight:700;letter-spacing:.08em;
+      text-transform:uppercase;color:rgba(255,255,255,.4);padding:6px 0}
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+    .cal-cell{
+      background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+      border-radius:8px;min-height:100px;padding:8px 6px;cursor:default;transition:background .2s;
+      position:relative;overflow:hidden;
+    }
+    .cal-cell.other-month{background:rgba(255,255,255,.015);opacity:.55}
+    .cal-cell.today{border-color:var(--red)!important;background:rgba(232,28,46,.08)}
+    .cal-cell.has-event{cursor:pointer}
+    .cal-cell.has-event:hover{background:rgba(255,255,255,.09)}
+    .cal-day-num{font-size:.8rem;font-weight:700;color:rgba(255,255,255,.55);margin-bottom:4px;line-height:1}
+    .cal-cell.today .cal-day-num{color:var(--red);font-weight:900}
+    .cal-event-pill{
+      display:block;width:100%;padding:3px 6px;border-radius:4px;margin-bottom:3px;
+      font-size:.65rem;font-weight:700;letter-spacing:.03em;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;
+      transition:filter .2s;line-height:1.4;
+    }
+    .cal-event-pill:hover{filter:brightness(1.2)}
+    .cal-more{font-size:.62rem;color:rgba(255,255,255,.4);padding:2px 0 0 4px;cursor:pointer}
+    .cal-more:hover{color:var(--white)}
+
+    /* ── VISTA LISTA ── */
+    #view-list{display:none;max-width:900px;margin:0 auto}
+    .list-month-group{margin-bottom:32px}
+    .list-month-label{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+      color:var(--red);margin-bottom:12px;padding-bottom:6px;
+      border-bottom:1px solid rgba(232,28,46,.3)}
+    .list-empty{text-align:center;color:rgba(255,255,255,.3);font-size:.9rem;padding:48px 0}
+    .list-event-card{
+      background:rgba(255,255,255,.06);border:1px solid var(--glass-border);
+      border-radius:12px;padding:18px 20px;margin-bottom:12px;
+      display:flex;gap:18px;align-items:flex-start;transition:background .2s;
+      cursor:pointer;
+    }
+    .list-event-card:hover{background:rgba(255,255,255,.10)}
+    .list-color-dot{width:6px;min-width:6px;border-radius:3px;align-self:stretch;margin-top:2px}
+    .list-event-date{
+      min-width:54px;text-align:center;
+      background:rgba(255,255,255,.06);border-radius:10px;padding:8px 6px;
+    }
+    .list-event-date .day{font-size:1.5rem;font-weight:900;line-height:1}
+    .list-event-date .weekday{font-size:.62rem;font-weight:700;letter-spacing:.08em;
+      text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:2px}
+    .list-event-body{flex:1;min-width:0}
+    .list-event-title{font-size:.98rem;font-weight:700;margin-bottom:6px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .list-event-meta{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.77rem;color:rgba(255,255,255,.5)}
+    .list-event-meta span{display:flex;align-items:center;gap:4px}
+    .list-event-actions{display:flex;gap:8px;align-items:center;margin-left:auto;flex-shrink:0}
+    .btn-edit{background:rgba(255,200,0,.15);color:#ffc800;border:none;border-radius:6px;
+      padding:6px 12px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s;
+      font-family:'Montserrat',sans-serif}
+    .btn-edit:hover{background:rgba(255,200,0,.3)}
+    .btn-del-ev{background:rgba(232,28,46,.15);color:var(--red);border:none;border-radius:6px;
+      padding:6px 12px;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s;
+      font-family:'Montserrat',sans-serif}
+    .btn-del-ev:hover{background:rgba(232,28,46,.35)}
+
+    /* ── DETAIL PANEL (lateral slide) ── */
+    #detail-panel{
+      position:fixed;top:0;right:0;bottom:0;width:min(420px,100vw);
+      background:#111;border-left:1px solid var(--glass-border);
+      z-index:200;transform:translateX(100%);transition:transform .35s ease;
+      display:flex;flex-direction:column;overflow:hidden;
+    }
+    #detail-panel.open{transform:translateX(0)}
+    .detail-header{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:20px 24px;border-bottom:1px solid var(--glass-border);flex-shrink:0;
+    }
+    .detail-header h3{font-size:1rem;font-weight:700}
+    .detail-close{background:transparent;border:none;color:rgba(255,255,255,.5);
+      font-size:1.4rem;cursor:pointer;transition:color .2s;line-height:1}
+    .detail-close:hover{color:var(--white)}
+    .detail-body{flex:1;overflow-y:auto;padding:24px}
+    .detail-color-bar{height:4px;width:60px;border-radius:2px;margin-bottom:20px}
+    .detail-title{font-size:1.4rem;font-weight:900;margin-bottom:16px;line-height:1.25}
+    .detail-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;font-size:.88rem}
+    .detail-row .icon{font-size:1.1rem;min-width:22px;margin-top:1px}
+    .detail-row .label{color:rgba(255,255,255,.45);font-size:.72rem;font-weight:700;
+      letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:2px}
+    .detail-row .val{color:var(--white);font-weight:600;line-height:1.45}
+    .detail-note{font-size:.83rem;color:rgba(255,255,255,.7);line-height:1.65;
+      background:rgba(255,255,255,.04);border-radius:8px;padding:12px 14px;margin-top:4px}
+    .detail-actions{padding:20px 24px;border-top:1px solid var(--glass-border);
+      display:flex;gap:10px;flex-shrink:0}
+    .detail-actions button{flex:1;padding:11px;border:none;border-radius:8px;
+      font-weight:700;font-size:.82rem;font-family:'Montserrat',sans-serif;cursor:pointer;transition:all .2s}
+    .maps-btn{
+      background:rgba(66,133,244,.25);color:#8ab4f8;border:none;border-radius:8px;
+      padding:11px;font-weight:700;font-size:.82rem;font-family:'Montserrat',sans-serif;
+      cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;
+      text-decoration:none;
+    }
+    .maps-btn:hover{background:rgba(66,133,244,.45)}
+    #detail-edit-btn{background:rgba(255,200,0,.2);color:#ffc800}
+    #detail-edit-btn:hover{background:rgba(255,200,0,.4)}
+    #detail-del-btn{background:rgba(232,28,46,.2);color:var(--red)}
+    #detail-del-btn:hover{background:rgba(232,28,46,.4)}
+
+    /* panel overlay */
+    #panel-overlay{
+      display:none;position:fixed;inset:0;z-index:199;background:rgba(0,0,0,.5)
+    }
+    #panel-overlay.open{display:block}
+
+    /* ── MODAL FORM evento ── */
+    .modal-overlay{display:none;position:fixed;inset:0;z-index:300;
+      background:rgba(0,0,0,.75);align-items:flex-start;justify-content:center;
+      padding:24px 16px;overflow-y:auto}
+    .modal-overlay.open{display:flex}
+    .modal-box{
+      background:#171717;border:1px solid var(--glass-border);border-radius:18px;
+      padding:32px 28px;width:100%;max-width:560px;margin:auto;
+    }
+    .modal-box h3{font-size:1.05rem;font-weight:800;margin-bottom:24px;
+      display:flex;align-items:center;gap:10px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .form-grid .full{grid-column:1/-1}
+    .form-group{display:flex;flex-direction:column;gap:6px}
+    .form-group label{font-size:.72rem;font-weight:700;letter-spacing:.07em;
+      text-transform:uppercase;color:rgba(255,255,255,.5)}
+    .form-group input,.form-group textarea,.form-group select{
+      background:rgba(255,255,255,.06);border:1px solid var(--glass-border);
+      color:var(--white);border-radius:8px;padding:10px 12px;
+      font-family:'Montserrat',sans-serif;font-size:.9rem;outline:none;
+      transition:border-color .2s;
+    }
+    .form-group input:focus,.form-group textarea:focus,.form-group select:focus{
+      border-color:rgba(232,28,46,.5);
+    }
+    .form-group textarea{min-height:80px;resize:vertical}
+    .color-picker-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .color-swatch{
+      width:28px;height:28px;border-radius:50%;cursor:pointer;border:3px solid transparent;
+      transition:transform .2s,border-color .2s;flex-shrink:0;
+    }
+    .color-swatch.selected{border-color:var(--white);transform:scale(1.15)}
+    .modal-actions{display:flex;gap:10px;margin-top:24px;justify-content:flex-end}
+    .modal-actions button{padding:10px 22px;border-radius:8px;font-weight:700;font-size:.83rem;
+      font-family:'Montserrat',sans-serif;cursor:pointer;border:none;transition:all .2s}
+    .btn-save{background:var(--red);color:#fff}
+    .btn-save:hover{background:var(--red-dark)}
+    .btn-cancel{background:rgba(255,255,255,.1);color:var(--white)}
+    .btn-cancel:hover{background:rgba(255,255,255,.2)}
+
+    /* ── TOAST ── */
+    #toast{
+      position:fixed;bottom:28px;right:28px;z-index:400;
+      background:rgba(20,20,20,.97);border:1px solid var(--glass-border);
+      border-radius:10px;padding:12px 20px;font-size:.85rem;font-weight:600;
+      color:var(--white);transform:translateY(100px);opacity:0;transition:all .35s;
+      pointer-events:none;max-width:300px;
+    }
+    #toast.show{transform:translateY(0);opacity:1}
+    #toast.ok {border-color:rgba(37,211,102,.5)}
+    #toast.err{border-color:rgba(232,28,46,.5);color:#ff7a7a}
+
+    /* ── FOOTER ── */
+    .site-footer{position:relative;z-index:10;text-align:center;
+      padding:28px 24px 24px;border-top:1px solid var(--glass-border);margin-top:40px}
+    .footer-social{display:flex;justify-content:center;gap:20px;margin-bottom:10px}
+    .footer-social a{color:rgba(255,255,255,.5);display:inline-flex;transition:color .2s,transform .2s}
+    .footer-social a:hover{color:var(--red);transform:translateY(-3px)}
+    .footer-social svg{width:20px;height:20px}
+    .site-footer p{font-size:.72rem;color:rgba(255,255,255,.28)}
+
+    @media(max-width:900px){
+      .cal-cell{min-height:60px;padding:5px 3px}
+      .cal-event-pill{font-size:.58rem;padding:2px 4px}
+      .cal-day-num{font-size:.72rem}
+    }
+    @media(max-width:768px){
+      nav{padding:0 20px}
+      .nav-links,.nav-social{display:none}
+      .hamburger{display:flex}
+      .form-grid{grid-template-columns:1fr}
+      .form-grid .full{grid-column:1}
+      .list-event-card{flex-wrap:wrap}
+      .list-event-actions{margin-left:0}
+      .cal-week-days div{font-size:.58rem}
+    }
+    @media(max-width:500px){
+      .cal-grid,.cal-week-days{gap:1px}
+      .cal-cell{min-height:44px;border-radius:4px}
+      .cal-event-pill{display:none}
+      .cal-cell.has-event::after{content:'';display:block;width:5px;height:5px;
+        background:var(--red);border-radius:50%;margin:2px auto 0}
+    }
+  </style>
+</head>
+<body>
+<div class="bg-fixed"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo"><a href="index.html"><img src="logo-bianco.png" alt="Artemusic"></a></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="chi-siamo.html">Chi siamo</a></li>
+    <li><a href="eventi.html">Eventi</a></li>
+    <li><a href="calendario.html" class="active">Calendario</a></li>
+    <li><a href="contatti.html">Contatti</a></li>
+    <li><a href="area-riservata.html">Area Riservata</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="nav-social">
+      <a href="https://www.instagram.com/serviceartemusic/" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.facebook.com/?locale=it_IT" target="_blank" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+    </div>
+    <a href="preventivo.html" class="nav-cta">Preventivo</a>
+  </div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="chi-siamo.html">Chi siamo</a>
+  <a href="eventi.html">Eventi</a>
+  <a href="calendario.html">Calendario</a>
+  <a href="contatti.html">Contatti</a>
+  <a href="area-riservata.html">Area Riservata</a>
+  <a href="preventivo.html" style="color:var(--red)">Preventivo</a>
+  <div class="mobile-social">
+    <a href="https://www.instagram.com/serviceartemusic/" target="_blank">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    </a>
+    <a href="https://www.facebook.com/?locale=it_IT" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- PAGE CONTENT -->
+<div class="page-wrap">
+
+  <!-- LOGIN -->
+  <div id="login-section">
+    <div class="login-card">
+      <div style="font-size:2.5rem;margin-bottom:14px">📅</div>
+      <h2>Calendario Interno</h2>
+      <p>Accedi con la tua password per vedere gli eventi programmati</p>
+      <div class="pw-wrap">
+        <input type="password" id="pw-input" placeholder="Password"
+               onkeydown="if(event.key==='Enter')doLogin()">
+        <button type="button" onclick="document.getElementById('pw-input').type==='password'?document.getElementById('pw-input').type='text':document.getElementById('pw-input').type='password'">👁</button>
+      </div>
+      <button class="btn-login" onclick="doLogin()">Entra</button>
+      <p class="login-error" id="login-err"></p>
+    </div>
+  </div>
+
+  <!-- CALENDARIO -->
+  <div id="cal-section">
+
+    <!-- topbar -->
+    <div class="cal-topbar">
+      <div class="cal-topbar-left">
+        <span id="role-badge" class="role-badge"></span>
+        <button class="btn-logout" onclick="doLogout()">Esci</button>
+      </div>
+      <button class="btn-new-event" id="new-event-btn" style="display:none" onclick="openForm()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nuovo Evento
+      </button>
+    </div>
+
+    <!-- nav mese -->
+    <div class="month-nav">
+      <button onclick="changeMonth(-1)">&#8592; Prec.</button>
+      <div class="month-title" id="month-title"></div>
+      <div class="view-toggle">
+        <button id="btn-month" class="active" onclick="setView('month')">Mese</button>
+        <button id="btn-list"  onclick="setView('list')">Lista</button>
+      </div>
+      <button onclick="changeMonth(1)">Succ. &#8594;</button>
+    </div>
+
+    <!-- VISTA MENSILE -->
+    <div id="view-month">
+      <div class="cal-grid-wrap">
+        <div class="cal-week-days" id="week-days"></div>
+        <div class="cal-grid" id="cal-grid"></div>
+      </div>
+    </div>
+
+    <!-- VISTA LISTA -->
+    <div id="view-list">
+      <div id="list-container"></div>
+    </div>
+
+  </div><!-- /cal-section -->
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-social">
+      <a href="https://www.instagram.com/serviceartemusic/" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.facebook.com/?locale=it_IT" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+    </div>
+    <p>© 2025 Artemusic Sound & Light – Manduria (TA)</p>
+  </footer>
+</div><!-- /page-wrap -->
+
+<!-- DETAIL PANEL (lateral) -->
+<div id="panel-overlay" onclick="closeDetail()"></div>
+<div id="detail-panel">
+  <div class="detail-header">
+    <h3>Dettaglio Evento</h3>
+    <button class="detail-close" onclick="closeDetail()">✕</button>
+  </div>
+  <div class="detail-body" id="detail-body"></div>
+  <div class="detail-actions" id="detail-actions"></div>
+</div>
+
+<!-- MODAL FORM EVENTO -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <h3 id="modal-title">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Nuovo Evento
+    </h3>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label>Titolo evento *</label>
+        <input type="text" id="f-titolo" placeholder="Es. Concerto Piazza Roma">
+      </div>
+      <div class="form-group">
+        <label>Data *</label>
+        <input type="date" id="f-data">
+      </div>
+      <div class="form-group" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="form-group">
+          <label>Inizio</label>
+          <input type="time" id="f-ora-inizio">
+        </div>
+        <div class="form-group">
+          <label>Fine</label>
+          <input type="time" id="f-ora-fine">
+        </div>
+      </div>
+      <div class="form-group full">
+        <label>Luogo / Location</label>
+        <input type="text" id="f-luogo" placeholder="Es. Piazza Garibaldi, Manduria">
+      </div>
+      <div class="form-group full">
+        <label>Indirizzo completo</label>
+        <input type="text" id="f-indirizzo" placeholder="Es. Via Roma 1, 74024 Manduria (TA)">
+      </div>
+      <div class="form-group full">
+        <label>Note / Dettagli</label>
+        <textarea id="f-note" placeholder="Materiale necessario, contatti cliente, istruzioni..."></textarea>
+      </div>
+      <div class="form-group full">
+        <label>Colore</label>
+        <div class="color-picker-row" id="color-picker"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Annulla</button>
+      <button class="btn-save" onclick="saveEvent()">
+        <span id="save-label">Salva Evento</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+//  COSTANTI
+// ══════════════════════════════════════════════
+const COLORS = [
+  '#e81c2e','#ff6b35','#f5a623','#27ae60','#2ecc71',
+  '#3498db','#9b59b6','#e91e8c','#00bcd4','#607d8b'
+];
+const WEEKDAYS = ['Lun','Mar','Mer','Gio','Ven','Sab','Dom'];
+const MONTHS_IT = [
+  'Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno',
+  'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'
+];
+
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+let role        = null;       // 'admin' | 'user'
+let events      = [];         // array eventi dal server
+let currentYear = new Date().getFullYear();
+let currentMonth= new Date().getMonth();   // 0-based
+let currentView = 'month';    // 'month' | 'list'
+let editingId   = null;       // id evento in modifica
+let selectedColor = COLORS[0];
+let detailEventId = null;
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+(async () => {
+  try {
+    const r = await fetch('/api/me');
+    const d = await r.json();
+    if (d.ok) { role = d.role; await loadEvents(); showCal(); }
+  } catch(e) {}
+})();
+
+// ══════════════════════════════════════════════
+//  AUTH
+// ══════════════════════════════════════════════
+async function doLogin(){
+  const pw  = document.getElementById('pw-input').value;
+  const err = document.getElementById('login-err');
+  err.textContent = '';
+  if (!pw){ err.textContent = 'Inserisci la password'; return; }
+  try {
+    const r = await fetch('/api/login',{method:'POST',
+      headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});
+    const d = await r.json();
+    if(d.ok){ role = d.role; await loadEvents(); showCal(); }
+    else     { err.textContent = 'Password errata'; }
+  } catch(e){ err.textContent = 'Errore di connessione'; }
+}
+async function doLogout(){
+  await fetch('/api/logout',{method:'POST'});
+  location.reload();
+}
+
+function showCal(){
+  document.getElementById('login-section').style.display = 'none';
+  document.getElementById('cal-section').style.display   = 'block';
+  const badge = document.getElementById('role-badge');
+  if(role==='admin'){
+    badge.className='role-badge admin'; badge.innerHTML='🔴 Amministratore';
+    document.getElementById('new-event-btn').style.display='inline-flex';
+  } else {
+    badge.className='role-badge user'; badge.innerHTML='⚪ Operaio / Tecnico';
+  }
+  buildColorPicker();
+  renderAll();
+}
+
+// ══════════════════════════════════════════════
+//  API EVENTI
+// ══════════════════════════════════════════════
+async function loadEvents(){
+  const r = await fetch('/api/eventi');
+  const d = await r.json();
+  if(d.ok) events = d.eventi;
+}
+
+async function saveEvent(){
+  const titolo    = document.getElementById('f-titolo').value.trim();
+  const data      = document.getElementById('f-data').value;
+  const oraInizio = document.getElementById('f-ora-inizio').value;
+  const oraFine   = document.getElementById('f-ora-fine').value;
+  const luogo     = document.getElementById('f-luogo').value.trim();
+  const indirizzo = document.getElementById('f-indirizzo').value.trim();
+  const note      = document.getElementById('f-note').value.trim();
+
+  if(!titolo){ showToast('Il titolo è obbligatorio','err'); return; }
+  if(!data)  { showToast('La data è obbligatoria','err'); return; }
+
+  const body = { titolo, data, oraInizio, oraFine, luogo, indirizzo, note, colore: selectedColor };
+
+  let r, d;
+  if(editingId){
+    r = await fetch('/api/eventi/'+editingId, {method:'PUT',
+      headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  } else {
+    r = await fetch('/api/eventi', {method:'POST',
+      headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  }
+  d = await r.json();
+
+  if(d.ok){
+    await loadEvents();
+    closeModal();
+    renderAll();
+    showToast(editingId ? '✅ Evento aggiornato' : '✅ Evento creato','ok');
+    editingId = null;
+  } else {
+    showToast('Errore: '+d.message,'err');
+  }
+}
+
+async function deleteEvent(id){
+  if(!confirm('Eliminare questo evento?')) return;
+  const r = await fetch('/api/eventi/'+id, {method:'DELETE'});
+  const d = await r.json();
+  if(d.ok){ await loadEvents(); renderAll(); closeDetail(); showToast('🗑 Evento eliminato','ok'); }
+  else     { showToast('Errore: '+d.message,'err'); }
+}
+
+// ══════════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════════
+function renderAll(){
+  document.getElementById('month-title').textContent =
+    MONTHS_IT[currentMonth] + ' ' + currentYear;
+  if(currentView==='month') renderMonth();
+  else                      renderList();
+}
+
+// ── MENSILE ──────────────────────────────────
+function renderMonth(){
+  const wd = document.getElementById('week-days');
+  wd.innerHTML = WEEKDAYS.map(d=>`<div>${d}</div>`).join('');
+
+  const grid     = document.getElementById('cal-grid');
+  const today    = new Date();
+  const firstDay = new Date(currentYear, currentMonth, 1);
+  const lastDay  = new Date(currentYear, currentMonth+1, 0);
+
+  // Giorno della settimana del primo del mese (lun=0)
+  let startDow = firstDay.getDay(); // 0=dom
+  startDow = (startDow === 0) ? 6 : startDow - 1;
+
+  const cells = [];
+
+  // Giorni mese precedente
+  for(let i=0; i<startDow; i++){
+    const d = new Date(currentYear, currentMonth, -(startDow-1-i));
+    cells.push({ date: d, otherMonth: true });
+  }
+  // Giorni mese corrente
+  for(let d=1; d<=lastDay.getDate(); d++){
+    cells.push({ date: new Date(currentYear, currentMonth, d), otherMonth: false });
+  }
+  // Giorni mese successivo
+  const remaining = 42 - cells.length; // 6 righe × 7 col
+  for(let i=1; i<=remaining; i++){
+    cells.push({ date: new Date(currentYear, currentMonth+1, i), otherMonth: true });
+  }
+
+  grid.innerHTML = '';
+  cells.forEach(({ date, otherMonth }) => {
+    const iso = toISO(date);
+    const dayEvents = events.filter(e => e.data === iso);
+    const isToday   = sameDay(date, today);
+
+    const cell = document.createElement('div');
+    cell.className = 'cal-cell' +
+      (otherMonth ? ' other-month' : '') +
+      (isToday    ? ' today'       : '') +
+      (dayEvents.length ? ' has-event' : '');
+
+    let inner = `<div class="cal-day-num">${date.getDate()}</div>`;
+    const MAX_SHOW = 3;
+    dayEvents.slice(0, MAX_SHOW).forEach(ev => {
+      inner += `<span class="cal-event-pill"
+        style="background:${ev.colore};color:#fff"
+        onclick="openDetail('${ev.id}');event.stopPropagation()"
+        title="${ev.titolo}${ev.oraInizio?' · '+ev.oraInizio:''}"
+      >${ev.oraInizio?ev.oraInizio+' ':''} ${ev.titolo}</span>`;
+    });
+    if(dayEvents.length > MAX_SHOW){
+      inner += `<div class="cal-more" onclick="openDayEvents('${iso}');event.stopPropagation()">
+        +${dayEvents.length-MAX_SHOW} altri</div>`;
+    }
+
+    cell.innerHTML = inner;
+    if(dayEvents.length){
+      cell.addEventListener('click', () => {
+        if(dayEvents.length===1) openDetail(dayEvents[0].id);
+        else openDayEvents(iso);
+      });
+    }
+    grid.appendChild(cell);
+  });
+}
+
+// ── LISTA ─────────────────────────────────────
+function renderList(){
+  const container = document.getElementById('list-container');
+
+  // Filtra per il mese corrente ±1 anno
+  const start = new Date(currentYear, currentMonth, 1);
+  const end   = new Date(currentYear, currentMonth+1, 0);
+  const filtered = events
+    .filter(e => { const d=new Date(e.data); return d>=start && d<=end; })
+    .sort((a,b) => (a.data+a.oraInizio).localeCompare(b.data+b.oraInizio));
+
+  if(!filtered.length){
+    container.innerHTML = `<div class="list-empty">Nessun evento questo mese</div>`;
+    return;
+  }
+
+  container.innerHTML = '';
+  // Raggruppa per settimana
+  filtered.forEach(ev => {
+    const d = new Date(ev.data);
+    const dayN    = d.getDate();
+    const weekday = WEEKDAYS[(d.getDay()+6)%7];
+
+    const card = document.createElement('div');
+    card.className = 'list-event-card';
+    card.innerHTML = `
+      <div class="list-color-dot" style="background:${ev.colore}"></div>
+      <div class="list-event-date">
+        <div class="day">${String(dayN).padStart(2,'0')}</div>
+        <div class="weekday">${weekday}</div>
+      </div>
+      <div class="list-event-body">
+        <div class="list-event-title">${ev.titolo}</div>
+        <div class="list-event-meta">
+          ${ev.oraInizio?`<span>🕐 ${ev.oraInizio}${ev.oraFine?' – '+ev.oraFine:''}</span>`:''}
+          ${ev.luogo?`<span>📍 ${ev.luogo}</span>`:''}
+          ${ev.indirizzo?`<span>🗺 ${ev.indirizzo}</span>`:''}
+        </div>
+      </div>
+      ${role==='admin'?`
+      <div class="list-event-actions">
+        <button class="btn-edit" onclick="openForm('${ev.id}');event.stopPropagation()">✏ Modifica</button>
+        <button class="btn-del-ev" onclick="deleteEvent('${ev.id}');event.stopPropagation()">🗑</button>
+      </div>`:''}
+    `;
+    card.addEventListener('click', () => openDetail(ev.id));
+    container.appendChild(card);
+  });
+}
+
+// ══════════════════════════════════════════════
+//  DETAIL PANEL
+// ══════════════════════════════════════════════
+function openDetail(id){
+  const ev = events.find(e => e.id === id);
+  if(!ev) return;
+  detailEventId = id;
+
+  const d    = new Date(ev.data);
+  const dow  = WEEKDAYS[(d.getDay()+6)%7];
+  const dStr = `${dow} ${d.getDate()} ${MONTHS_IT[d.getMonth()]} ${d.getFullYear()}`;
+  const mapsUrl = ev.indirizzo
+    ? 'https://maps.google.com/?q='+encodeURIComponent(ev.indirizzo+(ev.luogo?' '+ev.luogo:''))
+    : (ev.luogo ? 'https://maps.google.com/?q='+encodeURIComponent(ev.luogo) : null);
+
+  let html = `
+    <div class="detail-color-bar" style="background:${ev.colore}"></div>
+    <div class="detail-title">${ev.titolo}</div>
+    <div class="detail-row"><span class="icon">📅</span><div>
+      <span class="label">Data</span>
+      <span class="val">${dStr}</span></div></div>
+  `;
+  if(ev.oraInizio) html += `<div class="detail-row"><span class="icon">🕐</span><div>
+    <span class="label">Orario</span>
+    <span class="val">${ev.oraInizio}${ev.oraFine?' – '+ev.oraFine:''}</span></div></div>`;
+  if(ev.luogo) html += `<div class="detail-row"><span class="icon">📍</span><div>
+    <span class="label">Luogo</span>
+    <span class="val">${ev.luogo}</span></div></div>`;
+  if(ev.indirizzo) html += `<div class="detail-row"><span class="icon">🗺</span><div>
+    <span class="label">Indirizzo</span>
+    <span class="val">${ev.indirizzo}</span></div></div>`;
+  if(ev.note) html += `<div class="detail-row" style="flex-direction:column"><span class="label">Note</span>
+    <div class="detail-note">${ev.note.replace(/\n/g,'<br>')}</div></div>`;
+
+  document.getElementById('detail-body').innerHTML = html;
+
+  // Actions
+  let acts = '';
+  if(mapsUrl) acts += `<a class="maps-btn" href="${mapsUrl}" target="_blank" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    Apri Maps</a>`;
+  if(role==='admin'){
+    acts += `<button id="detail-edit-btn" onclick="openForm('${id}')">✏ Modifica</button>`;
+    acts += `<button id="detail-del-btn"  onclick="deleteEvent('${id}')">🗑 Elimina</button>`;
+  }
+  document.getElementById('detail-actions').innerHTML = acts;
+
+  document.getElementById('detail-panel').classList.add('open');
+  document.getElementById('panel-overlay').classList.add('open');
+}
+
+function closeDetail(){
+  document.getElementById('detail-panel').classList.remove('open');
+  document.getElementById('panel-overlay').classList.remove('open');
+}
+
+// Click su "N altri" eventi del giorno
+function openDayEvents(iso){
+  const dayEvs = events.filter(e => e.data===iso);
+  if(!dayEvs.length) return;
+  const d = new Date(iso);
+  const dStr = `${d.getDate()} ${MONTHS_IT[d.getMonth()]} ${d.getFullYear()}`;
+
+  let html = `<h3 style="margin-bottom:16px;font-size:.95rem">📅 ${dStr}</h3>`;
+  dayEvs.forEach(ev => {
+    html += `<div style="background:rgba(255,255,255,.07);border-radius:10px;padding:12px 14px;
+      margin-bottom:10px;cursor:pointer;border-left:3px solid ${ev.colore}"
+      onclick="openDetail('${ev.id}')">
+      <div style="font-weight:700;font-size:.9rem">${ev.titolo}</div>
+      ${ev.oraInizio?`<div style="font-size:.75rem;color:rgba(255,255,255,.5);margin-top:4px">🕐 ${ev.oraInizio}${ev.oraFine?' – '+ev.oraFine:''}</div>`:''}
+      ${ev.luogo?`<div style="font-size:.75rem;color:rgba(255,255,255,.5);margin-top:2px">📍 ${ev.luogo}</div>`:''}
+    </div>`;
+  });
+  document.getElementById('detail-body').innerHTML = html;
+  document.getElementById('detail-actions').innerHTML = '';
+  document.getElementById('detail-panel').classList.add('open');
+  document.getElementById('panel-overlay').classList.add('open');
+}
+
+// ══════════════════════════════════════════════
+//  MODAL FORM
+// ══════════════════════════════════════════════
+function openForm(id){
+  closeDetail();
+  editingId = id || null;
+  document.getElementById('modal-title').innerHTML = editingId
+    ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Modifica Evento`
+    : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Nuovo Evento`;
+  document.getElementById('save-label').textContent = editingId ? 'Aggiorna' : 'Salva Evento';
+
+  if(editingId){
+    const ev = events.find(e => e.id===editingId);
+    if(ev){
+      document.getElementById('f-titolo').value    = ev.titolo;
+      document.getElementById('f-data').value      = ev.data;
+      document.getElementById('f-ora-inizio').value= ev.oraInizio;
+      document.getElementById('f-ora-fine').value  = ev.oraFine;
+      document.getElementById('f-luogo').value     = ev.luogo;
+      document.getElementById('f-indirizzo').value = ev.indirizzo;
+      document.getElementById('f-note').value      = ev.note;
+      setSelectedColor(ev.colore);
+    }
+  } else {
+    document.getElementById('f-titolo').value    = '';
+    document.getElementById('f-data').value      = toISO(new Date());
+    document.getElementById('f-ora-inizio').value= '';
+    document.getElementById('f-ora-fine').value  = '';
+    document.getElementById('f-luogo').value     = '';
+    document.getElementById('f-indirizzo').value = '';
+    document.getElementById('f-note').value      = '';
+    setSelectedColor(COLORS[0]);
+  }
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('f-titolo').focus();
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  editingId = null;
+}
+
+// ── Color picker ──
+function buildColorPicker(){
+  const cp = document.getElementById('color-picker');
+  cp.innerHTML = '';
+  COLORS.forEach(c => {
+    const sw = document.createElement('div');
+    sw.className = 'color-swatch' + (c===selectedColor?' selected':'');
+    sw.style.background = c;
+    sw.onclick = () => setSelectedColor(c);
+    cp.appendChild(sw);
+  });
+}
+function setSelectedColor(c){
+  selectedColor = c;
+  document.querySelectorAll('.color-swatch').forEach(s => {
+    s.classList.toggle('selected', s.style.background===c ||
+      rgbToHex(s.style.background)===c);
+  });
+}
+function rgbToHex(rgb){
+  const r = rgb.match(/\d+/g);
+  if(!r||r.length<3) return rgb;
+  return '#'+[0,1,2].map(i=>parseInt(r[i]).toString(16).padStart(2,'0')).join('');
+}
+
+// ══════════════════════════════════════════════
+//  NAVIGAZIONE MESE / VISTA
+// ══════════════════════════════════════════════
+function changeMonth(delta){
+  currentMonth += delta;
+  if(currentMonth > 11){ currentMonth=0; currentYear++; }
+  if(currentMonth < 0 ){ currentMonth=11; currentYear--; }
+  renderAll();
+}
+function setView(v){
+  currentView = v;
+  document.getElementById('view-month').style.display = v==='month'?'block':'none';
+  document.getElementById('view-list').style.display  = v==='list' ?'block':'none';
+  document.getElementById('btn-month').classList.toggle('active', v==='month');
+  document.getElementById('btn-list').classList.toggle('active',  v==='list');
+  renderAll();
+}
+
+// ══════════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════════
+function toISO(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function sameDay(a,b){ return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate(); }
+
+function showToast(msg,type='ok'){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='show '+type;
+  clearTimeout(t._t); t._t=setTimeout(()=>{t.className=''},3200);
+}
+
+// ══════════════════════════════════════════════
+//  HAMBURGER & MODAL CHIUSURA
+// ══════════════════════════════════════════════
+document.getElementById('hamburger').addEventListener('click',function(){
+  this.classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+document.getElementById('mobileMenu').addEventListener('click',e=>{
+  if(e.target===document.getElementById('mobileMenu')){
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+});
+document.getElementById('modal').addEventListener('click',e=>{
+  if(e.target===document.getElementById('modal')) closeModal();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){ closeModal(); closeDetail(); }
+});
+</script>
+</body>
+</html>

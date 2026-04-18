@@ -299,6 +299,95 @@ app.get('/api/shared/:token', (req, res) => {
   }
 });
 
+// ══════════════════════════════════════════════
+// CALENDARIO EVENTI
+// ══════════════════════════════════════════════
+const EVENTS_FILE = path.join(__dirname, 'data', 'eventi.json');
+
+// Assicura che la cartella data esista
+if (!fs.existsSync(path.join(__dirname, 'data'))) {
+  fs.mkdirSync(path.join(__dirname, 'data'), { recursive: true });
+}
+if (!fs.existsSync(EVENTS_FILE)) {
+  fs.writeFileSync(EVENTS_FILE, JSON.stringify([], null, 2), 'utf8');
+}
+
+function readEvents() {
+  try { return JSON.parse(fs.readFileSync(EVENTS_FILE, 'utf8')); }
+  catch(e) { return []; }
+}
+function writeEvents(events) {
+  fs.writeFileSync(EVENTS_FILE, JSON.stringify(events, null, 2), 'utf8');
+}
+function newId() {
+  return Date.now().toString(36) + crypto.randomBytes(4).toString('hex');
+}
+
+// GET /api/eventi — tutti gli eventi (auth richiesta)
+app.get('/api/eventi', requireAuth, (req, res) => {
+  res.json({ ok: true, eventi: readEvents() });
+});
+
+// POST /api/eventi — crea evento (solo admin)
+// Body: { titolo, data, oraInizio, oraFine, luogo, indirizzo, note, colore }
+app.post('/api/eventi', requireAdmin, (req, res) => {
+  const { titolo, data, oraInizio, oraFine, luogo, indirizzo, note, colore } = req.body;
+  if (!titolo || !data) return res.status(400).json({ ok: false, message: 'Titolo e data sono obbligatori' });
+
+  const evento = {
+    id:         newId(),
+    titolo:     String(titolo).trim(),
+    data:       String(data).trim(),        // YYYY-MM-DD
+    oraInizio:  String(oraInizio || '').trim(),
+    oraFine:    String(oraFine   || '').trim(),
+    luogo:      String(luogo     || '').trim(),
+    indirizzo:  String(indirizzo || '').trim(),
+    note:       String(note      || '').trim(),
+    colore:     String(colore    || '#e81c2e').trim(),
+    creatoIl:   new Date().toISOString()
+  };
+
+  const events = readEvents();
+  events.push(evento);
+  writeEvents(events);
+  res.json({ ok: true, evento });
+});
+
+// PUT /api/eventi/:id — modifica evento (solo admin)
+app.put('/api/eventi/:id', requireAdmin, (req, res) => {
+  const events = readEvents();
+  const idx = events.findIndex(e => e.id === req.params.id);
+  if (idx === -1) return res.status(404).json({ ok: false, message: 'Evento non trovato' });
+
+  const { titolo, data, oraInizio, oraFine, luogo, indirizzo, note, colore } = req.body;
+  if (!titolo || !data) return res.status(400).json({ ok: false, message: 'Titolo e data sono obbligatori' });
+
+  events[idx] = {
+    ...events[idx],
+    titolo:    String(titolo).trim(),
+    data:      String(data).trim(),
+    oraInizio: String(oraInizio || '').trim(),
+    oraFine:   String(oraFine   || '').trim(),
+    luogo:     String(luogo     || '').trim(),
+    indirizzo: String(indirizzo || '').trim(),
+    note:      String(note      || '').trim(),
+    colore:    String(colore    || events[idx].colore).trim(),
+    aggiornatoIl: new Date().toISOString()
+  };
+  writeEvents(events);
+  res.json({ ok: true, evento: events[idx] });
+});
+
+// DELETE /api/eventi/:id — elimina evento (solo admin)
+app.delete('/api/eventi/:id', requireAdmin, (req, res) => {
+  const events = readEvents();
+  const idx = events.findIndex(e => e.id === req.params.id);
+  if (idx === -1) return res.status(404).json({ ok: false, message: 'Evento non trovato' });
+  events.splice(idx, 1);
+  writeEvents(events);
+  res.json({ ok: true });
+});
+
 // ──────────────────────────────────────────────
 // AVVIO SERVER
 // ──────────────────────────────────────────────

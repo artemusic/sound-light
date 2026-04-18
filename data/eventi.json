@@ -1,0 +1,50 @@
+[
+  {
+    "id": "mo4wx8i62a23514b",
+    "titolo": "Concerto Piazza Roma",
+    "data": "2026-05-10",
+    "oraInizio": "20:00",
+    "oraFine": "23:30",
+    "luogo": "Piazza Roma",
+    "indirizzo": "Piazza Roma, 74024 Manduria (TA)",
+    "note": "Allestimento dalle 16:00",
+    "colore": "#e81c2e",
+    "creatoIl": "2026-04-18T22:32:29.262Z"
+  },
+  {
+    "id": "mo4wxi2ue6640d0f",
+    "titolo": "Festival Estivo Taranto",
+    "data": "2026-07-18",
+    "oraInizio": "19:00",
+    "oraFine": "02:00",
+    "luogo": "Arena Porto Vecchio",
+    "indirizzo": "Lungomare Vittorio Emanuele III, 74121 Taranto (TA)",
+    "note": "LED Wall 12m x 6m, Line Array JBL SRX, palco 12x10m. Cliente: Comune di Taranto, referente Mario Rossi 320-1234567",
+    "colore": "#3498db",
+    "creatoIl": "2026-04-18T22:32:41.670Z"
+  },
+  {
+    "id": "mo4wxi3o1d663536",
+    "titolo": "Matrimonio Villa Castelli",
+    "data": "2026-05-24",
+    "oraInizio": "18:30",
+    "oraFine": "03:00",
+    "luogo": "Villa dei Sogni",
+    "indirizzo": "Via del Bosco 14, 72021 Villa Castelli (BR)",
+    "note": "Serata elegante. Audio diffuso, luci warm white, no sub dopo le 24:00",
+    "colore": "#e91e8c",
+    "creatoIl": "2026-04-18T22:32:41.700Z"
+  },
+  {
+    "id": "mo4wxi4i5ed35599",
+    "titolo": "Fiera Agroalimentare",
+    "data": "2026-06-05",
+    "oraInizio": "09:00",
+    "oraFine": "20:00",
+    "luogo": "Fiera di Manduria",
+    "indirizzo": "SS 7 Ter, 74024 Manduria (TA)",
+    "note": "Allestimento padiglione B: americana truss, faretti, 2x LED wall laterali",
+    "colore": "#f5a623",
+    "creatoIl": "2026-04-18T22:32:41.730Z"
+  }
+]
