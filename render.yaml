@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: artemusic
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    disk:
+      name: artemusic-data
+      mountPath: /opt/render/project/src/documenti
+      sizeGB: 1
