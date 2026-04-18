@@ -1,0 +1,39 @@
+Options -Indexes
+
+# ── Sicurezza: blocca accesso diretto a cartelle sensibili ──
+RedirectMatch 403 ^/documenti/
+RedirectMatch 403 ^/data/
+
+# ── Blocca accesso a file PHP interni ──
+<FilesMatch "^(server\.js|package\.json|package-lock\.json|render\.yaml)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# ── Redirige /api/* → api.php ──
+RewriteEngine On
+
+# Consenti accesso diretto a file statici esistenti (HTML, CSS, JS, immagini, font)
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_URI} !^/api/
+RewriteRule ^ - [L]
+
+# Tutte le richieste /api/* → api.php
+RewriteRule ^api/(.*)$ api.php [QSA,L]
+
+# Default: servi index.html per SPA (opzionale)
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteRule ^ index.html [L]
+
+# ── Limiti upload ──
+php_value upload_max_filesize 200M
+php_value post_max_size 210M
+php_value max_execution_time 120
+php_value max_input_time 120
+php_value memory_limit 256M
+
+# ── Sessione sicura ──
+php_value session.cookie_httponly 1
+php_value session.use_strict_mode 1
+php_value session.gc_maxlifetime 86400
