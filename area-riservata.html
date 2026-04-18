@@ -412,17 +412,45 @@
 // ────────────────────────────────────────────
 //  STATE
 // ────────────────────────────────────────────
-let currentRole = null;       // 'admin' | 'user'
-let currentPath = '';         // percorso relativo nella cartella documenti
-let modalMode   = null;       // 'mkdir' | 'rename'
-let renameTarget= null;       // path del file da rinominare
+let currentRole  = null;       // 'admin' | 'user'
+let currentPath  = '';         // percorso relativo nella cartella documenti
+let modalMode    = null;       // 'mkdir' | 'rename'
+let renameTarget = null;       // path del file da rinominare
+let _authToken   = '';         // Bearer token (fallback al cookie per proxy HTTPS)
+let _savedPw     = '';         // password salvata per ri-autenticazione automatica
+
+// ────────────────────────────────────────────
+//  HELPER: fetch con cookie + Bearer token
+// ────────────────────────────────────────────
+function apiFetch(url, opts={}){
+  opts.credentials = 'include';
+  if(_authToken){
+    opts.headers = opts.headers || {};
+    opts.headers['Authorization'] = 'Bearer ' + _authToken;
+  }
+  return fetch(url, opts);
+}
+
+async function ensureSession(){
+  if(!_savedPw) return false;
+  try{
+    const r = await fetch('/api/login',{
+      method:'POST', credentials:'include',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({password:_savedPw})
+    });
+    const d = await r.json();
+    if(d.ok){ _authToken = d.token || ''; return true; }
+    return false;
+  } catch(e){ return false; }
+}
 
 // ────────────────────────────────────────────
 //  INIT – controlla se già loggato
 // ────────────────────────────────────────────
 (async () => {
   try {
-    const r = await fetch('/api/me', {credentials:'include'});
+    const r = await apiFetch('/api/me');
     const d = await r.json();
     if (d.ok) {
       currentRole = d.role;
@@ -452,7 +480,9 @@ async function doLogin(){
     });
     const d  = await r.json();
     if (d.ok) {
-      currentRole = d.role;
+      currentRole  = d.role;
+      _savedPw     = pw;
+      _authToken   = d.token || '';
       showFM();
       loadFiles('');
     } else {
@@ -464,8 +494,7 @@ async function doLogin(){
 }
 
 async function doLogout(){
-  await fetch('/api/logout', {
-credentials:'include', method:'POST' });
+  await apiFetch('/api/logout', { method:'POST' });
   location.reload();
 }
 
@@ -499,7 +528,7 @@ async function loadFiles(relPath){
   currentPath = relPath || '';
   renderBreadcrumb();
   try {
-    const r = await fetch('/api/files?path=' + encodeURIComponent(currentPath));
+    const r = await apiFetch('/api/files?path=' + encodeURIComponent(currentPath));
     const d = await r.json();
     if (!d.ok) { showToast('Errore caricamento: ' + d.message, 'err'); return; }
     renderGrid(d.entries);
@@ -596,7 +625,7 @@ function downloadFile(filePath, name){
 //  SHARE via WhatsApp / Email (usa token temporaneo)
 // ────────────────────────────────────────────
 async function getShareUrl(filePath){
-  const r = await fetch('/api/share', { credentials:'include',
+  const r = await apiFetch('/api/share', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ path: filePath })
   });
@@ -651,6 +680,8 @@ async function uploadFiles(files){
       };
       xhr.onerror = () => reject(new Error('Errore di rete'));
       xhr.open('POST', '/api/upload');
+      xhr.withCredentials = true;
+      if(_authToken) xhr.setRequestHeader('Authorization', 'Bearer ' + _authToken);
       xhr.send(formData);
     });
     showToast(`✅ ${files.length} file caricati`, 'ok');
@@ -711,17 +742,24 @@ async function modalConfirm(){
   closeModal();
 
   if (modalMode === 'mkdir') {
-    const r = await fetch('/api/mkdir', { credentials:'include',
+    let r = await apiFetch('/api/mkdir', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ path: currentPath, name: val })
     });
+    if (r.status === 401 || r.status === 403) {
+      await ensureSession();
+      r = await apiFetch('/api/mkdir', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ path: currentPath, name: val })
+      });
+    }
     const d = await r.json();
     if (d.ok) { showToast('✅ Cartella creata', 'ok'); loadFiles(currentPath); }
     else      { showToast('Errore: ' + d.message, 'err'); }
   }
 
   if (modalMode === 'rename') {
-    const r = await fetch('/api/rename', { credentials:'include',
+    let r = await apiFetch('/api/rename', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ path: renameTarget, newName: val })
     });
@@ -736,7 +774,7 @@ async function modalConfirm(){
 // ────────────────────────────────────────────
 async function deleteItem(filePath, name){
   if (!confirm(`Eliminare definitivamente "${name}"?`)) return;
-  const r = await fetch('/api/delete?path=' + encodeURIComponent(filePath), { method:'DELETE', credentials:'include' });
+  const r = await apiFetch('/api/delete?path=' + encodeURIComponent(filePath), { method:'DELETE' });
   const d = await r.json();
   if (d.ok) { showToast('🗑 Eliminato', 'ok'); loadFiles(currentPath); }
   else      { showToast('Errore: ' + d.message, 'err'); }
