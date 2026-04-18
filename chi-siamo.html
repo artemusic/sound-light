@@ -337,11 +337,54 @@
         "ARTEMUSIC è nata da un sogno, cresciuta con il lavoro,<br>e continua con il cuore di famiglia."
       </blockquote>
     </div>
+
+    <!-- VIDEO FACEBOOK -->
+    <div style="max-width:820px;margin:64px auto 0;padding:0 32px">
+      <div style="text-align:center;margin-bottom:28px">
+        <span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--red);margin-bottom:10px">Dietro le quinte</span>
+        <h2 style="font-size:clamp(1.3rem,3vw,2rem);font-weight:900;line-height:1.2">Il nostro lavoro in azione</h2>
+        <div style="width:56px;height:3px;background:var(--red);margin:14px auto 0;border-radius:2px"></div>
+      </div>
+      <!-- Facebook embed via iframe SDK -->
+      <div id="fb-root"></div>
+      <div style="display:flex;justify-content:center">
+        <div class="fb-video"
+             data-href="https://www.facebook.com/share/r/1JaXMShHZW/"
+             data-width="560"
+             data-allowfullscreen="true"
+             data-show-captions="false"
+             style="max-width:100%">
+        </div>
+      </div>
+      <p style="text-align:center;font-size:.78rem;color:rgba(255,255,255,.35);margin-top:14px">
+        Segui la nostra pagina su
+        <a href="https://www.facebook.com/?locale=it_IT" target="_blank" style="color:var(--red);text-decoration:none">Facebook</a>
+        per non perdere i prossimi eventi!
+      </p>
+    </div>
   </div>
 
 
 
 
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-social">
+      <a href="https://www.instagram.com/serviceartemusic/" target="_blank" aria-label="Instagram">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a href="https://www.facebook.com/?locale=it_IT" target="_blank" aria-label="Facebook">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+    </div>
+    <p>© 2025 Artemusic Sound & Light – Manduria (TA)</p>
+  </footer>
+
+  <!-- Facebook JS SDK per embed video -->
+  <script async defer crossorigin="anonymous"
+    src="https://connect.facebook.net/it_IT/sdk.js#xfbml=1&version=v19.0">
+  </script>
 
   <script>
     const hamburger  = document.getElementById('hamburger');

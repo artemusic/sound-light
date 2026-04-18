@@ -1,180 +1,293 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Area Riservata – Artemusic</title>
-  <link rel="icon" href="favicon.ico" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --red: #e81c2e;
-      --red-dark: #b51020;
-      --white: #ffffff;
-      --black: #0a0a0a;
-      --glass-border: rgba(255,255,255,0.10);
-      --green: #25D366;
+    :root{
+      --red:#e81c2e; --red-dark:#b51020;
+      --white:#ffffff; --black:#0a0a0a;
+      --glass:rgba(10,10,10,0.60);
+      --glass-border:rgba(255,255,255,0.10);
     }
-    html, body { min-height: 100%; font-family: 'Montserrat', sans-serif; color: var(--white); background: var(--black); }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{min-height:100vh;font-family:'Montserrat',sans-serif;color:var(--white);background:var(--black)}
 
-    .bg-fixed { position: fixed; inset: 0; z-index: 0; background: url('bg3.jpg') no-repeat center center / cover; filter: brightness(0.22); }
+    /* ── BG ── */
+    .bg-fixed{
+      position:fixed;inset:0;z-index:0;
+      background:url('bg3.jpg') center/cover no-repeat;
+      filter:brightness(.25);
+    }
 
     /* ── NAV ── */
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 16px 48px; background: rgba(10,10,10,0.75); backdrop-filter: blur(14px); border-bottom: 1px solid var(--glass-border); }
-    .nav-logo { height: 40px; }
-    .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
-    .nav-links a { color: rgba(255,255,255,0.78); text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; position: relative; transition: color 0.25s; }
-    .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:var(--red); transition:width 0.3s; }
-    .nav-links a:hover { color:var(--white); }
-    .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
-    .nav-links a.active { color:var(--white); }
-    .nav-right { display:flex; align-items:center; gap:16px; }
-    .nav-social { display:flex; gap:14px; align-items:center; }
-    .nav-social a { color:rgba(255,255,255,0.65); text-decoration:none; transition:color 0.2s,transform 0.2s; display:flex; align-items:center; }
-    .nav-social a:hover { color:var(--white); transform:scale(1.15); }
-    .nav-cta { background:var(--red); color:white !important; padding:8px 18px; border-radius:50px; text-decoration:none; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; transition:background 0.25s; white-space:nowrap; }
-    .nav-cta:hover { background:var(--red-dark) !important; }
-    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; z-index:200; }
-    .hamburger span { display:block; width:26px; height:2px; background:var(--white); border-radius:2px; transition:all 0.35s; }
-    .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity:0; }
-    .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
-    .mobile-menu { display:none; position:fixed; inset:0; background:rgba(10,10,10,0.97); z-index:150; flex-direction:column; align-items:center; justify-content:center; gap:32px; }
-    .mobile-menu.open { display:flex; }
-    .mobile-menu a { color:var(--white); text-decoration:none; font-size:20px; font-weight:700; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
-    .mobile-menu a:hover { color:var(--red); }
-    .mobile-social { display:flex; gap:24px; margin-top:8px; }
-    .mobile-social a { color:rgba(255,255,255,0.7); text-decoration:none; display:flex; align-items:center; }
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:100;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:18px 40px;
+      background:rgba(10,10,10,.80);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--glass-border);
+    }
+    nav .logo img{height:44px}
+    .nav-links{list-style:none;display:flex;gap:28px;align-items:center}
+    .nav-links a{color:var(--white);text-decoration:none;font-size:.85rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}
+    .nav-links a:hover,.nav-links a.active{color:var(--red)}
+    .nav-right{display:flex;align-items:center;gap:16px}
+    .nav-social a{color:var(--white);display:inline-flex;transition:color .2s,transform .2s}
+    .nav-social a:hover{color:var(--red);transform:scale(1.15)}
+    .nav-social svg{width:22px;height:22px}
+    .nav-cta{
+      background:var(--red);color:var(--white);border:none;
+      padding:8px 18px;border-radius:6px;font-size:.78rem;font-weight:700;
+      letter-spacing:.08em;text-transform:uppercase;text-decoration:none;
+      transition:background .2s;cursor:pointer;
+    }
+    .nav-cta:hover{background:var(--red-dark)}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+    .hamburger span{display:block;width:24px;height:2px;background:var(--white);border-radius:2px;transition:.3s}
+    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .hamburger.open span:nth-child(2){opacity:0}
+    .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .mobile-menu{
+      display:none;position:fixed;inset:0;z-index:99;
+      background:rgba(10,10,10,.97);
+      flex-direction:column;align-items:center;justify-content:center;gap:32px;
+    }
+    .mobile-menu.open{display:flex}
+    .mobile-menu a{color:var(--white);text-decoration:none;font-size:1.3rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    .mobile-menu a:hover{color:var(--red)}
+    .mobile-social{display:flex;gap:20px;margin-top:8px}
+    .mobile-social a{color:var(--white);display:inline-flex;transition:color .2s}
+    .mobile-social a:hover{color:var(--red)}
+    .mobile-social svg{width:26px;height:26px}
 
     /* ── PAGE ── */
-    .page-wrap { position: relative; z-index: 10; min-height: 100vh; padding: 110px 24px 80px; display: flex; flex-direction: column; align-items: center; }
+    .page-wrap{position:relative;z-index:10;min-height:100vh;padding-top:90px}
+    .page-hero{text-align:center;padding:48px 24px 32px}
+    .page-hero h1{font-size:clamp(1.6rem,4vw,2.6rem);font-weight:900;letter-spacing:.04em}
+    .red-line{width:60px;height:3px;background:var(--red);margin:14px auto 0}
 
     /* ── LOGIN CARD ── */
-    .login-card { width: 100%; max-width: 460px; background: rgba(15,15,15,0.85); border: 1px solid rgba(255,255,255,0.12); border-radius: 22px; padding: 52px 44px; backdrop-filter: blur(20px); text-align: center; animation: fadeIn 0.5s ease both; }
-    .login-icon { font-size: 46px; margin-bottom: 18px; }
-    .login-card h1 { font-size: 24px; font-weight: 900; margin-bottom: 8px; }
-    .login-card > p { font-size: 13px; color: rgba(255,255,255,0.45); margin-bottom: 34px; line-height: 1.65; }
-    .form-group { margin-bottom: 20px; text-align: left; }
-    .form-group label { display:block; font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-bottom:8px; }
-    .pwd-wrap { position:relative; }
-    .form-group input[type="password"], .form-group input[type="text"] { width:100%; padding:14px 46px 14px 16px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.15); border-radius:10px; color:var(--white); font-family:'Montserrat',sans-serif; font-size:14px; outline:none; transition:border-color 0.25s, background 0.25s; }
-    .form-group input:focus { border-color:var(--red); background:rgba(255,255,255,0.10); }
-    .toggle-pwd { position:absolute; right:14px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:17px; color:rgba(255,255,255,0.38); user-select:none; }
-    .btn-login { width:100%; padding:15px; border:none; border-radius:10px; background:var(--red); color:var(--white); font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer; transition:background 0.25s, transform 0.2s, box-shadow 0.2s; }
-    .btn-login:hover { background:var(--red-dark); transform:translateY(-2px); box-shadow:0 8px 24px rgba(232,28,46,0.40); }
-    .error-msg { display:none; margin-top:14px; background:rgba(232,28,46,0.14); border:1px solid rgba(232,28,46,0.38); border-radius:8px; padding:10px 14px; font-size:13px; color:#ff8080; }
-
-    /* ── ROLE BADGE ── */
-    .role-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 6px 14px; border-radius: 50px;
-      font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-      margin-bottom: 28px;
+    #login-card{
+      max-width:400px;margin:0 auto;
+      background:var(--glass);border:1px solid var(--glass-border);
+      border-radius:16px;padding:36px 32px;backdrop-filter:blur(16px);
     }
-    .role-badge.admin { background: rgba(232,28,46,0.18); border: 1px solid rgba(232,28,46,0.45); color: #ff8080; }
-    .role-badge.user  { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.65); }
-
-    /* ── PANEL ── */
-    .docs-panel { display:none; width:100%; max-width:980px; animation:fadeIn 0.5s ease both; }
-    .docs-header { text-align:center; margin-bottom:40px; }
-    .docs-header .label { font-size:11px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--red); margin-bottom:10px; display:block; }
-    .docs-header h2 { font-size:clamp(26px,4vw,38px); font-weight:900; }
-    .docs-header .divider { width:48px; height:3px; background:var(--red); margin:16px auto 0; border-radius:2px; }
-    .docs-header p { font-size:13px; color:rgba(255,255,255,0.40); margin-top:14px; }
-
-    /* ── SECTION TITLE ── */
-    .section-title { font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.32); margin:36px 0 16px; width:100%; }
-
-    /* ── UPLOAD AREA (admin only) ── */
-    .upload-zone {
-      background: rgba(255,255,255,0.04); border: 2px dashed rgba(255,255,255,0.18);
-      border-radius: 18px; padding: 36px 30px; text-align: center; margin-bottom: 8px;
-      transition: border-color 0.25s, background 0.25s; cursor: pointer; width:100%;
+    #login-card h2{font-size:1.15rem;font-weight:700;margin-bottom:20px;text-align:center}
+    .pw-wrap{position:relative;display:flex}
+    .pw-wrap input{
+      flex:1;background:rgba(255,255,255,.07);border:1px solid var(--glass-border);
+      color:var(--white);border-radius:8px;padding:12px 44px 12px 14px;
+      font-family:'Montserrat',sans-serif;font-size:.95rem;outline:none;
     }
-    .upload-zone:hover, .upload-zone.drag-over { border-color: var(--red); background: rgba(232,28,46,0.07); }
-    .upload-zone .up-icon { font-size: 38px; margin-bottom: 10px; }
-    .upload-zone h3 { font-size:15px; font-weight:700; margin-bottom:6px; }
-    .upload-zone p { font-size:12px; color:rgba(255,255,255,0.40); line-height:1.6; margin-bottom:16px; }
-    .upload-zone input[type="file"] { display:none; }
-    .btn-choose { display:inline-flex; align-items:center; gap:8px; padding:10px 22px; border-radius:50px; background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.22); color:var(--white); font-family:'Montserrat',sans-serif; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:background 0.2s; }
-    .btn-choose:hover { background:rgba(255,255,255,0.18); }
-
-    /* ── UPLOADED LIST ── */
-    .uploaded-list { width:100%; }
-    .up-item { display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,0.055); border:1px solid rgba(255,255,255,0.10); border-radius:12px; padding:14px 18px; margin-bottom:10px; gap:12px; flex-wrap:wrap; animation: fadeIn 0.3s ease both; }
-    .up-item .fi { display:flex; align-items:center; gap:10px; flex:1; min-width:0; }
-    .up-item .fi-icon { font-size:22px; flex-shrink:0; }
-    .up-item .fi-name { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .up-item .fi-size { font-size:11px; color:rgba(255,255,255,0.38); margin-top:2px; }
-    .act-row { display:flex; gap:8px; flex-shrink:0; }
-    .act-btn { display:flex; align-items:center; gap:6px; padding:7px 14px; border-radius:50px; border:none; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; cursor:pointer; transition:transform 0.15s, opacity 0.15s; }
-    .act-btn:hover { transform:translateY(-1px); opacity:0.85; }
-    .btn-wa   { background:var(--green); color:#fff; }
-    .btn-mail { background:#3b82f6; color:#fff; }
-    .btn-dl   { background:rgba(255,255,255,0.12); color:#fff; border:1px solid rgba(255,255,255,0.20)!important; }
-    .btn-rm   { background:rgba(232,28,46,0.15); color:#ff8080; border:1px solid rgba(232,28,46,0.30)!important; }
-
-    /* ── DOCS GRID ── */
-    .docs-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(210px,1fr)); gap:14px; width:100%; }
-    .doc-card { background:rgba(255,255,255,0.055); border:1px solid rgba(255,255,255,0.10); border-radius:14px; overflow:hidden; transition:border-color 0.25s, transform 0.25s; }
-    .doc-card:hover { border-color:rgba(232,28,46,0.40); transform:translateY(-3px); }
-    .doc-head { padding:20px 18px 16px; display:flex; align-items:center; gap:12px; }
-    .doc-icon { font-size:26px; flex-shrink:0; }
-    .doc-name { font-size:13px; font-weight:700; line-height:1.3; }
-    .doc-acts { display:flex; border-top:1px solid rgba(255,255,255,0.07); }
-    .da { flex:1; padding:10px 0; display:flex; align-items:center; justify-content:center; gap:5px; font-size:11px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; cursor:pointer; text-decoration:none; color:rgba(255,255,255,0.55); border:none; background:none; font-family:'Montserrat',sans-serif; transition:background 0.2s, color 0.2s; }
-    .da + .da { border-left:1px solid rgba(255,255,255,0.07); }
-    .da:hover        { background:rgba(255,255,255,0.07); color:var(--white); }
-    .da.wa:hover     { background:rgba(37,211,102,0.15); color:var(--green); }
-    .da.mail:hover   { background:rgba(59,130,246,0.15); color:#60a5fa; }
-
-    /* ── FOOTER ── */
-    .site-footer { position:relative; z-index:10; text-align:center; padding:40px 24px 56px; border-top:1px solid rgba(255,255,255,0.07); width:100%; }
-    .footer-social { display:flex; gap:20px; justify-content:center; margin-bottom:12px; }
-    .footer-social a { color:rgba(255,255,255,0.50); text-decoration:none; display:flex; align-items:center; transition:color 0.2s, transform 0.2s; }
-    .footer-social a:hover { color:var(--white); transform:translateY(-3px); }
-    .site-footer p { font-size:11px; color:rgba(255,255,255,0.25); letter-spacing:0.5px; }
-
-    @keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-
-    @media (max-width:768px) {
-      nav { padding:14px 20px; }
-      .nav-links, .nav-social { display:none; }
-      .hamburger { display:flex; }
-      .login-card { padding:36px 24px; }
-      .docs-grid { grid-template-columns:1fr 1fr; }
-      .act-row { flex-wrap:wrap; }
+    .pw-wrap button{
+      position:absolute;right:0;top:0;bottom:0;background:transparent;border:none;
+      color:rgba(255,255,255,.5);cursor:pointer;padding:0 12px;font-size:1rem;
+      transition:color .2s;
     }
-    @media (max-width:480px) { .docs-grid { grid-template-columns:1fr; } }
+    .pw-wrap button:hover{color:var(--white)}
+    .btn-login{
+      width:100%;margin-top:16px;padding:13px;background:var(--red);
+      border:none;border-radius:8px;color:var(--white);font-weight:700;
+      font-size:.95rem;font-family:'Montserrat',sans-serif;
+      text-transform:uppercase;letter-spacing:.07em;cursor:pointer;transition:background .2s;
+    }
+    .btn-login:hover{background:var(--red-dark)}
+    .login-error{color:#ff6b6b;font-size:.82rem;margin-top:10px;text-align:center;min-height:18px}
+
+    /* ── FILE MANAGER ── */
+    #fm-panel{display:none}
+    .fm-header{
+      max-width:1100px;margin:0 auto 24px;
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    }
+    .role-badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 14px;border-radius:20px;font-size:.78rem;font-weight:700;
+      letter-spacing:.06em;text-transform:uppercase;
+    }
+    .role-badge.admin{background:rgba(232,28,46,.25);border:1px solid var(--red);color:var(--red)}
+    .role-badge.user {background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#ccc}
+    .btn-logout{
+      background:transparent;border:1px solid rgba(255,255,255,.25);
+      color:rgba(255,255,255,.7);border-radius:6px;padding:6px 14px;
+      font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;
+    }
+    .btn-logout:hover{border-color:var(--red);color:var(--red)}
+
+    /* breadcrumb */
+    .breadcrumb{
+      max-width:1100px;margin:0 auto 16px;
+      display:flex;align-items:center;flex-wrap:wrap;gap:6px;
+      font-size:.82rem;color:rgba(255,255,255,.6);
+    }
+    .breadcrumb span{cursor:pointer;transition:color .2s}
+    .breadcrumb span:hover{color:var(--white)}
+    .breadcrumb span.current{color:var(--white);font-weight:600;cursor:default}
+    .breadcrumb .sep{color:rgba(255,255,255,.3)}
+
+    /* toolbar admin */
+    #admin-toolbar{
+      max-width:1100px;margin:0 auto 20px;
+      display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+    }
+    #admin-toolbar button, #admin-toolbar label{
+      display:inline-flex;align-items:center;gap:7px;
+      padding:9px 16px;border-radius:8px;font-size:.8rem;font-weight:700;
+      letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:all .2s;
+      font-family:'Montserrat',sans-serif;border:none;
+    }
+    .btn-new-folder{background:rgba(255,255,255,.1);color:var(--white)}
+    .btn-new-folder:hover{background:rgba(255,255,255,.2)}
+    .btn-upload-files{background:var(--red);color:var(--white)}
+    .btn-upload-files:hover{background:var(--red-dark)}
+    .btn-upload-folder{background:rgba(232,28,46,.2);color:var(--red);border:1px solid var(--red) !important}
+    .btn-upload-folder:hover{background:rgba(232,28,46,.35)}
+
+    /* drop zone */
+    #drop-zone{
+      max-width:1100px;margin:0 auto 24px;
+      border:2px dashed rgba(255,255,255,.2);border-radius:14px;
+      padding:28px;text-align:center;
+      background:rgba(255,255,255,.04);
+      transition:all .25s;font-size:.88rem;color:rgba(255,255,255,.5);
+    }
+    #drop-zone.drag-over{border-color:var(--red);background:rgba(232,28,46,.08);color:var(--white)}
+    #drop-zone svg{width:32px;height:32px;margin-bottom:8px;opacity:.5}
+
+    /* upload progress */
+    #upload-progress{max-width:1100px;margin:0 auto 16px}
+    .prog-item{background:rgba(255,255,255,.06);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:.82rem}
+    .prog-bar{height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin-top:6px;overflow:hidden}
+    .prog-fill{height:100%;background:var(--red);border-radius:2px;transition:width .3s}
+
+    /* file grid */
+    .fm-grid{
+      max-width:1100px;margin:0 auto;
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;
+    }
+    .fm-card{
+      background:rgba(255,255,255,.06);border:1px solid var(--glass-border);
+      border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:10px;
+      transition:background .2s,border-color .2s;cursor:default;
+    }
+    .fm-card:hover{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.2)}
+    .fm-card .icon{font-size:2.2rem;line-height:1}
+    .fm-card .name{
+      font-size:.88rem;font-weight:600;
+      overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+      word-break:break-all;
+    }
+    .fm-card .meta{font-size:.72rem;color:rgba(255,255,255,.45)}
+    .fm-card .actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+    .fm-card .actions button{
+      flex:1;min-width:0;padding:6px 4px;border:none;border-radius:6px;
+      font-size:.72rem;font-weight:700;font-family:'Montserrat',sans-serif;
+      cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:4px;
+    }
+    .btn-dl   {background:rgba(255,255,255,.12);color:var(--white)}
+    .btn-dl:hover{background:rgba(255,255,255,.22)}
+    .btn-wa   {background:#25d366;color:#fff}
+    .btn-wa:hover{background:#1ebe5d}
+    .btn-mail {background:rgba(66,133,244,.35);color:#8ab4f8}
+    .btn-mail:hover{background:rgba(66,133,244,.55)}
+    .btn-rename{background:rgba(255,200,0,.15);color:#ffc800}
+    .btn-rename:hover{background:rgba(255,200,0,.3)}
+    .btn-del  {background:rgba(232,28,46,.2);color:var(--red)}
+    .btn-del:hover{background:rgba(232,28,46,.4)}
+
+    .fm-empty{
+      max-width:1100px;margin:48px auto;text-align:center;
+      color:rgba(255,255,255,.35);font-size:.9rem;
+    }
+
+    /* modal rename / new folder */
+    .modal-overlay{
+      display:none;position:fixed;inset:0;z-index:200;
+      background:rgba(0,0,0,.75);align-items:center;justify-content:center;
+    }
+    .modal-overlay.open{display:flex}
+    .modal-box{
+      background:#1a1a1a;border:1px solid var(--glass-border);border-radius:16px;
+      padding:32px 28px;min-width:300px;max-width:420px;width:90%;
+    }
+    .modal-box h3{font-size:1.05rem;font-weight:700;margin-bottom:16px}
+    .modal-box input{
+      width:100%;background:rgba(255,255,255,.07);border:1px solid var(--glass-border);
+      color:var(--white);border-radius:8px;padding:10px 12px;
+      font-family:'Montserrat',sans-serif;font-size:.92rem;outline:none;
+    }
+    .modal-actions{display:flex;gap:10px;margin-top:18px;justify-content:flex-end}
+    .modal-actions button{
+      padding:9px 20px;border-radius:8px;font-weight:700;font-size:.82rem;
+      font-family:'Montserrat',sans-serif;cursor:pointer;border:none;transition:all .2s;
+    }
+    .btn-confirm{background:var(--red);color:#fff}
+    .btn-confirm:hover{background:var(--red-dark)}
+    .btn-cancel{background:rgba(255,255,255,.1);color:var(--white)}
+    .btn-cancel:hover{background:rgba(255,255,255,.2)}
+
+    /* toast */
+    #toast{
+      position:fixed;bottom:28px;right:28px;z-index:300;
+      background:rgba(30,30,30,.95);border:1px solid var(--glass-border);
+      border-radius:10px;padding:12px 20px;font-size:.85rem;font-weight:600;
+      color:var(--white);transform:translateY(100px);opacity:0;
+      transition:all .35s;pointer-events:none;max-width:320px;
+    }
+    #toast.show{transform:translateY(0);opacity:1}
+    #toast.ok{border-color:rgba(37,211,102,.5)}
+    #toast.err{border-color:rgba(232,28,46,.5);color:#ff7a7a}
+
+    /* footer */
+    .site-footer{
+      position:relative;z-index:10;text-align:center;padding:32px 24px 24px;
+      border-top:1px solid var(--glass-border);margin-top:64px;
+    }
+    .footer-social{display:flex;justify-content:center;gap:20px;margin-bottom:12px}
+    .footer-social a{color:var(--white);display:inline-flex;transition:color .2s,transform .2s}
+    .footer-social a:hover{color:var(--red);transform:translateY(-3px)}
+    .footer-social svg{width:22px;height:22px}
+    .site-footer p{font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.6}
+
+    @media(max-width:768px){
+      nav{padding:14px 20px}
+      .nav-links,.nav-social{display:none}
+      .hamburger{display:flex}
+      #admin-toolbar button,#admin-toolbar label{font-size:.72rem;padding:8px 12px}
+    }
   </style>
 </head>
 <body>
-
 <div class="bg-fixed"></div>
 
 <!-- NAV -->
 <nav>
-  <a href="index.html"><img src="logo-bianco.png" alt="Artemusic" class="nav-logo" /></a>
+  <div class="logo"><a href="index.html"><img src="logo-bianco.png" alt="Artemusic"></a></div>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="chi-siamo.html">Chi siamo</a></li>
     <li><a href="eventi.html">Eventi</a></li>
     <li><a href="contatti.html">Contatti</a></li>
-    <li><a href="preventivo.html" class="nav-cta">Preventivo</a></li>
     <li><a href="area-riservata.html" class="active">Area Riservata</a></li>
   </ul>
   <div class="nav-right">
     <div class="nav-social">
-      <a href="https://www.instagram.com/serviceartemusic/" target="_blank" title="Instagram">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      <a href="https://www.instagram.com/serviceartemusic/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
       </a>
-      <a href="https://www.facebook.com/?locale=it_IT" target="_blank" title="Facebook">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      <a href="https://www.facebook.com/?locale=it_IT" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
       </a>
     </div>
-    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <a href="preventivo.html" class="nav-cta">Preventivo</a>
   </div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
 </nav>
 
 <!-- MOBILE MENU -->
@@ -183,247 +296,501 @@
   <a href="chi-siamo.html">Chi siamo</a>
   <a href="eventi.html">Eventi</a>
   <a href="contatti.html">Contatti</a>
-  <a href="preventivo.html" style="color:var(--red)">Preventivo</a>
   <a href="area-riservata.html">Area Riservata</a>
+  <a href="preventivo.html" style="color:var(--red)">Preventivo</a>
   <div class="mobile-social">
-    <a href="https://www.instagram.com/serviceartemusic/" target="_blank">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    <a href="https://www.instagram.com/serviceartemusic/" target="_blank" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
     </a>
-    <a href="https://www.facebook.com/?locale=it_IT" target="_blank">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    <a href="https://www.facebook.com/?locale=it_IT" target="_blank" aria-label="Facebook">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
     </a>
   </div>
 </div>
 
-<!-- PAGE -->
+<!-- PAGE CONTENT -->
 <div class="page-wrap">
-
-  <!-- ═══ LOGIN ═══ -->
-  <div class="login-card" id="loginCard">
-    <div class="login-icon">🔐</div>
+  <div class="page-hero">
     <h1>Area Riservata</h1>
-    <p>Inserisci la password per accedere ai documenti tecnici e alle dichiarazioni di conformità.</p>
-    <div class="form-group">
-      <label>Password</label>
-      <div class="pwd-wrap">
-        <input type="password" id="pwdInput" placeholder="••••••••••••" onkeydown="if(event.key==='Enter')checkPassword()" />
-        <span class="toggle-pwd" onclick="togglePwd()">👁</span>
-      </div>
-    </div>
-    <button class="btn-login" onclick="checkPassword()">Accedi →</button>
-    <div class="error-msg" id="errorMsg">⚠ Password errata. Riprova.</div>
+    <div class="red-line"></div>
   </div>
 
-  <!-- ═══ PANNELLO DOCUMENTI ═══ -->
-  <div class="docs-panel" id="docsPanel">
-
-    <div class="docs-header">
-      <span class="label">Artemusic · Uso Interno</span>
-      <h2>Area Riservata</h2>
-      <div class="divider"></div>
-      <!-- badge ruolo inserito da JS -->
-      <div id="roleBadge" style="margin-top:16px;"></div>
-      <p id="roleDesc"></p>
-    </div>
-
-    <!-- ── SEZIONE ADMIN: upload ── -->
-    <div id="adminSection" style="display:none; width:100%;">
-      <div class="section-title">⬆ Carica Documenti (solo amministratore)</div>
-
-      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
-        <div class="up-icon">📤</div>
-        <h3>Carica un file o una cartella</h3>
-        <p>Trascina qui un file (PDF, ZIP, immagine…) oppure clicca per selezionarlo.<br>Dopo il caricamento potrai inviarlo via WhatsApp, email o scaricarlo.</p>
-        <button class="btn-choose" onclick="event.stopPropagation(); document.getElementById('fileInput').click()">📁 Scegli File</button>
-        <input type="file" id="fileInput" multiple onchange="handleFiles(this.files)" />
+  <!-- LOGIN -->
+  <div id="login-card" style="padding:0 24px 60px">
+    <div style="max-width:400px;margin:0 auto;background:var(--glass);border:1px solid var(--glass-border);border-radius:16px;padding:36px 32px;backdrop-filter:blur(16px)">
+      <h2 style="text-align:center;font-size:1.1rem;margin-bottom:22px">🔒 Accesso Riservato</h2>
+      <div class="pw-wrap">
+        <input type="password" id="pw-input" placeholder="Password" autocomplete="current-password"
+               onkeydown="if(event.key==='Enter')doLogin()">
+        <button type="button" onclick="togglePw()" title="Mostra/nascondi">👁</button>
       </div>
-      <div class="uploaded-list" id="uploadedList"></div>
+      <button class="btn-login" onclick="doLogin()">Accedi</button>
+      <p class="login-error" id="login-err"></p>
+    </div>
+  </div>
+
+  <!-- FILE MANAGER -->
+  <div id="fm-panel" style="padding:0 24px 80px">
+
+    <!-- Header: badge ruolo + logout -->
+    <div class="fm-header">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div id="role-badge" class="role-badge"></div>
+        <span id="fm-title" style="font-size:1rem;font-weight:700"></span>
+      </div>
+      <button class="btn-logout" onclick="doLogout()">Esci</button>
     </div>
 
-    <!-- ── DOCUMENTI FISSI ── -->
-    <div class="section-title" id="docsTitle">📂 Collaudi &amp; Dichiarazioni di Conformità</div>
-    <div class="docs-grid" id="docsGrid"></div>
+    <!-- Breadcrumb -->
+    <div class="breadcrumb" id="breadcrumb"></div>
 
-  </div><!-- /docs-panel -->
+    <!-- Toolbar ADMIN -->
+    <div id="admin-toolbar" style="display:none">
+      <button class="btn-new-folder" onclick="openMkdir()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        Nuova cartella
+      </button>
+      <label class="btn-upload-files">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+        Carica file
+        <input type="file" id="file-input" multiple hidden onchange="uploadFiles(this.files)">
+      </label>
+      <label class="btn-upload-folder">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        Carica cartella
+        <input type="file" id="folder-input" multiple hidden webkitdirectory onchange="uploadFiles(this.files)">
+      </label>
+    </div>
 
-</div><!-- /page-wrap -->
+    <!-- Drop zone (solo admin) -->
+    <div id="drop-zone" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+      <div>Trascina qui file o cartelle per caricarli</div>
+      <div style="font-size:.75rem;margin-top:4px;opacity:.6">Oppure usa i pulsanti sopra</div>
+    </div>
+
+    <!-- Upload progress -->
+    <div id="upload-progress"></div>
+
+    <!-- File grid -->
+    <div class="fm-grid" id="fm-grid"></div>
+    <div class="fm-empty" id="fm-empty" style="display:none">Nessun file o cartella qui.</div>
+  </div>
+</div>
+
+<!-- MODAL nuova cartella / rinomina -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <h3 id="modal-title">Nuova cartella</h3>
+    <input type="text" id="modal-input" placeholder="">
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Annulla</button>
+      <button class="btn-confirm" id="modal-confirm-btn" onclick="modalConfirm()">Crea</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
 
 <!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-social">
-    <a href="https://www.instagram.com/serviceartemusic/" target="_blank" title="Instagram">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    <a href="https://www.instagram.com/serviceartemusic/" target="_blank" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
     </a>
-    <a href="https://www.facebook.com/?locale=it_IT" target="_blank" title="Facebook">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    <a href="https://www.facebook.com/?locale=it_IT" target="_blank" aria-label="Facebook">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
     </a>
   </div>
-  <p>© 2025 Artemusic Sound &amp; Light Srls · Manduria (TA) · P.IVA 03436690733</p>
+  <p>© 2025 Artemusic Sound & Light – Manduria (TA)</p>
 </footer>
 
 <script>
-  /* ─── Hamburger ─── */
-  const hamburger  = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('open');
-    mobileMenu.classList.toggle('open');
-  });
+// ────────────────────────────────────────────
+//  STATE
+// ────────────────────────────────────────────
+let currentRole = null;       // 'admin' | 'user'
+let currentPath = '';         // percorso relativo nella cartella documenti
+let modalMode   = null;       // 'mkdir' | 'rename'
+let renameTarget= null;       // path del file da rinominare
 
-  /* ─── Passwords ─── */
-  const PWD_ADMIN = 'Admin2025!';      // password ADMIN (solo tu)
-  const PWD_USER  = 'Allestimenti2025'; // password per collaboratori
-
-  let currentRole = null; // 'admin' | 'user'
-
-  function checkPassword() {
-    const val = document.getElementById('pwdInput').value.trim();
-    if (val === PWD_ADMIN) {
-      currentRole = 'admin';
-      openPanel();
-    } else if (val === PWD_USER) {
-      currentRole = 'user';
-      openPanel();
-    } else {
-      const err = document.getElementById('errorMsg');
-      err.style.display = 'block';
-      document.getElementById('pwdInput').value = '';
-      document.getElementById('pwdInput').focus();
-      setTimeout(() => { err.style.display = 'none'; }, 3500);
+// ────────────────────────────────────────────
+//  INIT – controlla se già loggato
+// ────────────────────────────────────────────
+(async () => {
+  try {
+    const r = await fetch('/api/me');
+    const d = await r.json();
+    if (d.ok) {
+      currentRole = d.role;
+      showFM();
+      loadFiles(currentPath);
     }
-  }
+  } catch(e) {}
+})();
 
-  function togglePwd() {
-    const inp = document.getElementById('pwdInput');
-    inp.type = (inp.type === 'password') ? 'text' : 'password';
-  }
+// ────────────────────────────────────────────
+//  LOGIN / LOGOUT
+// ────────────────────────────────────────────
+function togglePw(){
+  const i = document.getElementById('pw-input');
+  i.type = i.type === 'password' ? 'text' : 'password';
+}
 
-  function openPanel() {
-    document.getElementById('loginCard').style.display = 'none';
-    document.getElementById('docsPanel').style.display = 'block';
-
-    // Role badge
-    const badge = document.getElementById('roleBadge');
-    const desc  = document.getElementById('roleDesc');
-    if (currentRole === 'admin') {
-      badge.innerHTML = '<span class="role-badge admin">🛡 Amministratore</span>';
-      desc.textContent = 'Accesso completo: puoi caricare, condividere e gestire tutti i documenti.';
-      document.getElementById('adminSection').style.display = 'block';
-    } else {
-      badge.innerHTML = '<span class="role-badge user">👤 Accesso Standard</span>';
-      desc.textContent = 'Puoi visualizzare, scaricare e condividere i documenti disponibili.';
-    }
-
-    renderDocs();
-  }
-
-  /* ─── Documenti fissi ─── */
-  const DOCS = [
-    { name:'Americana Trabes Folding', icon:'🏗️', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/AMERICANA%20TRABES%20FOLDING/' },
-    { name:'Antipanico',               icon:'🚪', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/ANTIPANICO/' },
-    { name:'Audio',                    icon:'🔊', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/AUDIO/' },
-    { name:'Casette in Legno',         icon:'🏠', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/CASETTE%20IN%20LEGNO/' },
-    { name:'Copertura Ring da 30',     icon:'⛺', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/COPERTURA%20RING%20DA%2030/' },
-    { name:'Gazebo 3×3',              icon:'🏕️', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/GAZEBO%203%20X%203/' },
-    { name:'Guil',                     icon:'⚙️', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/GUIL/' },
-    { name:'LED Wall',                 icon:'📺', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/LEDWALL/' },
-    { name:'Luci',                     icon:'💡', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/LUCI/' },
-    { name:'Powerbox',                 icon:'⚡', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/POWERBOX/' },
-    { name:'Sedie',                    icon:'🪑', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/SEDIE/' },
-  ];
-
-  function renderDocs() {
-    const grid   = document.getElementById('docsGrid');
-    const origin = window.location.origin;
-    const base   = origin + window.location.pathname.replace('area-riservata.html', '');
-
-    grid.innerHTML = DOCS.map(doc => {
-      const fullUrl  = base + doc.path;
-      const waText   = encodeURIComponent(`📁 *${doc.name}*\nDocumento tecnico Artemusic Sound & Light:\n${fullUrl}`);
-      const mailSubj = encodeURIComponent(`Documento Artemusic: ${doc.name}`);
-      const mailBody = encodeURIComponent(`Ciao,\n\nti invio il documento "${doc.name}".\n\nLink diretto:\n${fullUrl}\n\nArtemusic Sound & Light\ninfo@artemusic.it`);
-
-      return `
-      <div class="doc-card">
-        <div class="doc-head">
-          <span class="doc-icon">${doc.icon}</span>
-          <span class="doc-name">${doc.name}</span>
-        </div>
-        <div class="doc-acts">
-          <a class="da wa" href="https://wa.me/?text=${waText}" target="_blank" title="WhatsApp">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            WA
-          </a>
-          <a class="da mail" href="mailto:?subject=${mailSubj}&body=${mailBody}" title="Email">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            Email
-          </a>
-          <a class="da" href="${doc.path}" target="_blank" title="Scarica">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zm7-18v10l4-4 1.41 1.41L12 14.83l-5.41-5.42L8 8l4 4V2h2z"/></svg>
-            Scarica
-          </a>
-        </div>
-      </div>`;
-    }).join('');
-  }
-
-  /* ─── Upload & Share (solo admin) ─── */
-  const uploadZone = document.getElementById('uploadZone');
-  uploadZone.addEventListener('dragover',  e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
-  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
-  uploadZone.addEventListener('drop', e => {
-    e.preventDefault();
-    uploadZone.classList.remove('drag-over');
-    handleFiles(e.dataTransfer.files);
-  });
-
-  function handleFiles(files) {
-    const list = document.getElementById('uploadedList');
-    Array.from(files).forEach(file => {
-      const url     = URL.createObjectURL(file);
-      const sizeFmt = file.size > 1048576 ? (file.size/1048576).toFixed(1)+' MB' : (file.size/1024).toFixed(0)+' KB';
-      const ext     = file.name.split('.').pop().toUpperCase();
-      const icon    = {PDF:'📄',ZIP:'🗜️',RAR:'🗜️',PNG:'🖼️',JPG:'🖼️',JPEG:'🖼️',DOC:'📝',DOCX:'📝',XLS:'📊',XLSX:'📊'}[ext] || '📁';
-      const waText  = encodeURIComponent(`📁 *${file.name}*\nInviato da Artemusic Sound & Light`);
-      const mailSubj= encodeURIComponent(`File: ${file.name} – Artemusic`);
-      const mailBody= encodeURIComponent(`Ti invio il file "${file.name}" (${sizeFmt}).\n\nArtemusic Sound & Light · info@artemusic.it`);
-
-      const item = document.createElement('div');
-      item.className = 'up-item';
-      item.id = 'upitem-' + Date.now() + Math.random().toString(36).slice(2);
-      item.innerHTML = `
-        <div class="fi">
-          <span class="fi-icon">${icon}</span>
-          <div>
-            <div class="fi-name">${file.name}</div>
-            <div class="fi-size">${sizeFmt} · ${ext}</div>
-          </div>
-        </div>
-        <div class="act-row">
-          <button class="act-btn btn-wa"   onclick="window.open('https://wa.me/?text=${waText}','_blank')">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            WhatsApp
-          </button>
-          <button class="act-btn btn-mail" onclick="window.location.href='mailto:?subject=${mailSubj}&body=${mailBody}'">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            Email
-          </button>
-          <button class="act-btn btn-dl"   onclick="dlFile('${url}','${file.name}')">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zm7-18v10l4-4 1.41 1.41L12 14.83l-5.41-5.42L8 8l4 4V2h2z"/></svg>
-            Scarica
-          </button>
-          <button class="act-btn btn-rm"   onclick="this.closest('.up-item').remove()">✕</button>
-        </div>`;
-      list.prepend(item);
+async function doLogin(){
+  const pw  = document.getElementById('pw-input').value;
+  const err = document.getElementById('login-err');
+  err.textContent = '';
+  if (!pw) { err.textContent = 'Inserisci la password'; return; }
+  try {
+    const r  = await fetch('/api/login', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ password: pw })
     });
+    const d  = await r.json();
+    if (d.ok) {
+      currentRole = d.role;
+      showFM();
+      loadFiles('');
+    } else {
+      err.textContent = 'Password errata';
+    }
+  } catch(e) {
+    err.textContent = 'Errore di connessione';
+  }
+}
+
+async function doLogout(){
+  await fetch('/api/logout', { method:'POST' });
+  location.reload();
+}
+
+// ────────────────────────────────────────────
+//  SHOW PANELS
+// ────────────────────────────────────────────
+function showFM(){
+  document.getElementById('login-card').style.display = 'none';
+  document.getElementById('fm-panel').style.display   = 'block';
+
+  const badge = document.getElementById('role-badge');
+  const title = document.getElementById('fm-title');
+  if (currentRole === 'admin') {
+    badge.className = 'role-badge admin';
+    badge.innerHTML = '🔴 Amministratore';
+    title.textContent = 'Gestione Documenti';
+    document.getElementById('admin-toolbar').style.display = 'flex';
+    document.getElementById('drop-zone').style.display     = 'block';
+    setupDropZone();
+  } else {
+    badge.className = 'role-badge user';
+    badge.innerHTML = '⚪ Accesso Standard';
+    title.textContent = 'Documenti';
+  }
+}
+
+// ────────────────────────────────────────────
+//  LOAD FILES
+// ────────────────────────────────────────────
+async function loadFiles(relPath){
+  currentPath = relPath || '';
+  renderBreadcrumb();
+  try {
+    const r = await fetch('/api/files?path=' + encodeURIComponent(currentPath));
+    const d = await r.json();
+    if (!d.ok) { showToast('Errore caricamento: ' + d.message, 'err'); return; }
+    renderGrid(d.entries);
+  } catch(e) {
+    showToast('Impossibile raggiungere il server', 'err');
+  }
+}
+
+// ────────────────────────────────────────────
+//  RENDER GRID
+// ────────────────────────────────────────────
+function renderGrid(entries){
+  const grid  = document.getElementById('fm-grid');
+  const empty = document.getElementById('fm-empty');
+  grid.innerHTML = '';
+
+  if (!entries.length) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  entries.forEach(e => {
+    const card = document.createElement('div');
+    card.className = 'fm-card';
+
+    const icon = e.isDir ? '📁' : fileIcon(e.name);
+    const size = e.isDir ? '' : formatBytes(e.size);
+    const date = new Date(e.modified).toLocaleDateString('it-IT');
+
+    let actions = '';
+    // Download / Scarica ZIP
+    actions += `<button class="btn-dl" onclick="downloadFile('${esc(e.path)}','${esc(e.name)}')">⬇ Scarica${e.isDir?' ZIP':''}</button>`;
+    // WhatsApp
+    actions += `<button class="btn-wa" onclick="shareWA('${esc(e.path)}','${esc(e.name)}')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.528 5.845L0 24l6.304-1.503A11.932 11.932 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 11.999 0zm.001 21.818a9.818 9.818 0 0 1-5.001-1.368l-.359-.213-3.724.977.994-3.63-.234-.373A9.8 9.8 0 0 1 2.182 12c0-5.421 4.397-9.818 9.818-9.818 5.422 0 9.818 4.397 9.818 9.818 0 5.422-4.396 9.818-9.818 9.818z"/></svg>
+      WA</button>`;
+    // Email
+    actions += `<button class="btn-mail" onclick="shareEmail('${esc(e.path)}','${esc(e.name)}')">✉ Mail</button>`;
+
+    if (currentRole === 'admin') {
+      actions += `<button class="btn-rename" onclick="openRename('${esc(e.path)}','${esc(e.name)}')">✏ Rinomina</button>`;
+      actions += `<button class="btn-del" onclick="deleteItem('${esc(e.path)}','${esc(e.name)}')">🗑 Elimina</button>`;
+    }
+
+    card.innerHTML = `
+      <div class="icon">${icon}</div>
+      <div class="name" title="${esc(e.name)}">${e.name}</div>
+      <div class="meta">${size ? size + ' · ' : ''}${date}</div>
+      <div class="actions">${actions}</div>`;
+
+    if (e.isDir) {
+      card.style.cursor = 'pointer';
+      card.querySelector('.name').addEventListener('click', () => loadFiles(e.path));
+      card.querySelector('.icon').addEventListener('click', () => loadFiles(e.path));
+    }
+
+    grid.appendChild(card);
+  });
+}
+
+// ────────────────────────────────────────────
+//  BREADCRUMB
+// ────────────────────────────────────────────
+function renderBreadcrumb(){
+  const bc = document.getElementById('breadcrumb');
+  const parts = currentPath ? currentPath.split('/').filter(Boolean) : [];
+  let html = `<span onclick="loadFiles('')">🏠 Documenti</span>`;
+  let built = '';
+  parts.forEach((p, i) => {
+    built += (built ? '/' : '') + p;
+    const captured = built;
+    html += `<span class="sep">›</span>`;
+    if (i === parts.length - 1) {
+      html += `<span class="current">${p}</span>`;
+    } else {
+      html += `<span onclick="loadFiles('${esc(captured)}')">${p}</span>`;
+    }
+  });
+  bc.innerHTML = html;
+}
+
+// ────────────────────────────────────────────
+//  DOWNLOAD
+// ────────────────────────────────────────────
+function downloadFile(filePath, name){
+  const url = '/api/download?path=' + encodeURIComponent(filePath);
+  const a = document.createElement('a');
+  a.href = url; a.download = name; a.style.display = 'none';
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+// ────────────────────────────────────────────
+//  SHARE via WhatsApp / Email (usa token temporaneo)
+// ────────────────────────────────────────────
+async function getShareUrl(filePath){
+  const r = await fetch('/api/share', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ path: filePath })
+  });
+  const d = await r.json();
+  if (!d.ok) throw new Error(d.message);
+  return d.url;
+}
+
+async function shareWA(filePath, name){
+  try {
+    const url = await getShareUrl(filePath);
+    const msg = encodeURIComponent(`Ciao! Ecco il file/cartella "${name}" da Artemusic:\n${url}`);
+    window.open('https://wa.me/?text=' + msg, '_blank');
+  } catch(e) { showToast('Errore condivisione: ' + e.message, 'err'); }
+}
+
+async function shareEmail(filePath, name){
+  try {
+    const url  = await getShareUrl(filePath);
+    const subj = encodeURIComponent(`Artemusic – ${name}`);
+    const body = encodeURIComponent(`Buongiorno,\n\ndi seguito il link per scaricare il file/cartella "${name}":\n\n${url}\n\nIl link è valido per 24 ore.\n\nCordiali saluti,\nArtemusic Sound & Light`);
+    window.location.href = `mailto:?subject=${subj}&body=${body}`;
+  } catch(e) { showToast('Errore condivisione: ' + e.message, 'err'); }
+}
+
+// ────────────────────────────────────────────
+//  UPLOAD (ADMIN)
+// ────────────────────────────────────────────
+async function uploadFiles(files){
+  if (!files || !files.length) return;
+  const formData = new FormData();
+  formData.append('path', currentPath);
+  for (const f of files) formData.append('files', f);
+
+  const prog = document.getElementById('upload-progress');
+  const item = document.createElement('div');
+  item.className = 'prog-item';
+  item.innerHTML = `<div>Caricamento ${files.length} file…</div><div class="prog-bar"><div class="prog-fill" id="pf" style="width:0%"></div></div>`;
+  prog.appendChild(item);
+
+  try {
+    const xhr = new XMLHttpRequest();
+    xhr.upload.onprogress = ev => {
+      if (ev.lengthComputable) {
+        document.getElementById('pf').style.width = Math.round(ev.loaded / ev.total * 100) + '%';
+      }
+    };
+    await new Promise((resolve, reject) => {
+      xhr.onload = () => {
+        if (xhr.status === 200) resolve(JSON.parse(xhr.responseText));
+        else reject(new Error('Upload fallito: ' + xhr.status));
+      };
+      xhr.onerror = () => reject(new Error('Errore di rete'));
+      xhr.open('POST', '/api/upload');
+      xhr.send(formData);
+    });
+    showToast(`✅ ${files.length} file caricati`, 'ok');
+    loadFiles(currentPath);
+  } catch(e) {
+    showToast('Errore: ' + e.message, 'err');
+  } finally {
+    setTimeout(() => item.remove(), 3000);
+  }
+}
+
+// Drag & drop
+function setupDropZone(){
+  const dz = document.getElementById('drop-zone');
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.classList.remove('drag-over');
+    uploadFiles(e.dataTransfer.files);
+  });
+}
+
+// ────────────────────────────────────────────
+//  MKDIR
+// ────────────────────────────────────────────
+function openMkdir(){
+  modalMode = 'mkdir';
+  document.getElementById('modal-title').textContent = 'Nuova cartella';
+  document.getElementById('modal-input').value = '';
+  document.getElementById('modal-input').placeholder = 'Nome cartella';
+  document.getElementById('modal-confirm-btn').textContent = 'Crea';
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('modal-input').focus();
+}
+
+// ────────────────────────────────────────────
+//  RENAME
+// ────────────────────────────────────────────
+function openRename(filePath, name){
+  modalMode    = 'rename';
+  renameTarget = filePath;
+  document.getElementById('modal-title').textContent = 'Rinomina';
+  document.getElementById('modal-input').value = name;
+  document.getElementById('modal-input').placeholder = 'Nuovo nome';
+  document.getElementById('modal-confirm-btn').textContent = 'Salva';
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('modal-input').focus();
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  modalMode = null; renameTarget = null;
+}
+
+async function modalConfirm(){
+  const val = document.getElementById('modal-input').value.trim();
+  if (!val) return;
+  closeModal();
+
+  if (modalMode === 'mkdir') {
+    const r = await fetch('/api/mkdir', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ path: currentPath, name: val })
+    });
+    const d = await r.json();
+    if (d.ok) { showToast('✅ Cartella creata', 'ok'); loadFiles(currentPath); }
+    else      { showToast('Errore: ' + d.message, 'err'); }
   }
 
-  function dlFile(url, name) {
-    const a = document.createElement('a');
-    a.href = url; a.download = name;
-    document.body.appendChild(a); a.click();
-    document.body.removeChild(a);
+  if (modalMode === 'rename') {
+    const r = await fetch('/api/rename', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ path: renameTarget, newName: val })
+    });
+    const d = await r.json();
+    if (d.ok) { showToast('✅ Rinominato', 'ok'); loadFiles(currentPath); }
+    else      { showToast('Errore: ' + d.message, 'err'); }
   }
+}
+
+// ────────────────────────────────────────────
+//  DELETE
+// ────────────────────────────────────────────
+async function deleteItem(filePath, name){
+  if (!confirm(`Eliminare definitivamente "${name}"?`)) return;
+  const r = await fetch('/api/delete?path=' + encodeURIComponent(filePath), { method:'DELETE' });
+  const d = await r.json();
+  if (d.ok) { showToast('🗑 Eliminato', 'ok'); loadFiles(currentPath); }
+  else      { showToast('Errore: ' + d.message, 'err'); }
+}
+
+// ────────────────────────────────────────────
+//  HELPERS
+// ────────────────────────────────────────────
+function fileIcon(name){
+  const ext = name.split('.').pop().toLowerCase();
+  const map = { pdf:'📄', doc:'📝', docx:'📝', xls:'📊', xlsx:'📊', csv:'📊',
+                jpg:'🖼', jpeg:'🖼', png:'🖼', gif:'🖼', webp:'🖼',
+                mp4:'🎬', avi:'🎬', mov:'🎬', mkv:'🎬',
+                mp3:'🎵', wav:'🎵', aac:'🎵',
+                zip:'📦', rar:'📦', '7z':'📦',
+                txt:'📃', json:'📋', xml:'📋' };
+  return map[ext] || '📎';
+}
+
+function formatBytes(b){
+  if (b < 1024)         return b + ' B';
+  if (b < 1024*1024)    return (b/1024).toFixed(1) + ' KB';
+  return (b/1024/1024).toFixed(1) + ' MB';
+}
+
+function esc(s){ return String(s).replace(/'/g, "\\'"); }
+
+function showToast(msg, type='ok'){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className   = 'show ' + type;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.className = ''; }, 3200);
+}
+
+// ────────────────────────────────────────────
+//  HAMBURGER
+// ────────────────────────────────────────────
+const ham  = document.getElementById('hamburger');
+const mMen = document.getElementById('mobileMenu');
+ham.addEventListener('click', () => {
+  ham.classList.toggle('open');
+  mMen.classList.toggle('open');
+});
+mMen.addEventListener('click', e => {
+  if (e.target === mMen) { ham.classList.remove('open'); mMen.classList.remove('open'); }
+});
+
+// Close modal on overlay click
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal')) closeModal();
+});
+
+// Enter key in modal input
+document.getElementById('modal-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') modalConfirm();
+});
 </script>
 </body>
 </html>
