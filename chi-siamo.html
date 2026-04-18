@@ -197,12 +197,152 @@
       margin-top: 6px;
     }
 
+    /* ── JBL SECTION ── */
+    .jbl-section {
+      max-width: 1100px;
+      margin: 80px auto 0;
+      padding: 0 32px;
+    }
+    .jbl-heading {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 36px;
+    }
+    .jbl-heading h2 {
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .jbl-heading .jbl-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.12);
+    }
+    .jbl-heading .jbl-badge {
+      background: var(--red);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 50px;
+      white-space: nowrap;
+    }
+    .jbl-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+    .jbl-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .jbl-img-wrap {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.40);
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .jbl-img-wrap.tall {
+      grid-row: span 2;
+      aspect-ratio: auto;
+    }
+    .jbl-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.4s ease;
+    }
+    .jbl-img-wrap:hover img { transform: scale(1.04); }
+    .jbl-info {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .jbl-logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+    .jbl-logo-badge .brand {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--red);
+    }
+    .jbl-info h3 {
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 900;
+      line-height: 1.2;
+      margin-top: -4px;
+    }
+    .jbl-info p {
+      font-size: 14px;
+      line-height: 1.80;
+      color: rgba(255,255,255,0.68);
+    }
+    .jbl-specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .spec-item {
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .spec-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.40);
+      margin-bottom: 4px;
+    }
+    .spec-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .jbl-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--red);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: gap 0.2s;
+    }
+    .jbl-link:hover { gap: 12px; }
+
+    @media (max-width: 900px) {
+      .jbl-layout { grid-template-columns: 1fr; }
+      .jbl-images { order: 2; }
+      .jbl-info { order: 1; }
+    }
     @media (max-width: 768px) {
       nav { padding: 16px 24px; }
       .nav-links { display: none; }
       .hamburger { display: flex; }
       .cards-grid { padding: 0 20px; }
       .text-block { padding: 0 20px; }
+      .jbl-section { padding: 0 16px; }
+      .jbl-specs { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -292,6 +432,83 @@
       </p>
     </div>
   </div>
+
+  <!-- ══ SEZIONE JBL SRX910LA ══ -->
+  <div class="jbl-section">
+    <div class="jbl-heading">
+      <h2>Il Nostro Impianto Audio</h2>
+      <div class="jbl-line"></div>
+      <span class="jbl-badge">🔊 Line Array</span>
+    </div>
+
+    <div class="jbl-layout">
+      <!-- Immagini -->
+      <div class="jbl-images">
+        <div class="jbl-img-wrap tall">
+          <img src="https://sspark.genspark.ai/cfimages?u1=F717GDCBmMgiSsnAZy4wqoIAfPLCrVvvJjMhMV6WnL65wx2NHU7ILoja7GNQ0ThH2KhX6wDRnRE25slDB7XoIecB7baX1IuW%2BgykEBAIIAS%2F3Q%3D%3D&u2=Nkeitn2uwbg%2FzOIq&width=2560"
+               alt="JBL SRX910LA line array system" loading="lazy" />
+        </div>
+        <div class="jbl-img-wrap">
+          <img src="https://sspark.genspark.ai/cfimages?u1=VvwGeaaRD9OSKoCb4xdjqQrVBgITbfqfLRnx5CFYVLtOXvp6oyKtRTaEUFcKC5moE7F7FNQ57SLgmWalMujLHNjBd1or37oSwx9udJe7C%2FSSRHJpiS8Me393v2lgQQG42rkDmCEzP3qD3WdfVvyZs4Fbr1mkA5S868B3pbBqlg%3D%3D&u2=MOKl5kFWfdnZnXmS&width=2560"
+               alt="JBL SRX900 Series family" loading="lazy" />
+        </div>
+        <div class="jbl-img-wrap">
+          <img src="https://sspark.genspark.ai/cfimages?u1=yLKsQIaUHf9LmevFJ1ubvYlQGC97XAN4v3Rzvls6mh%2FhAI0UweqmDyinJftim%2B%2B2YIjtqsZz5tUA6EZ%2BIXUGIRzD8sP95yIFcgo%3D&u2=ZxANMfzzSvQlk3ki&width=2560"
+               alt="JBL SRX910LA single unit" loading="lazy" />
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="jbl-info">
+        <div>
+          <div class="jbl-logo-badge">
+            <span class="brand">JBL Professional</span>
+          </div>
+          <h3>SRX910LA<br>Line Array System</h3>
+        </div>
+
+        <p>
+          Il sistema <strong style="color:#fff;">JBL SRX910LA</strong> è il cuore del nostro impianto audio. Un line array attivo di ultima generazione con doppio woofer da 10" a neodimio e driver di compressione da 3", in grado di spingere fino a <strong style="color:#fff;">135 dB SPL</strong> con una potenza di 600W per modulo.
+        </p>
+        <p>
+          Grazie al DSP integrato e alla connettività digitale, garantiamo una copertura uniforme e cristallina anche nelle venue più grandi, dai festival all'aperto agli eventi indoor di ogni dimensione.
+        </p>
+
+        <div class="jbl-specs">
+          <div class="spec-item">
+            <div class="spec-label">Max SPL</div>
+            <div class="spec-value">135 dB</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Potenza</div>
+            <div class="spec-value">600 W</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Woofer</div>
+            <div class="spec-value">2× 10" Neodimio</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Freq. Range</div>
+            <div class="spec-value">53 Hz – 19 kHz</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Copertura</div>
+            <div class="spec-value">105° Orizzontale</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Amplificatore</div>
+            <div class="spec-value">Classe D DSP</div>
+          </div>
+        </div>
+
+        <a href="https://jblpro.com/en/products/srx910la" target="_blank" class="jbl-link">
+          Scheda tecnica completa →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:80px;"></div>
 
   <script>
     const hamburger  = document.getElementById('hamburger');
