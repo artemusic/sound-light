@@ -664,6 +664,7 @@ let cm       = new Date().getMonth();
 let view     = 'month';
 let editId   = null;
 let selColor = COLORS[0];
+let _savedPw = ''; // password salvata in memoria per ri-autenticazione automatica
 
 // ════════════════════════════════════════
 //  INIT – auto-login se sessione attiva
@@ -696,9 +697,29 @@ async function doLogin(){
       body: JSON.stringify({password:pw})
     });
     const d = await r.json();
-    if(d.ok){ role=d.role; await loadEv(); showCal(); }
-    else     { err.textContent='❌ Password errata'; }
+    if(d.ok){
+      role=d.role;
+      _savedPw = pw; // salva in memoria per ri-autenticazione automatica
+      await loadEv();
+      showCal();
+    } else {
+      err.textContent='❌ Password errata';
+    }
   } catch(e){ err.textContent='⚠ Errore di connessione'; }
+}
+
+// Ri-autentica silenziosamente se la sessione è scaduta
+async function ensureSession(){
+  if(!_savedPw) return false;
+  try{
+    const r = await fetch('/api/login',{
+      method:'POST', credentials:'include',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({password:_savedPw})
+    });
+    const d = await r.json();
+    return d.ok;
+  } catch(e){ return false; }
 }
 
 async function doLogout(){
@@ -755,30 +776,68 @@ async function saveEvent(){
   if(!titolo){ showToast('⚠ Il nome evento è obbligatorio','err'); return; }
   if(!data)  { showToast('⚠ La data è obbligatoria','err');         return; }
 
+  // Mostra stato di caricamento
+  const savBtn = document.getElementById('save-lbl');
+  const origTxt = savBtn.textContent;
+  savBtn.textContent = '⏳ Salvataggio...';
+
   const body = {titolo,data,oraInizio,oraFine,orarioLavoro,
                 luogo,indirizzo,dipendenti,merce,note,
                 colore:selColor, importo};
-  let r, d;
-  if(editId){
-    r = await fetch('/api/eventi/'+editId,{
-      method:'PUT', credentials:'include',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(body)
-    });
-  } else {
-    r = await fetch('/api/eventi',{
-      method:'POST', credentials:'include',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(body)
-    });
-  }
-  d = await r.json();
-  if(d.ok){
-    await loadEv(); closeModal(); renderAll();
-    showToast(editId ? '✅ Evento aggiornato' : '✅ Evento creato','ok');
-    editId = null;
-  } else {
-    showToast('Errore: '+d.message,'err');
+  try {
+    let r, d;
+    if(editId){
+      r = await fetch('/api/eventi/'+editId,{
+        method:'PUT', credentials:'include',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
+    } else {
+      r = await fetch('/api/eventi',{
+        method:'POST', credentials:'include',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
+    }
+    d = await r.json();
+
+    if(d.ok){
+      await loadEv(); closeModal(); renderAll();
+      showToast(editId ? '✅ Evento aggiornato' : '✅ Evento creato','ok');
+      editId = null;
+    } else if(r.status === 401 || r.status === 403){
+      // Prova a ri-autenticarsi automaticamente
+      showToast('🔄 Riconnessione sessione...','ok');
+      const relogged = await ensureSession();
+      if(relogged){
+        // Riprova il salvataggio
+        let r2, d2;
+        if(editId){
+          r2 = await fetch('/api/eventi/'+editId,{method:'PUT',credentials:'include',
+            headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+        } else {
+          r2 = await fetch('/api/eventi',{method:'POST',credentials:'include',
+            headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+        }
+        d2 = await r2.json();
+        if(d2.ok){
+          await loadEv(); closeModal(); renderAll();
+          showToast(editId ? '✅ Evento aggiornato' : '✅ Evento creato','ok');
+          editId = null;
+        } else {
+          showToast('❌ Errore dopo riconnessione: '+(d2.message||''),'err');
+        }
+      } else {
+        showToast('⚠ Sessione scaduta – ricarica la pagina','err');
+        setTimeout(()=>{ location.reload(); }, 2000);
+      }
+    } else {
+      showToast('❌ Errore: '+(d.message||'risposta non valida'),'err');
+    }
+  } catch(e){
+    showToast('❌ Errore di rete: '+e.message,'err');
+  } finally {
+    savBtn.textContent = origTxt;
   }
 }
 

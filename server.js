@@ -18,10 +18,9 @@ const PORT = 3000;
 // ──────────────────────────────────────────────
 // CONFIGURAZIONE PASSWORDS
 // ──────────────────────────────────────────────
-const ADMIN_PASSWORD    = '260264';       // admin: accesso totale + importo
-const USER_PASSWORD     = 'ing260264';    // area riservata documenti
-const CALENDAR_PASSWORD = 'tecnico260264'; // calendario tecnici (solo lettura)
-const FRATELLI_PASSWORD = '260264';       // stessa del admin (stesso accesso)
+const ADMIN_PASSWORD    = '260264';   // admin totale: calendario (crea/modifica) + file manager + importo
+const CALENDAR_PASSWORD = '112233';   // tecnici: vede solo calendario (no modifica, no importo)
+const USER_PASSWORD     = '445566';   // area riservata documenti (no calendario)
 
 // ──────────────────────────────────────────────
 // CARTELLA DOCUMENTI (root del file manager)
@@ -37,13 +36,14 @@ app.set('trust proxy', 1); // necessario dietro reverse proxy / sandbox
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
-  secret: crypto.randomBytes(32).toString('hex'),
-  resave: false,
+  secret: 'artemusic-secret-key-2025-stable',  // chiave fissa: le sessioni sopravvivono al riavvio
+  resave: true,
   saveUninitialized: false,
   cookie: {
-    maxAge:   8 * 60 * 60 * 1000, // 8 ore
+    maxAge:   24 * 60 * 60 * 1000, // 24 ore
     sameSite: 'lax',
-    secure:   false   // il proxy gestisce HTTPS, qui HTTP interno
+    secure:   false,
+    httpOnly: true
   }
 }));
 
@@ -78,22 +78,19 @@ function relToDocs(absPath) {
 // POST /api/login
 app.post('/api/login', (req, res) => {
   const { password } = req.body;
-  // Admin: accesso totale (file manager + calendario + importo)
-  if (password === ADMIN_PASSWORD) {
-    req.session.role = 'admin';
-    return res.json({ ok: true, role: 'admin' });
-  }
-  // Tecnico calendario: vede solo il calendario (no importo, no file manager)
-  if (password === CALENDAR_PASSWORD) {
-    req.session.role = 'tecnico';
-    return res.json({ ok: true, role: 'tecnico' });
-  }
-  // Ingegnere area riservata: accede ai documenti (no calendario admin, no importo)
-  if (password === USER_PASSWORD) {
-    req.session.role = 'user';
-    return res.json({ ok: true, role: 'user' });
-  }
-  res.status(401).json({ ok: false, message: 'Password errata' });
+
+  let role = null;
+  if      (password === ADMIN_PASSWORD)    role = 'admin';   // tutto
+  else if (password === CALENDAR_PASSWORD) role = 'tecnico'; // solo lettura calendario
+  else if (password === USER_PASSWORD)     role = 'user';    // solo area riservata
+
+  if (!role) return res.status(401).json({ ok: false, message: 'Password errata' });
+
+  req.session.role = role;
+  req.session.save(err => {
+    if (err) return res.status(500).json({ ok: false, message: 'Errore sessione' });
+    res.json({ ok: true, role });
+  });
 });
 
 // POST /api/logout

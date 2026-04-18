@@ -78,5 +78,21 @@
     "colore": "#e81c2e",
     "importo": "3500.00",
     "creatoIl": "2026-04-18T22:55:10.840Z"
+  },
+  {
+    "id": "mo4y448m789bc89b",
+    "titolo": "Test Salvataggio Mobile",
+    "data": "2026-06-20",
+    "oraInizio": "20:00",
+    "oraFine": "23:00",
+    "luogo": "Piazza Centrale",
+    "indirizzo": "Piazza Centrale, Manduria",
+    "orarioLavoro": "15:00",
+    "dipendenti": "Marco, Luigi",
+    "merce": "Line Array x8",
+    "note": "Test da mobile",
+    "colore": "#27ae60",
+    "importo": "2500.00",
+    "creatoIl": "2026-04-18T23:05:49.942Z"
   }
 ]
