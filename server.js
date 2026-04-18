@@ -75,21 +75,35 @@ function relToDocs(absPath) {
 // AUTH API
 // ──────────────────────────────────────────────
 
+// Token in-memory come fallback al cookie (risolve proxy HTTPS che blocca sameSite)
+const authTokens = new Map(); // token -> { role, expires }
+
 // POST /api/login
 app.post('/api/login', (req, res) => {
   const { password } = req.body;
 
   let role = null;
-  if      (password === ADMIN_PASSWORD)    role = 'admin';   // tutto
-  else if (password === CALENDAR_PASSWORD) role = 'tecnico'; // solo lettura calendario
-  else if (password === USER_PASSWORD)     role = 'user';    // solo area riservata
+  if      (password === ADMIN_PASSWORD)    role = 'admin';
+  else if (password === CALENDAR_PASSWORD) role = 'tecnico';
+  else if (password === USER_PASSWORD)     role = 'user';
 
   if (!role) return res.status(401).json({ ok: false, message: 'Password errata' });
 
+  // Salva nella sessione
   req.session.role = role;
+
+  // Genera anche un token Bearer come fallback
+  const token   = crypto.randomBytes(24).toString('hex');
+  const expires = Date.now() + 24 * 60 * 60 * 1000;
+  authTokens.set(token, { role, expires });
+  // Pulizia token scaduti
+  for (const [t, v] of authTokens) {
+    if (v.expires < Date.now()) authTokens.delete(t);
+  }
+
   req.session.save(err => {
-    if (err) return res.status(500).json({ ok: false, message: 'Errore sessione' });
-    res.json({ ok: true, role });
+    // Restituisce anche il token per uso come header Authorization
+    res.json({ ok: true, role, token });
   });
 });
 
@@ -101,34 +115,51 @@ app.post('/api/logout', (req, res) => {
 
 // GET /api/me
 app.get('/api/me', (req, res) => {
-  if (!req.session.role) return res.status(401).json({ ok: false });
-  res.json({ ok: true, role: req.session.role });
+  const role = getRole(req);
+  if (!role) return res.status(401).json({ ok: false });
+  res.json({ ok: true, role });
 });
 
 // ──────────────────────────────────────────────
 // MIDDLEWARE: controllo autenticazione
 // ──────────────────────────────────────────────
+// Ricava il ruolo dal cookie DI SESSIONE oppure dall'header Authorization: Bearer <token>
+function getRole(req) {
+  if (req.session && req.session.role) return req.session.role;
+  const auth = req.headers['authorization'] || '';
+  if (auth.startsWith('Bearer ')) {
+    const token = auth.slice(7);
+    const entry = authTokens.get(token);
+    if (entry && entry.expires > Date.now()) return entry.role;
+  }
+  return null;
+}
+
 function requireAuth(req, res, next) {
-  if (!req.session.role) return res.status(401).json({ ok: false, message: 'Non autenticato' });
+  const role = getRole(req);
+  if (!role) return res.status(401).json({ ok: false, message: 'Non autenticato' });
+  req._role = role;
   next();
 }
 
 function requireAdmin(req, res, next) {
-  if (req.session.role !== 'admin') return res.status(403).json({ ok: false, message: 'Solo admin' });
+  const role = getRole(req);
+  if (role !== 'admin') return res.status(403).json({ ok: false, message: 'Solo admin' });
+  req._role = role;
   next();
 }
 
-// Può accedere ai dati finanziari (importo): solo admin
 function requireFinance(req, res, next) {
-  const r = req.session.role;
-  if (r !== 'admin') return res.status(403).json({ ok: false, message: 'Accesso negato' });
+  const role = getRole(req);
+  if (role !== 'admin') return res.status(403).json({ ok: false, message: 'Accesso negato' });
+  req._role = role;
   next();
 }
 
-// Può creare/modificare eventi: solo admin
 function requireEventManager(req, res, next) {
-  const r = req.session.role;
-  if (r !== 'admin') return res.status(403).json({ ok: false, message: 'Solo admin' });
+  const role = getRole(req);
+  if (role !== 'admin') return res.status(403).json({ ok: false, message: 'Solo admin' });
+  req._role = role;
   next();
 }
 
@@ -146,9 +177,13 @@ app.get('/api/files', requireAuth, (req, res) => {
 
   // File da nascondere (tecnici / helper)
   const HIDDEN = new Set(['.keep', 'keep', 'index.html', '.gitkeep', '.DS_Store', 'Thumbs.db']);
+  // Nasconde la cartella Archivio Eventi agli utenti non-admin
+  const isRoot = (relToDocs(folder) === '');
+  const hideArchivio = isRoot && (req._role !== 'admin');
 
   const entries = fs.readdirSync(folder, { withFileTypes: true })
     .filter(e => !HIDDEN.has(e.name) && !e.name.startsWith('.'))
+    .filter(e => !(hideArchivio && e.name === 'Archivio Eventi'))
     .map(e => {
       const fullPath = path.join(folder, e.name);
       const stat     = fs.statSync(fullPath);
@@ -352,7 +387,7 @@ function newId() {
 // GET /api/eventi — tutti gli eventi (auth richiesta)
 // L'importo viene restituito solo all'admin
 app.get('/api/eventi', requireAuth, (req, res) => {
-  const canSeeFinance = (req.session.role === 'admin');
+  const canSeeFinance = (req._role === 'admin');
   const eventi = readEvents().map(e => {
     if (!canSeeFinance) {
       const { importo, ...rest } = e;
@@ -376,7 +411,7 @@ app.post('/api/eventi', requireEventManager, (req, res) => {
 
   if (!titolo || !data) return res.status(400).json({ ok: false, message: 'Titolo e data sono obbligatori' });
 
-  const canSeeFinance = (req.session.role === 'admin');
+  const canSeeFinance = (req._role === 'admin');
 
   const evento = {
     id:            newId(),
@@ -399,9 +434,11 @@ app.post('/api/eventi', requireEventManager, (req, res) => {
   events.push(evento);
   writeEvents(events);
 
-  // Crea automaticamente la cartella dell'evento in documenti/
+  // Crea automaticamente la cartella evento in documenti/Archivio Eventi/ (non nella root)
+  const archivioPath = path.join(DOCS_ROOT, 'Archivio Eventi');
+  if (!fs.existsSync(archivioPath)) fs.mkdirSync(archivioPath, { recursive: true });
   const folderName = `${evento.data} – ${evento.titolo}`.replace(/[<>:"/\\|?*]/g, '_');
-  const folderPath = path.join(DOCS_ROOT, folderName);
+  const folderPath = path.join(archivioPath, folderName);
   if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath, { recursive: true });
 
   res.json({ ok: true, evento });
@@ -421,7 +458,7 @@ app.put('/api/eventi/:id', requireEventManager, (req, res) => {
 
   if (!titolo || !data) return res.status(400).json({ ok: false, message: 'Titolo e data sono obbligatori' });
 
-  const canSeeFinance = (req.session.role === 'admin');
+  const canSeeFinance = (req._role === 'admin');
 
   events[idx] = {
     ...events[idx],
