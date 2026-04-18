@@ -16,42 +16,22 @@
       --glass-border: rgba(255,255,255,0.10);
       --green: #25D366;
     }
-    html, body {
-      min-height: 100%;
-      font-family: 'Montserrat', sans-serif;
-      color: var(--white);
-      background: var(--black);
-    }
+    html, body { min-height: 100%; font-family: 'Montserrat', sans-serif; color: var(--white); background: var(--black); }
 
-    .bg-fixed {
-      position: fixed; inset: 0; z-index: 0;
-      background: url('bg3.jpg') no-repeat center center / cover;
-      filter: brightness(0.22);
-    }
+    .bg-fixed { position: fixed; inset: 0; z-index: 0; background: url('bg3.jpg') no-repeat center center / cover; filter: brightness(0.22); }
 
     /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 16px 48px;
-      background: rgba(10,10,10,0.75);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--glass-border);
-    }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 16px 48px; background: rgba(10,10,10,0.75); backdrop-filter: blur(14px); border-bottom: 1px solid var(--glass-border); }
     .nav-logo { height: 40px; }
     .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
-    .nav-links a {
-      color: rgba(255,255,255,0.78); text-decoration: none;
-      font-size: 12px; font-weight: 600; letter-spacing: 1.4px;
-      text-transform: uppercase; position: relative; transition: color 0.25s;
-    }
+    .nav-links a { color: rgba(255,255,255,0.78); text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; position: relative; transition: color 0.25s; }
     .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:var(--red); transition:width 0.3s; }
     .nav-links a:hover { color:var(--white); }
     .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
     .nav-links a.active { color:var(--white); }
     .nav-right { display:flex; align-items:center; gap:16px; }
     .nav-social { display:flex; gap:14px; align-items:center; }
-    .nav-social a { color:rgba(255,255,255,0.65); text-decoration:none; transition:color 0.2s,transform 0.2s; line-height:1; display:flex; align-items:center; }
+    .nav-social a { color:rgba(255,255,255,0.65); text-decoration:none; transition:color 0.2s,transform 0.2s; display:flex; align-items:center; }
     .nav-social a:hover { color:var(--white); transform:scale(1.15); }
     .nav-cta { background:var(--red); color:white !important; padding:8px 18px; border-radius:50px; text-decoration:none; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; transition:background 0.25s; white-space:nowrap; }
     .nav-cta:hover { background:var(--red-dark) !important; }
@@ -65,194 +45,115 @@
     .mobile-menu a { color:var(--white); text-decoration:none; font-size:20px; font-weight:700; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
     .mobile-menu a:hover { color:var(--red); }
     .mobile-social { display:flex; gap:24px; margin-top:8px; }
-    .mobile-social a { color:rgba(255,255,255,0.7); text-decoration:none; display:flex; align-items:center; transition:color 0.2s; }
-    .mobile-social a:hover { color:var(--white); }
+    .mobile-social a { color:rgba(255,255,255,0.7); text-decoration:none; display:flex; align-items:center; }
 
     /* ── PAGE ── */
-    .page-wrap {
-      position: relative; z-index: 10;
-      min-height: 100vh;
-      padding: 110px 24px 80px;
-      display: flex; flex-direction: column; align-items: center;
-    }
+    .page-wrap { position: relative; z-index: 10; min-height: 100vh; padding: 110px 24px 80px; display: flex; flex-direction: column; align-items: center; }
 
     /* ── LOGIN CARD ── */
-    .login-card {
-      width: 100%; max-width: 460px;
-      background: rgba(15,15,15,0.82);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 22px; padding: 52px 44px;
-      backdrop-filter: blur(18px); text-align: center;
-      animation: fadeIn 0.5s ease both;
-    }
+    .login-card { width: 100%; max-width: 460px; background: rgba(15,15,15,0.85); border: 1px solid rgba(255,255,255,0.12); border-radius: 22px; padding: 52px 44px; backdrop-filter: blur(20px); text-align: center; animation: fadeIn 0.5s ease both; }
     .login-icon { font-size: 46px; margin-bottom: 18px; }
     .login-card h1 { font-size: 24px; font-weight: 900; margin-bottom: 8px; }
-    .login-card p { font-size: 13px; color: rgba(255,255,255,0.48); margin-bottom: 34px; line-height: 1.65; }
+    .login-card > p { font-size: 13px; color: rgba(255,255,255,0.45); margin-bottom: 34px; line-height: 1.65; }
     .form-group { margin-bottom: 20px; text-align: left; }
     .form-group label { display:block; font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-bottom:8px; }
     .pwd-wrap { position:relative; }
-    .form-group input[type="password"], .form-group input[type="text"] {
-      width:100%; padding:14px 46px 14px 16px;
-      background:rgba(255,255,255,0.07);
-      border:1px solid rgba(255,255,255,0.15);
-      border-radius:10px; color:var(--white);
-      font-family:'Montserrat',sans-serif; font-size:14px;
-      outline:none; transition:border-color 0.25s, background 0.25s;
-    }
+    .form-group input[type="password"], .form-group input[type="text"] { width:100%; padding:14px 46px 14px 16px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.15); border-radius:10px; color:var(--white); font-family:'Montserrat',sans-serif; font-size:14px; outline:none; transition:border-color 0.25s, background 0.25s; }
     .form-group input:focus { border-color:var(--red); background:rgba(255,255,255,0.10); }
     .toggle-pwd { position:absolute; right:14px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:17px; color:rgba(255,255,255,0.38); user-select:none; }
-    .btn-login {
-      width:100%; padding:15px; border:none; border-radius:10px;
-      background:var(--red); color:var(--white);
-      font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700;
-      letter-spacing:1.5px; text-transform:uppercase; cursor:pointer;
-      transition:background 0.25s, transform 0.2s, box-shadow 0.2s;
-    }
+    .btn-login { width:100%; padding:15px; border:none; border-radius:10px; background:var(--red); color:var(--white); font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer; transition:background 0.25s, transform 0.2s, box-shadow 0.2s; }
     .btn-login:hover { background:var(--red-dark); transform:translateY(-2px); box-shadow:0 8px 24px rgba(232,28,46,0.40); }
-    .error-msg {
-      display:none; margin-top:14px;
-      background:rgba(232,28,46,0.14); border:1px solid rgba(232,28,46,0.38);
-      border-radius:8px; padding:10px 14px; font-size:13px; color:#ff8080;
-    }
+    .error-msg { display:none; margin-top:14px; background:rgba(232,28,46,0.14); border:1px solid rgba(232,28,46,0.38); border-radius:8px; padding:10px 14px; font-size:13px; color:#ff8080; }
 
-    /* ── DOCUMENTS PANEL ── */
-    .docs-panel { display:none; width:100%; max-width:960px; animation:fadeIn 0.5s ease both; }
-    .docs-header {
-      text-align:center; margin-bottom:36px;
+    /* ── ROLE BADGE ── */
+    .role-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 50px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 28px;
     }
-    .docs-header .label {
-      font-size:11px; font-weight:700; letter-spacing:4px;
-      text-transform:uppercase; color:var(--red); margin-bottom:10px; display:block;
-    }
+    .role-badge.admin { background: rgba(232,28,46,0.18); border: 1px solid rgba(232,28,46,0.45); color: #ff8080; }
+    .role-badge.user  { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.65); }
+
+    /* ── PANEL ── */
+    .docs-panel { display:none; width:100%; max-width:980px; animation:fadeIn 0.5s ease both; }
+    .docs-header { text-align:center; margin-bottom:40px; }
+    .docs-header .label { font-size:11px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--red); margin-bottom:10px; display:block; }
     .docs-header h2 { font-size:clamp(26px,4vw,38px); font-weight:900; }
     .docs-header .divider { width:48px; height:3px; background:var(--red); margin:16px auto 0; border-radius:2px; }
-    .docs-header p { font-size:13px; color:rgba(255,255,255,0.45); margin-top:14px; }
+    .docs-header p { font-size:13px; color:rgba(255,255,255,0.40); margin-top:14px; }
 
-    /* ── UPLOAD AREA ── */
-    .upload-section {
-      background: rgba(255,255,255,0.04);
-      border: 2px dashed rgba(255,255,255,0.18);
-      border-radius: 18px; padding: 36px 30px;
-      text-align: center; margin-bottom: 36px;
-      transition: border-color 0.25s, background 0.25s;
-      cursor: pointer;
-    }
-    .upload-section:hover, .upload-section.drag-over {
-      border-color: var(--red); background: rgba(232,28,46,0.06);
-    }
-    .upload-icon { font-size: 40px; margin-bottom: 12px; }
-    .upload-section h3 { font-size:16px; font-weight:700; margin-bottom:6px; }
-    .upload-section p { font-size:12px; color:rgba(255,255,255,0.45); line-height:1.6; margin-bottom:16px; }
-    .upload-section input[type="file"] { display:none; }
-    .btn-upload {
-      display:inline-flex; align-items:center; gap:8px;
-      padding:11px 24px; border-radius:50px;
-      background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.22);
-      color:var(--white); font-family:'Montserrat',sans-serif;
-      font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
-      cursor:pointer; transition:background 0.25s, border-color 0.25s;
-    }
-    .btn-upload:hover { background:rgba(255,255,255,0.18); border-color:rgba(255,255,255,0.40); }
+    /* ── SECTION TITLE ── */
+    .section-title { font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.32); margin:36px 0 16px; width:100%; }
 
-    /* uploaded files list */
-    .uploaded-list { margin-top:18px; display:none; }
-    .uploaded-item {
-      display:flex; align-items:center; justify-content:space-between;
-      background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.10);
-      border-radius:10px; padding:12px 16px; margin-bottom:10px;
-      gap:12px; flex-wrap:wrap;
+    /* ── UPLOAD AREA (admin only) ── */
+    .upload-zone {
+      background: rgba(255,255,255,0.04); border: 2px dashed rgba(255,255,255,0.18);
+      border-radius: 18px; padding: 36px 30px; text-align: center; margin-bottom: 8px;
+      transition: border-color 0.25s, background 0.25s; cursor: pointer; width:100%;
     }
-    .uploaded-item .file-info { display:flex; align-items:center; gap:10px; flex:1; min-width:0; }
-    .uploaded-item .file-icon { font-size:22px; flex-shrink:0; }
-    .uploaded-item .file-name { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .uploaded-item .file-size { font-size:11px; color:rgba(255,255,255,0.40); margin-top:2px; }
-    .file-actions { display:flex; gap:8px; flex-shrink:0; }
-    .file-actions button {
-      display:flex; align-items:center; gap:6px;
-      padding:7px 14px; border-radius:50px; border:none;
-      font-family:'Montserrat',sans-serif; font-size:11px; font-weight:700;
-      letter-spacing:0.8px; text-transform:uppercase; cursor:pointer;
-      transition:transform 0.2s, opacity 0.2s;
-    }
-    .file-actions button:hover { transform:translateY(-1px); opacity:0.88; }
-    .btn-wa { background:var(--green); color:white; }
-    .btn-mail { background:#3b82f6; color:white; }
-    .btn-dl { background:rgba(255,255,255,0.14); color:white; border:1px solid rgba(255,255,255,0.22) !important; }
+    .upload-zone:hover, .upload-zone.drag-over { border-color: var(--red); background: rgba(232,28,46,0.07); }
+    .upload-zone .up-icon { font-size: 38px; margin-bottom: 10px; }
+    .upload-zone h3 { font-size:15px; font-weight:700; margin-bottom:6px; }
+    .upload-zone p { font-size:12px; color:rgba(255,255,255,0.40); line-height:1.6; margin-bottom:16px; }
+    .upload-zone input[type="file"] { display:none; }
+    .btn-choose { display:inline-flex; align-items:center; gap:8px; padding:10px 22px; border-radius:50px; background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.22); color:var(--white); font-family:'Montserrat',sans-serif; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:background 0.2s; }
+    .btn-choose:hover { background:rgba(255,255,255,0.18); }
 
-    /* ── DOCUMENTS GRID ── */
-    .docs-section-title {
-      font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase;
-      color:rgba(255,255,255,0.35); margin:32px 0 16px;
-    }
-    .docs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-      gap: 14px;
-    }
-    .doc-card {
-      background: rgba(255,255,255,0.055);
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 14px; padding: 0;
-      overflow: hidden;
-      transition: border-color 0.25s, transform 0.25s;
-    }
+    /* ── UPLOADED LIST ── */
+    .uploaded-list { width:100%; }
+    .up-item { display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,0.055); border:1px solid rgba(255,255,255,0.10); border-radius:12px; padding:14px 18px; margin-bottom:10px; gap:12px; flex-wrap:wrap; animation: fadeIn 0.3s ease both; }
+    .up-item .fi { display:flex; align-items:center; gap:10px; flex:1; min-width:0; }
+    .up-item .fi-icon { font-size:22px; flex-shrink:0; }
+    .up-item .fi-name { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .up-item .fi-size { font-size:11px; color:rgba(255,255,255,0.38); margin-top:2px; }
+    .act-row { display:flex; gap:8px; flex-shrink:0; }
+    .act-btn { display:flex; align-items:center; gap:6px; padding:7px 14px; border-radius:50px; border:none; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; cursor:pointer; transition:transform 0.15s, opacity 0.15s; }
+    .act-btn:hover { transform:translateY(-1px); opacity:0.85; }
+    .btn-wa   { background:var(--green); color:#fff; }
+    .btn-mail { background:#3b82f6; color:#fff; }
+    .btn-dl   { background:rgba(255,255,255,0.12); color:#fff; border:1px solid rgba(255,255,255,0.20)!important; }
+    .btn-rm   { background:rgba(232,28,46,0.15); color:#ff8080; border:1px solid rgba(232,28,46,0.30)!important; }
+
+    /* ── DOCS GRID ── */
+    .docs-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(210px,1fr)); gap:14px; width:100%; }
+    .doc-card { background:rgba(255,255,255,0.055); border:1px solid rgba(255,255,255,0.10); border-radius:14px; overflow:hidden; transition:border-color 0.25s, transform 0.25s; }
     .doc-card:hover { border-color:rgba(232,28,46,0.40); transform:translateY(-3px); }
-    .doc-card-head {
-      padding:20px 18px 16px;
-      display:flex; align-items:center; gap:12px;
-    }
-    .doc-card-icon { font-size:26px; flex-shrink:0; }
-    .doc-card-name { font-size:13px; font-weight:700; line-height:1.3; }
-    .doc-card-actions {
-      display:flex; border-top:1px solid rgba(255,255,255,0.07);
-    }
-    .doc-action {
-      flex:1; padding:10px 0;
-      display:flex; align-items:center; justify-content:center; gap:5px;
-      font-size:11px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase;
-      cursor:pointer; text-decoration:none; color:rgba(255,255,255,0.60);
-      border:none; background:none; font-family:'Montserrat',sans-serif;
-      transition:background 0.2s, color 0.2s;
-    }
-    .doc-action + .doc-action { border-left:1px solid rgba(255,255,255,0.07); }
-    .doc-action:hover { background:rgba(255,255,255,0.07); color:var(--white); }
-    .doc-action.wa:hover { background:rgba(37,211,102,0.15); color:var(--green); }
-    .doc-action.mail:hover { background:rgba(59,130,246,0.15); color:#60a5fa; }
-    .doc-action.dl { }
-    .doc-action.dl:hover { background:rgba(255,255,255,0.10); }
+    .doc-head { padding:20px 18px 16px; display:flex; align-items:center; gap:12px; }
+    .doc-icon { font-size:26px; flex-shrink:0; }
+    .doc-name { font-size:13px; font-weight:700; line-height:1.3; }
+    .doc-acts { display:flex; border-top:1px solid rgba(255,255,255,0.07); }
+    .da { flex:1; padding:10px 0; display:flex; align-items:center; justify-content:center; gap:5px; font-size:11px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; cursor:pointer; text-decoration:none; color:rgba(255,255,255,0.55); border:none; background:none; font-family:'Montserrat',sans-serif; transition:background 0.2s, color 0.2s; }
+    .da + .da { border-left:1px solid rgba(255,255,255,0.07); }
+    .da:hover        { background:rgba(255,255,255,0.07); color:var(--white); }
+    .da.wa:hover     { background:rgba(37,211,102,0.15); color:var(--green); }
+    .da.mail:hover   { background:rgba(59,130,246,0.15); color:#60a5fa; }
 
     /* ── FOOTER ── */
-    .site-footer {
-      position:relative; z-index:10; text-align:center;
-      padding:40px 24px 56px; border-top:1px solid rgba(255,255,255,0.07);
-      width:100%;
-    }
+    .site-footer { position:relative; z-index:10; text-align:center; padding:40px 24px 56px; border-top:1px solid rgba(255,255,255,0.07); width:100%; }
     .footer-social { display:flex; gap:20px; justify-content:center; margin-bottom:12px; }
-    .footer-social a { color:rgba(255,255,255,0.55); text-decoration:none; display:flex; align-items:center; transition:color 0.2s,transform 0.2s; }
+    .footer-social a { color:rgba(255,255,255,0.50); text-decoration:none; display:flex; align-items:center; transition:color 0.2s, transform 0.2s; }
     .footer-social a:hover { color:var(--white); transform:translateY(-3px); }
-    .site-footer p { font-size:11px; color:rgba(255,255,255,0.28); letter-spacing:0.5px; }
+    .site-footer p { font-size:11px; color:rgba(255,255,255,0.25); letter-spacing:0.5px; }
 
-    /* ── ANIMATIONS ── */
     @keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
 
     @media (max-width:768px) {
       nav { padding:14px 20px; }
-      .nav-links { display:none; }
-      .nav-social { display:none; }
+      .nav-links, .nav-social { display:none; }
       .hamburger { display:flex; }
       .login-card { padding:36px 24px; }
       .docs-grid { grid-template-columns:1fr 1fr; }
-      .file-actions { flex-wrap:wrap; }
+      .act-row { flex-wrap:wrap; }
     }
-    @media (max-width:480px) {
-      .docs-grid { grid-template-columns:1fr; }
-    }
+    @media (max-width:480px) { .docs-grid { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
 
 <div class="bg-fixed"></div>
 
+<!-- NAV -->
 <nav>
   <a href="index.html"><img src="logo-bianco.png" alt="Artemusic" class="nav-logo" /></a>
   <ul class="nav-links">
@@ -276,6 +177,7 @@
   </div>
 </nav>
 
+<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="index.html">Home</a>
   <a href="chi-siamo.html">Chi siamo</a>
@@ -293,14 +195,14 @@
   </div>
 </div>
 
+<!-- PAGE -->
 <div class="page-wrap">
 
-  <!-- ── LOGIN ── -->
+  <!-- ═══ LOGIN ═══ -->
   <div class="login-card" id="loginCard">
     <div class="login-icon">🔐</div>
     <h1>Area Riservata</h1>
-    <p>Inserisci la password per accedere ai documenti tecnici, alle dichiarazioni di conformità e agli strumenti di gestione file.</p>
-
+    <p>Inserisci la password per accedere ai documenti tecnici e alle dichiarazioni di conformità.</p>
     <div class="form-group">
       <label>Password</label>
       <div class="pwd-wrap">
@@ -308,60 +210,59 @@
         <span class="toggle-pwd" onclick="togglePwd()">👁</span>
       </div>
     </div>
-
     <button class="btn-login" onclick="checkPassword()">Accedi →</button>
     <div class="error-msg" id="errorMsg">⚠ Password errata. Riprova.</div>
   </div>
 
-  <!-- ── DOCUMENTS PANEL ── -->
+  <!-- ═══ PANNELLO DOCUMENTI ═══ -->
   <div class="docs-panel" id="docsPanel">
 
     <div class="docs-header">
       <span class="label">Artemusic · Uso Interno</span>
       <h2>Area Riservata</h2>
       <div class="divider"></div>
-      <p>Gestisci e condividi documenti e dichiarazioni di conformità</p>
+      <!-- badge ruolo inserito da JS -->
+      <div id="roleBadge" style="margin-top:16px;"></div>
+      <p id="roleDesc"></p>
     </div>
 
-    <!-- Upload section -->
-    <div class="upload-section" id="uploadZone" onclick="document.getElementById('fileInput').click()">
-      <div class="upload-icon">📤</div>
-      <h3>Carica un file o una cartella</h3>
-      <p>Trascina qui un file (PDF, ZIP, immagine…) oppure clicca per selezionarlo dal tuo dispositivo.<br>Potrai poi inviarlo via WhatsApp, email o scaricarlo.</p>
-      <button class="btn-upload" onclick="event.stopPropagation(); document.getElementById('fileInput').click()">
-        📁 Scegli File
-      </button>
-      <input type="file" id="fileInput" multiple onchange="handleFiles(this.files)" />
+    <!-- ── SEZIONE ADMIN: upload ── -->
+    <div id="adminSection" style="display:none; width:100%;">
+      <div class="section-title">⬆ Carica Documenti (solo amministratore)</div>
+
+      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+        <div class="up-icon">📤</div>
+        <h3>Carica un file o una cartella</h3>
+        <p>Trascina qui un file (PDF, ZIP, immagine…) oppure clicca per selezionarlo.<br>Dopo il caricamento potrai inviarlo via WhatsApp, email o scaricarlo.</p>
+        <button class="btn-choose" onclick="event.stopPropagation(); document.getElementById('fileInput').click()">📁 Scegli File</button>
+        <input type="file" id="fileInput" multiple onchange="handleFiles(this.files)" />
+      </div>
+      <div class="uploaded-list" id="uploadedList"></div>
     </div>
 
-    <!-- Uploaded files list -->
-    <div class="uploaded-list" id="uploadedList"></div>
+    <!-- ── DOCUMENTI FISSI ── -->
+    <div class="section-title" id="docsTitle">📂 Collaudi &amp; Dichiarazioni di Conformità</div>
+    <div class="docs-grid" id="docsGrid"></div>
 
-    <!-- Existing documents grid -->
-    <div class="docs-section-title">📂 Collaudi &amp; Dichiarazioni di Conformità</div>
-    <div class="docs-grid" id="docsGrid">
-      <!-- Cards injected by JS -->
-    </div>
-
-  </div>
+  </div><!-- /docs-panel -->
 
 </div><!-- /page-wrap -->
 
-<!-- Footer -->
+<!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-social">
     <a href="https://www.instagram.com/artemusic_sound_light" target="_blank" title="Instagram">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
     </a>
     <a href="https://www.facebook.com/artemusicsoundlight" target="_blank" title="Facebook">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
     </a>
   </div>
   <p>© 2025 Artemusic Sound &amp; Light Srls · Manduria (TA) · P.IVA 03436690733</p>
 </footer>
 
 <script>
-  // ── Hamburger ──
+  /* ─── Hamburger ─── */
   const hamburger  = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
   hamburger.addEventListener('click', () => {
@@ -369,13 +270,20 @@
     mobileMenu.classList.toggle('open');
   });
 
-  // ── Password ──
+  /* ─── Passwords ─── */
+  const PWD_ADMIN = 'Admin2025!';      // password ADMIN (solo tu)
+  const PWD_USER  = 'Allestimenti2025'; // password per collaboratori
+
+  let currentRole = null; // 'admin' | 'user'
+
   function checkPassword() {
-    const pwd = document.getElementById('pwdInput').value;
-    if (pwd === 'Allestimenti2025') {
-      document.getElementById('loginCard').style.display = 'none';
-      document.getElementById('docsPanel').style.display = 'block';
-      renderDocs();
+    const val = document.getElementById('pwdInput').value.trim();
+    if (val === PWD_ADMIN) {
+      currentRole = 'admin';
+      openPanel();
+    } else if (val === PWD_USER) {
+      currentRole = 'user';
+      openPanel();
     } else {
       const err = document.getElementById('errorMsg');
       err.style.display = 'block';
@@ -384,61 +292,84 @@
       setTimeout(() => { err.style.display = 'none'; }, 3500);
     }
   }
+
   function togglePwd() {
     const inp = document.getElementById('pwdInput');
     inp.type = (inp.type === 'password') ? 'text' : 'password';
   }
 
-  // ── Documents list ──
+  function openPanel() {
+    document.getElementById('loginCard').style.display = 'none';
+    document.getElementById('docsPanel').style.display = 'block';
+
+    // Role badge
+    const badge = document.getElementById('roleBadge');
+    const desc  = document.getElementById('roleDesc');
+    if (currentRole === 'admin') {
+      badge.innerHTML = '<span class="role-badge admin">🛡 Amministratore</span>';
+      desc.textContent = 'Accesso completo: puoi caricare, condividere e gestire tutti i documenti.';
+      document.getElementById('adminSection').style.display = 'block';
+    } else {
+      badge.innerHTML = '<span class="role-badge user">👤 Accesso Standard</span>';
+      desc.textContent = 'Puoi visualizzare, scaricare e condividere i documenti disponibili.';
+    }
+
+    renderDocs();
+  }
+
+  /* ─── Documenti fissi ─── */
   const DOCS = [
-    { name: 'Americana Trabes Folding', icon: '🏗️', path: 'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/AMERICANA%20TRABES%20FOLDING/' },
-    { name: 'Antipanico',               icon: '🚪', path: 'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/ANTIPANICO/' },
-    { name: 'Audio',                     icon: '🔊', path: 'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/AUDIO/' },
-    { name: 'Casette in Legno',          icon: '🏠', path: 'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/CASETTE%20IN%20LEGNO/' },
-    { name: 'Copertura Ring da 30',      icon: '⛺', path: 'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/COPERTURA%20RING%20DA%2030/' },
-    { name: 'Gazebo 3×3',               icon: '🏕️', path: 'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/GAZEBO%203%20X%203/' },
-    { name: 'Guil',                      icon: '⚙️', path: 'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/GUIL/' },
-    { name: 'LED Wall',                  icon: '📺', path: 'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/LEDWALL/' },
-    { name: 'Luci',                      icon: '💡', path: 'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/LUCI/' },
-    { name: 'Powerbox',                  icon: '⚡', path: 'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/POWERBOX/' },
-    { name: 'Sedie',                     icon: '🪑', path: 'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/SEDIE/' },
+    { name:'Americana Trabes Folding', icon:'🏗️', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/AMERICANA%20TRABES%20FOLDING/' },
+    { name:'Antipanico',               icon:'🚪', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/ANTIPANICO/' },
+    { name:'Audio',                    icon:'🔊', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/AUDIO/' },
+    { name:'Casette in Legno',         icon:'🏠', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/CASETTE%20IN%20LEGNO/' },
+    { name:'Copertura Ring da 30',     icon:'⛺', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/COPERTURA%20RING%20DA%2030/' },
+    { name:'Gazebo 3×3',              icon:'🏕️', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/GAZEBO%203%20X%203/' },
+    { name:'Guil',                     icon:'⚙️', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/GUIL/' },
+    { name:'LED Wall',                 icon:'📺', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/LEDWALL/' },
+    { name:'Luci',                     icon:'💡', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/LUCI/' },
+    { name:'Powerbox',                 icon:'⚡', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/POWERBOX/' },
+    { name:'Sedie',                    icon:'🪑', path:'documenti/Collaudi%20%26%20Dichiarazioni%20di%20Conformita/SEDIE/' },
   ];
 
   function renderDocs() {
-    const grid = document.getElementById('docsGrid');
-    const siteUrl = window.location.origin + '/' + window.location.pathname.replace('area-riservata.html','');
+    const grid   = document.getElementById('docsGrid');
+    const origin = window.location.origin;
+    const base   = origin + window.location.pathname.replace('area-riservata.html', '');
+
     grid.innerHTML = DOCS.map(doc => {
-      const fullUrl = siteUrl + doc.path;
-      const waText  = encodeURIComponent(`📁 *${doc.name}* – Documento tecnico Artemusic:\n${fullUrl}`);
+      const fullUrl  = base + doc.path;
+      const waText   = encodeURIComponent(`📁 *${doc.name}*\nDocumento tecnico Artemusic Sound & Light:\n${fullUrl}`);
       const mailSubj = encodeURIComponent(`Documento Artemusic: ${doc.name}`);
-      const mailBody = encodeURIComponent(`In allegato trovi il documento "${doc.name}".\n\nAccedi direttamente:\n${fullUrl}\n\nArtemusic Sound & Light`);
+      const mailBody = encodeURIComponent(`Ciao,\n\nti invio il documento "${doc.name}".\n\nLink diretto:\n${fullUrl}\n\nArtemusic Sound & Light\ninfo@artemusic.it`);
+
       return `
-        <div class="doc-card">
-          <div class="doc-card-head">
-            <span class="doc-card-icon">${doc.icon}</span>
-            <span class="doc-card-name">${doc.name}</span>
-          </div>
-          <div class="doc-card-actions">
-            <a class="doc-action wa" href="https://wa.me/?text=${waText}" target="_blank" title="Invia su WhatsApp">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-              WA
-            </a>
-            <a class="doc-action mail" href="mailto:?subject=${mailSubj}&body=${mailBody}" title="Invia via Email">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-              Mail
-            </a>
-            <a class="doc-action dl" href="${doc.path}" target="_blank" download title="Apri / Scarica">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zm7-18v10l4-4 1.41 1.41L12 14.83l-5.41-5.42L8 8l4 4V2h2z"/></svg>
-              Scarica
-            </a>
-          </div>
-        </div>`;
+      <div class="doc-card">
+        <div class="doc-head">
+          <span class="doc-icon">${doc.icon}</span>
+          <span class="doc-name">${doc.name}</span>
+        </div>
+        <div class="doc-acts">
+          <a class="da wa" href="https://wa.me/?text=${waText}" target="_blank" title="WhatsApp">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WA
+          </a>
+          <a class="da mail" href="mailto:?subject=${mailSubj}&body=${mailBody}" title="Email">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            Email
+          </a>
+          <a class="da" href="${doc.path}" target="_blank" title="Scarica">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zm7-18v10l4-4 1.41 1.41L12 14.83l-5.41-5.42L8 8l4 4V2h2z"/></svg>
+            Scarica
+          </a>
+        </div>
+      </div>`;
     }).join('');
   }
 
-  // ── File Upload & Share ──
+  /* ─── Upload & Share (solo admin) ─── */
   const uploadZone = document.getElementById('uploadZone');
-  uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+  uploadZone.addEventListener('dragover',  e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
   uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
   uploadZone.addEventListener('drop', e => {
     e.preventDefault();
@@ -448,47 +379,46 @@
 
   function handleFiles(files) {
     const list = document.getElementById('uploadedList');
-    list.style.display = 'block';
     Array.from(files).forEach(file => {
-      const url    = URL.createObjectURL(file);
-      const sizeFmt = file.size > 1048576
-        ? (file.size / 1048576).toFixed(1) + ' MB'
-        : (file.size / 1024).toFixed(0) + ' KB';
-      const ext    = file.name.split('.').pop().toUpperCase();
-      const icon   = { PDF:'📄', ZIP:'🗜️', RAR:'🗜️', PNG:'🖼️', JPG:'🖼️', JPEG:'🖼️', DOC:'📝', DOCX:'📝', XLS:'📊', XLSX:'📊' }[ext] || '📁';
-      const waText = encodeURIComponent(`📁 *${file.name}* – da Artemusic Sound & Light`);
-      const mailSubj = encodeURIComponent(`File: ${file.name} – Artemusic`);
-      const mailBody = encodeURIComponent(`Ti invio il file "${file.name}" (${sizeFmt}) da parte di Artemusic Sound & Light.`);
+      const url     = URL.createObjectURL(file);
+      const sizeFmt = file.size > 1048576 ? (file.size/1048576).toFixed(1)+' MB' : (file.size/1024).toFixed(0)+' KB';
+      const ext     = file.name.split('.').pop().toUpperCase();
+      const icon    = {PDF:'📄',ZIP:'🗜️',RAR:'🗜️',PNG:'🖼️',JPG:'🖼️',JPEG:'🖼️',DOC:'📝',DOCX:'📝',XLS:'📊',XLSX:'📊'}[ext] || '📁';
+      const waText  = encodeURIComponent(`📁 *${file.name}*\nInviato da Artemusic Sound & Light`);
+      const mailSubj= encodeURIComponent(`File: ${file.name} – Artemusic`);
+      const mailBody= encodeURIComponent(`Ti invio il file "${file.name}" (${sizeFmt}).\n\nArtemusic Sound & Light · info@artemusic.it`);
 
       const item = document.createElement('div');
-      item.className = 'uploaded-item';
+      item.className = 'up-item';
+      item.id = 'upitem-' + Date.now() + Math.random().toString(36).slice(2);
       item.innerHTML = `
-        <div class="file-info">
-          <span class="file-icon">${icon}</span>
+        <div class="fi">
+          <span class="fi-icon">${icon}</span>
           <div>
-            <div class="file-name">${file.name}</div>
-            <div class="file-size">${sizeFmt} · ${ext}</div>
+            <div class="fi-name">${file.name}</div>
+            <div class="fi-size">${sizeFmt} · ${ext}</div>
           </div>
         </div>
-        <div class="file-actions">
-          <button class="btn-wa" onclick="window.open('https://wa.me/?text=${waText}','_blank')">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <div class="act-row">
+          <button class="act-btn btn-wa"   onclick="window.open('https://wa.me/?text=${waText}','_blank')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             WhatsApp
           </button>
-          <button class="btn-mail" onclick="window.location.href='mailto:?subject=${mailSubj}&body=${mailBody}'">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          <button class="act-btn btn-mail" onclick="window.location.href='mailto:?subject=${mailSubj}&body=${mailBody}'">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
             Email
           </button>
-          <button class="btn-dl" onclick="downloadFile('${url}','${file.name}')">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zm7-18v10l4-4 1.41 1.41L12 14.83l-5.41-5.42L8 8l4 4V2h2z"/></svg>
+          <button class="act-btn btn-dl"   onclick="dlFile('${url}','${file.name}')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zm7-18v10l4-4 1.41 1.41L12 14.83l-5.41-5.42L8 8l4 4V2h2z"/></svg>
             Scarica
           </button>
+          <button class="act-btn btn-rm"   onclick="this.closest('.up-item').remove()">✕</button>
         </div>`;
-      list.appendChild(item);
+      list.prepend(item);
     });
   }
 
-  function downloadFile(url, name) {
+  function dlFile(url, name) {
     const a = document.createElement('a');
     a.href = url; a.download = name;
     document.body.appendChild(a); a.click();
