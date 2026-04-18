@@ -1,17 +1,5 @@
 [
   {
-    "id": "mo4wx8i62a23514b",
-    "titolo": "Concerto Piazza Roma",
-    "data": "2026-05-10",
-    "oraInizio": "20:00",
-    "oraFine": "23:30",
-    "luogo": "Piazza Roma",
-    "indirizzo": "Piazza Roma, 74024 Manduria (TA)",
-    "note": "Allestimento dalle 16:00",
-    "colore": "#e81c2e",
-    "creatoIl": "2026-04-18T22:32:29.262Z"
-  },
-  {
     "id": "mo4wxi2ue6640d0f",
     "titolo": "Festival Estivo Taranto",
     "data": "2026-07-18",
@@ -94,5 +82,21 @@
     "colore": "#27ae60",
     "importo": "2500.00",
     "creatoIl": "2026-04-18T23:05:49.942Z"
+  },
+  {
+    "id": "mo4ya7r5dce26192",
+    "titolo": "DON DOMENICO",
+    "data": "2026-04-19",
+    "oraInizio": "17:00",
+    "oraFine": "",
+    "luogo": "PIAZZA SANT'ANGELO",
+    "indirizzo": "",
+    "orarioLavoro": "08:30",
+    "dipendenti": "EZIO,ANTONIO,MASSIMO,VITO",
+    "merce": "IMPIANTO AUDIO,LEDWALL 3X2,PALCO 7,5X4,5 ,100 SEDIE",
+    "note": "",
+    "colore": "#e81c2e",
+    "importo": "1500",
+    "creatoIl": "2026-04-18T23:10:34.433Z"
   }
 ]
