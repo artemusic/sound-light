@@ -46,5 +46,21 @@
     "note": "Allestimento padiglione B: americana truss, faretti, 2x LED wall laterali",
     "colore": "#f5a623",
     "creatoIl": "2026-04-18T22:32:41.730Z"
+  },
+  {
+    "id": "mo4xco1ue0fba992",
+    "titolo": "Concerto Test Campi",
+    "data": "2026-05-15",
+    "oraInizio": "21:00",
+    "oraFine": "23:30",
+    "luogo": "Teatro Petruzzelli",
+    "indirizzo": "Piazza della Libertà, 70122 Bari BA",
+    "orarioLavoro": "15:00",
+    "dipendenti": "Marco Rossi, Luigi Bianchi, Sandro Neri",
+    "merce": "Line Array JBL x12, Subwoofer x6, Mixer Allen & Heath, Cavi XLR 50m",
+    "note": "Parcheggio riservato sul retro. Contattare Mario al 333-1234567",
+    "colore": "#3498db",
+    "importo": "5500.00",
+    "creatoIl": "2026-04-18T22:44:29.250Z"
   }
 ]

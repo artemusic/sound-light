@@ -420,7 +420,7 @@ let renameTarget= null;       // path del file da rinominare
 // ────────────────────────────────────────────
 (async () => {
   try {
-    const r = await fetch('/api/me');
+    const r = await fetch('/api/me', {credentials:'include'});
     const d = await r.json();
     if (d.ok) {
       currentRole = d.role;
@@ -444,7 +444,7 @@ async function doLogin(){
   err.textContent = '';
   if (!pw) { err.textContent = 'Inserisci la password'; return; }
   try {
-    const r  = await fetch('/api/login', {
+    const r  = await fetch('/api/login', { credentials:'include',
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ password: pw })
     });
@@ -462,7 +462,8 @@ async function doLogin(){
 }
 
 async function doLogout(){
-  await fetch('/api/logout', { method:'POST' });
+  await fetch('/api/logout', {
+credentials:'include', method:'POST' });
   location.reload();
 }
 
@@ -593,7 +594,7 @@ function downloadFile(filePath, name){
 //  SHARE via WhatsApp / Email (usa token temporaneo)
 // ────────────────────────────────────────────
 async function getShareUrl(filePath){
-  const r = await fetch('/api/share', {
+  const r = await fetch('/api/share', { credentials:'include',
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ path: filePath })
   });
@@ -708,7 +709,7 @@ async function modalConfirm(){
   closeModal();
 
   if (modalMode === 'mkdir') {
-    const r = await fetch('/api/mkdir', {
+    const r = await fetch('/api/mkdir', { credentials:'include',
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ path: currentPath, name: val })
     });
@@ -718,7 +719,7 @@ async function modalConfirm(){
   }
 
   if (modalMode === 'rename') {
-    const r = await fetch('/api/rename', {
+    const r = await fetch('/api/rename', { credentials:'include',
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ path: renameTarget, newName: val })
     });
@@ -733,7 +734,7 @@ async function modalConfirm(){
 // ────────────────────────────────────────────
 async function deleteItem(filePath, name){
   if (!confirm(`Eliminare definitivamente "${name}"?`)) return;
-  const r = await fetch('/api/delete?path=' + encodeURIComponent(filePath), { method:'DELETE' });
+  const r = await fetch('/api/delete?path=' + encodeURIComponent(filePath), { method:'DELETE', credentials:'include' });
   const d = await r.json();
   if (d.ok) { showToast('🗑 Eliminato', 'ok'); loadFiles(currentPath); }
   else      { showToast('Errore: ' + d.message, 'err'); }

@@ -18,8 +18,9 @@ const PORT = 3000;
 // ──────────────────────────────────────────────
 // CONFIGURAZIONE PASSWORDS
 // ──────────────────────────────────────────────
-const ADMIN_PASSWORD = 'Admin2025!';
-const USER_PASSWORD  = 'Allestimenti2025';
+const ADMIN_PASSWORD    = 'Admin2025!';
+const USER_PASSWORD     = 'Allestimenti2025';
+const FRATELLI_PASSWORD = 'Famiglia2025!';  // vede anche l'importo
 
 // ──────────────────────────────────────────────
 // CARTELLA DOCUMENTI (root del file manager)
@@ -30,13 +31,19 @@ if (!fs.existsSync(DOCS_ROOT)) fs.mkdirSync(DOCS_ROOT, { recursive: true });
 // ──────────────────────────────────────────────
 // MIDDLEWARE
 // ──────────────────────────────────────────────
+app.set('trust proxy', 1); // necessario dietro reverse proxy / sandbox
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
   secret: crypto.randomBytes(32).toString('hex'),
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 8 * 60 * 60 * 1000 } // 8 ore
+  cookie: {
+    maxAge:   8 * 60 * 60 * 1000, // 8 ore
+    sameSite: 'lax',
+    secure:   false   // il proxy gestisce HTTPS, qui HTTP interno
+  }
 }));
 
 // File statici (HTML, CSS, immagini, MP3…) serviti dalla root
@@ -74,6 +81,10 @@ app.post('/api/login', (req, res) => {
     req.session.role = 'admin';
     return res.json({ ok: true, role: 'admin' });
   }
+  if (password === FRATELLI_PASSWORD) {
+    req.session.role = 'fratelli';
+    return res.json({ ok: true, role: 'fratelli' });
+  }
   if (password === USER_PASSWORD) {
     req.session.role = 'user';
     return res.json({ ok: true, role: 'user' });
@@ -103,6 +114,20 @@ function requireAuth(req, res, next) {
 
 function requireAdmin(req, res, next) {
   if (req.session.role !== 'admin') return res.status(403).json({ ok: false, message: 'Solo admin' });
+  next();
+}
+
+// Può accedere ai dati finanziari (importo): solo admin e fratelli
+function requireFinance(req, res, next) {
+  const r = req.session.role;
+  if (r !== 'admin' && r !== 'fratelli') return res.status(403).json({ ok: false, message: 'Accesso negato' });
+  next();
+}
+
+// Può creare/modificare eventi: admin e fratelli
+function requireEventManager(req, res, next) {
+  const r = req.session.role;
+  if (r !== 'admin' && r !== 'fratelli') return res.status(403).json({ ok: false, message: 'Solo admin o fratelli' });
   next();
 }
 
@@ -324,62 +349,103 @@ function newId() {
 }
 
 // GET /api/eventi — tutti gli eventi (auth richiesta)
+// L'importo viene restituito solo ad admin e fratelli
 app.get('/api/eventi', requireAuth, (req, res) => {
-  res.json({ ok: true, eventi: readEvents() });
+  const canSeeFinance = (req.session.role === 'admin' || req.session.role === 'fratelli');
+  const eventi = readEvents().map(e => {
+    if (!canSeeFinance) {
+      const { importo, ...rest } = e;
+      return rest;
+    }
+    return e;
+  });
+  res.json({ ok: true, eventi });
 });
 
-// POST /api/eventi — crea evento (solo admin)
-// Body: { titolo, data, oraInizio, oraFine, luogo, indirizzo, note, colore }
-app.post('/api/eventi', requireAdmin, (req, res) => {
-  const { titolo, data, oraInizio, oraFine, luogo, indirizzo, note, colore } = req.body;
+// POST /api/eventi — crea evento (admin e fratelli)
+app.post('/api/eventi', requireEventManager, (req, res) => {
+  const {
+    titolo, data, oraInizio, oraFine,
+    luogo, indirizzo,
+    orarioLavoro,           // ora inizio lavoro tecnici
+    dipendenti,             // array o stringa nomi
+    merce,                  // materiale da portare
+    note, colore, importo   // importo: solo admin/fratelli possono inserirlo
+  } = req.body;
+
   if (!titolo || !data) return res.status(400).json({ ok: false, message: 'Titolo e data sono obbligatori' });
 
+  const canSeeFinance = (req.session.role === 'admin' || req.session.role === 'fratelli');
+
   const evento = {
-    id:         newId(),
-    titolo:     String(titolo).trim(),
-    data:       String(data).trim(),        // YYYY-MM-DD
-    oraInizio:  String(oraInizio || '').trim(),
-    oraFine:    String(oraFine   || '').trim(),
-    luogo:      String(luogo     || '').trim(),
-    indirizzo:  String(indirizzo || '').trim(),
-    note:       String(note      || '').trim(),
-    colore:     String(colore    || '#e81c2e').trim(),
-    creatoIl:   new Date().toISOString()
+    id:            newId(),
+    titolo:        String(titolo).trim(),
+    data:          String(data).trim(),
+    oraInizio:     String(oraInizio    || '').trim(),
+    oraFine:       String(oraFine      || '').trim(),
+    luogo:         String(luogo        || '').trim(),
+    indirizzo:     String(indirizzo    || '').trim(),
+    orarioLavoro:  String(orarioLavoro || '').trim(),
+    dipendenti:    String(dipendenti   || '').trim(),
+    merce:         String(merce        || '').trim(),
+    note:          String(note         || '').trim(),
+    colore:        String(colore       || '#e81c2e').trim(),
+    importo:       canSeeFinance ? String(importo || '').trim() : '',
+    creatoIl:      new Date().toISOString()
   };
 
   const events = readEvents();
   events.push(evento);
   writeEvents(events);
+
+  // Crea automaticamente la cartella dell'evento in documenti/
+  const folderName = `${evento.data} – ${evento.titolo}`.replace(/[<>:"/\\|?*]/g, '_');
+  const folderPath = path.join(DOCS_ROOT, folderName);
+  if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath, { recursive: true });
+
   res.json({ ok: true, evento });
 });
 
-// PUT /api/eventi/:id — modifica evento (solo admin)
-app.put('/api/eventi/:id', requireAdmin, (req, res) => {
+// PUT /api/eventi/:id — modifica evento (admin e fratelli)
+app.put('/api/eventi/:id', requireEventManager, (req, res) => {
   const events = readEvents();
   const idx = events.findIndex(e => e.id === req.params.id);
   if (idx === -1) return res.status(404).json({ ok: false, message: 'Evento non trovato' });
 
-  const { titolo, data, oraInizio, oraFine, luogo, indirizzo, note, colore } = req.body;
+  const {
+    titolo, data, oraInizio, oraFine,
+    luogo, indirizzo, orarioLavoro,
+    dipendenti, merce, note, colore, importo
+  } = req.body;
+
   if (!titolo || !data) return res.status(400).json({ ok: false, message: 'Titolo e data sono obbligatori' });
+
+  const canSeeFinance = (req.session.role === 'admin' || req.session.role === 'fratelli');
 
   events[idx] = {
     ...events[idx],
-    titolo:    String(titolo).trim(),
-    data:      String(data).trim(),
-    oraInizio: String(oraInizio || '').trim(),
-    oraFine:   String(oraFine   || '').trim(),
-    luogo:     String(luogo     || '').trim(),
-    indirizzo: String(indirizzo || '').trim(),
-    note:      String(note      || '').trim(),
-    colore:    String(colore    || events[idx].colore).trim(),
+    titolo:       String(titolo).trim(),
+    data:         String(data).trim(),
+    oraInizio:    String(oraInizio    || '').trim(),
+    oraFine:      String(oraFine      || '').trim(),
+    luogo:        String(luogo        || '').trim(),
+    indirizzo:    String(indirizzo    || '').trim(),
+    orarioLavoro: String(orarioLavoro || '').trim(),
+    dipendenti:   String(dipendenti   || '').trim(),
+    merce:        String(merce        || '').trim(),
+    note:         String(note         || '').trim(),
+    colore:       String(colore       || events[idx].colore).trim(),
+    importo:      canSeeFinance
+                    ? String(importo !== undefined ? importo : (events[idx].importo || '')).trim()
+                    : (events[idx].importo || ''),
     aggiornatoIl: new Date().toISOString()
   };
   writeEvents(events);
   res.json({ ok: true, evento: events[idx] });
 });
 
-// DELETE /api/eventi/:id — elimina evento (solo admin)
-app.delete('/api/eventi/:id', requireAdmin, (req, res) => {
+// DELETE /api/eventi/:id — elimina evento (admin e fratelli)
+app.delete('/api/eventi/:id', requireEventManager, (req, res) => {
   const events = readEvents();
   const idx = events.findIndex(e => e.id === req.params.id);
   if (idx === -1) return res.status(404).json({ ok: false, message: 'Evento non trovato' });
