@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Richiedi Preventivo – Artemusic</title>
+  <link rel="icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --red: #e81c2e;
+      --red-dark: #b51020;
+      --white: #ffffff;
+      --black: #0a0a0a;
+      --glass-border: rgba(255,255,255,0.10);
+    }
+    html, body {
+      min-height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--white);
+      background: var(--black);
+    }
+    .bg-fixed {
+      position: fixed;
+      inset: 0; z-index: 0;
+      background: url('bg1.jpg') no-repeat center center / cover;
+      filter: brightness(0.25);
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 48px;
+      background: rgba(10,10,10,0.75);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .nav-logo { height: 38px; }
+    .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+    .nav-links a {
+      color: rgba(255,255,255,0.78); text-decoration: none;
+      font-size: 12px; font-weight: 600; letter-spacing: 1.4px;
+      text-transform: uppercase; position: relative; transition: color 0.25s;
+    }
+    .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:var(--red); transition:width 0.3s; }
+    .nav-links a:hover { color:var(--white); }
+    .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
+    .nav-links a.active { color:var(--white); }
+    .nav-social { display:flex; gap:14px; align-items:center; }
+    .nav-social a { color:rgba(255,255,255,0.65); font-size:18px; text-decoration:none; transition:color 0.2s, transform 0.2s; line-height:1; }
+    .nav-social a:hover { color:var(--white); transform:scale(1.15); }
+    .nav-cta {
+      background: var(--red); color: white !important;
+      padding: 8px 18px; border-radius: 50px;
+      font-size: 11px !important; letter-spacing: 1px !important;
+      transition: background 0.25s !important;
+    }
+    .nav-cta:hover { background: var(--red-dark) !important; }
+    .nav-cta::after { display:none !important; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; z-index:200; }
+    .hamburger span { display:block; width:26px; height:2px; background:var(--white); border-radius:2px; transition:all 0.35s; }
+    .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+    .mobile-menu { display:none; position:fixed; inset:0; background:rgba(10,10,10,0.97); z-index:150; flex-direction:column; align-items:center; justify-content:center; gap:32px; }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { color:var(--white); text-decoration:none; font-size:20px; font-weight:700; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+    .mobile-menu a:hover { color:var(--red); }
+    .mobile-social { display:flex; gap:24px; margin-top:16px; }
+    .mobile-social a { color:rgba(255,255,255,0.7); font-size:28px; text-decoration:none; }
+
+    /* PAGE */
+    .page-wrap {
+      position: relative; z-index: 10;
+      min-height: 100vh;
+      padding: 130px 24px 80px;
+    }
+    .page-hero { text-align:center; margin-bottom: 48px; }
+    .page-hero .label {
+      display:inline-block; font-size:11px; font-weight:700;
+      letter-spacing:4px; text-transform:uppercase; color:var(--red); margin-bottom:12px;
+    }
+    .page-hero h1 { font-size:clamp(32px,5.5vw,56px); font-weight:900; line-height:1.1; }
+    .page-hero .divider { width:56px; height:3px; background:var(--red); margin:18px auto 0; border-radius:2px; }
+    .page-hero p { margin-top:18px; font-size:14px; color:rgba(255,255,255,0.50); max-width:480px; margin-left:auto; margin-right:auto; line-height:1.7; }
+
+    /* FORM */
+    .form-card {
+      max-width: 820px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 20px;
+      padding: 48px 44px;
+      backdrop-filter: blur(12px);
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .form-group { display:flex; flex-direction:column; gap:8px; }
+    .form-group.full { grid-column: span 2; }
+    .form-group label {
+      font-size:11px; font-weight:700; letter-spacing:1.5px;
+      text-transform:uppercase; color:rgba(255,255,255,0.45);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width:100%; padding:13px 16px;
+      background:rgba(255,255,255,0.07);
+      border:1px solid rgba(255,255,255,0.13);
+      border-radius:10px;
+      color:var(--white);
+      font-family:'Montserrat',sans-serif;
+      font-size:14px;
+      outline:none;
+      transition:border-color 0.25s, background 0.25s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .form-group select option { background:#1a1a1a; color:white; }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color:rgba(255,255,255,0.25); }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color:var(--red);
+      background:rgba(255,255,255,0.10);
+    }
+    .form-group textarea { resize:vertical; min-height:120px; }
+
+    /* Tipo evento checkboxes */
+    .tipo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .tipo-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      user-select: none;
+    }
+    .tipo-item input[type="checkbox"] { display:none; }
+    .tipo-item .check-box {
+      width:16px; height:16px;
+      border:2px solid rgba(255,255,255,0.30);
+      border-radius:4px; flex-shrink:0;
+      transition:background 0.2s, border-color 0.2s;
+      display:flex; align-items:center; justify-content:center;
+      font-size:11px;
+    }
+    .tipo-item input:checked ~ .check-box {
+      background:var(--red); border-color:var(--red);
+    }
+    .tipo-item input:checked ~ .check-box::after { content:'✓'; color:white; font-weight:900; }
+    .tipo-item:has(input:checked) {
+      background:rgba(232,28,46,0.12);
+      border-color:rgba(232,28,46,0.40);
+    }
+    .tipo-item span { font-size:12px; font-weight:600; color:rgba(255,255,255,0.75); }
+
+    /* Servizi richiesti */
+    .servizi-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top:4px;
+    }
+    .servizio-tag {
+      display:flex; align-items:center; gap:8px;
+      padding: 9px 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select:none;
+    }
+    .servizio-tag input[type="checkbox"] { display:none; }
+    .servizio-tag span { font-size:12px; font-weight:600; color:rgba(255,255,255,0.70); transition:color 0.2s; }
+    .servizio-tag:has(input:checked) {
+      background:rgba(232,28,46,0.15);
+      border-color:var(--red);
+    }
+    .servizio-tag:has(input:checked) span { color:white; }
+
+    .form-divider {
+      grid-column: span 2;
+      height:1px; background:rgba(255,255,255,0.08);
+      margin: 8px 0;
+    }
+    .form-section-title {
+      grid-column: span 2;
+      font-size:11px; font-weight:700;
+      letter-spacing:2px; text-transform:uppercase;
+      color:rgba(255,255,255,0.35);
+      margin-bottom:-4px;
+    }
+
+    .btn-submit {
+      width:100%; margin-top:24px;
+      padding:16px;
+      border:none; border-radius:12px;
+      background:var(--red);
+      color:white;
+      font-family:'Montserrat',sans-serif;
+      font-size:14px; font-weight:700;
+      letter-spacing:1.5px; text-transform:uppercase;
+      cursor:pointer;
+      transition:background 0.25s, transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-submit:hover {
+      background:var(--red-dark);
+      transform:translateY(-2px);
+      box-shadow:0 8px 28px rgba(232,28,46,0.40);
+    }
+
+    /* FOOTER SOCIAL */
+    .footer-social {
+      position: relative; z-index:10;
+      text-align:center;
+      padding: 32px 24px 48px;
+      display:flex; flex-direction:column; align-items:center; gap:16px;
+    }
+    .footer-social p { font-size:12px; color:rgba(255,255,255,0.30); }
+    .footer-social .social-icons { display:flex; gap:20px; }
+    .footer-social .social-icons a {
+      width:44px; height:44px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.07);
+      border:1px solid rgba(255,255,255,0.12);
+      display:flex; align-items:center; justify-content:center;
+      font-size:20px; text-decoration:none;
+      transition:background 0.25s, transform 0.25s;
+    }
+    .footer-social .social-icons a:hover { background:rgba(255,255,255,0.15); transform:translateY(-3px); }
+
+    @media (max-width:768px) {
+      nav { padding:14px 20px; }
+      .nav-links { display:none; }
+      .nav-social { display:none; }
+      .hamburger { display:flex; }
+      .form-card { padding:28px 20px; }
+      .form-grid { grid-template-columns:1fr; }
+      .form-group.full { grid-column:span 1; }
+      .form-divider, .form-section-title { grid-column:span 1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-fixed"></div>
+
+<nav>
+  <a href="index.html"><img src="logo-bianco.png" alt="Artemusic" class="nav-logo" /></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="chi-siamo.html">Chi siamo</a></li>
+    <li><a href="eventi.html">Eventi</a></li>
+    <li><a href="contatti.html">Contatti</a></li>
+    <li><a href="preventivo.html" class="active nav-cta">Preventivo</a></li>
+    <li><a href="area-riservata.html">Area Riservata</a></li>
+  </ul>
+  <div class="nav-social">
+    <a href="https://www.instagram.com/artemusic_sound_light" target="_blank" title="Instagram">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/artemusicsoundlight" target="_blank" title="Facebook">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    </a>
+  </div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="chi-siamo.html">Chi siamo</a>
+  <a href="eventi.html">Eventi</a>
+  <a href="contatti.html">Contatti</a>
+  <a href="preventivo.html" style="color:var(--red)">Preventivo</a>
+  <a href="area-riservata.html">Area Riservata</a>
+  <div class="mobile-social">
+    <a href="https://www.instagram.com/artemusic_sound_light" target="_blank">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/artemusicsoundlight" target="_blank">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    </a>
+  </div>
+</div>
+
+<div class="page-wrap">
+  <div class="page-hero">
+    <span class="label">Contattaci</span>
+    <h1>Richiedi un Preventivo</h1>
+    <div class="divider"></div>
+    <p>Compilaci il form e ti ricontatteremo entro 24 ore con una proposta su misura per il tuo evento.</p>
+  </div>
+
+  <div class="form-card">
+    <form action="https://formsubmit.co/info@artemusic.it" method="POST">
+      <input type="hidden" name="_next" value="https://www.artemusic.it/thankyou.html">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_subject" value="Nuova richiesta di preventivo">
+      <input type="hidden" name="_template" value="box">
+
+      <div class="form-grid">
+
+        <!-- Dati personali -->
+        <div class="form-section-title">👤 Dati di contatto</div>
+
+        <div class="form-group">
+          <label>Nome e Cognome *</label>
+          <input type="text" name="nome" placeholder="Mario Rossi" required />
+        </div>
+        <div class="form-group">
+          <label>Telefono *</label>
+          <input type="tel" name="telefono" placeholder="+39 000 0000000" required />
+        </div>
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" name="email" placeholder="mario@email.it" required />
+        </div>
+        <div class="form-group">
+          <label>Azienda / Ente (opzionale)</label>
+          <input type="text" name="azienda" placeholder="Nome azienda o ente" />
+        </div>
+
+        <div class="form-divider"></div>
+
+        <!-- Dettagli evento -->
+        <div class="form-section-title">📅 Dettagli dell'evento</div>
+
+        <div class="form-group">
+          <label>Data dell'evento *</label>
+          <input type="date" name="data_evento" required />
+        </div>
+        <div class="form-group">
+          <label>Luogo / Venue *</label>
+          <input type="text" name="luogo" placeholder="Es: Piazza Garibaldi, Manduria" required />
+        </div>
+        <div class="form-group">
+          <label>Tipo di spazio</label>
+          <select name="tipo_spazio">
+            <option value="">Seleziona...</option>
+            <option>All'aperto</option>
+            <option>Indoor / Sala</option>
+            <option>Tendone / Gazebo</option>
+            <option>Teatro / Auditorium</option>
+            <option>Masseria / Villa</option>
+            <option>Altro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Numero di spettatori attesi</label>
+          <select name="spettatori">
+            <option value="">Seleziona...</option>
+            <option>Fino a 100</option>
+            <option>100 – 500</option>
+            <option>500 – 1.000</option>
+            <option>1.000 – 5.000</option>
+            <option>Oltre 5.000</option>
+          </select>
+        </div>
+
+        <!-- Tipo evento -->
+        <div class="form-group full">
+          <label>Tipo di evento</label>
+          <div class="tipo-grid">
+            <label class="tipo-item"><input type="checkbox" name="evento[]" value="Concerto"><div class="check-box"></div><span>🎤 Concerto</span></label>
+            <label class="tipo-item"><input type="checkbox" name="evento[]" value="Festival"><div class="check-box"></div><span>🎪 Festival</span></label>
+            <label class="tipo-item"><input type="checkbox" name="evento[]" value="Fiera"><div class="check-box"></div><span>🏛️ Fiera</span></label>
+            <label class="tipo-item"><input type="checkbox" name="evento[]" value="Congresso"><div class="check-box"></div><span>🎙️ Congresso</span></label>
+            <label class="tipo-item"><input type="checkbox" name="evento[]" value="Matrimonio"><div class="check-box"></div><span>💍 Matrimonio</span></label>
+            <label class="tipo-item"><input type="checkbox" name="evento[]" value="Sfilata"><div class="check-box"></div><span>👗 Sfilata</span></label>
+            <label class="tipo-item"><input type="checkbox" name="evento[]" value="Saggio danza"><div class="check-box"></div><span>🩰 Saggio danza</span></label>
+            <label class="tipo-item"><input type="checkbox" name="evento[]" value="Evento sportivo"><div class="check-box"></div><span>⚽ Evento sportivo</span></label>
+            <label class="tipo-item"><input type="checkbox" name="evento[]" value="Mostra"><div class="check-box"></div><span>🖼️ Mostra</span></label>
+            <label class="tipo-item"><input type="checkbox" name="evento[]" value="Altro"><div class="check-box"></div><span>➕ Altro</span></label>
+          </div>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <!-- Servizi -->
+        <div class="form-section-title">🔧 Servizi richiesti</div>
+        <div class="form-group full">
+          <label>Seleziona i servizi di cui hai bisogno</label>
+          <div class="servizi-row">
+            <label class="servizio-tag"><input type="checkbox" name="servizi[]" value="Audio"><span>🔊 Audio</span></label>
+            <label class="servizio-tag"><input type="checkbox" name="servizi[]" value="Luci"><span>💡 Luci</span></label>
+            <label class="servizio-tag"><input type="checkbox" name="servizi[]" value="Video / LED Wall"><span>🎬 Video / LED Wall</span></label>
+            <label class="servizio-tag"><input type="checkbox" name="servizi[]" value="Palco"><span>🏗️ Palco</span></label>
+            <label class="servizio-tag"><input type="checkbox" name="servizi[]" value="Americana / Truss"><span>⚙️ Americana / Truss</span></label>
+            <label class="servizio-tag"><input type="checkbox" name="servizi[]" value="Gazebo / Copertura"><span>⛺ Gazebo / Copertura</span></label>
+            <label class="servizio-tag"><input type="checkbox" name="servizi[]" value="Regia video"><span>🎥 Regia video</span></label>
+            <label class="servizio-tag"><input type="checkbox" name="servizi[]" value="Tecnico in loco"><span>👨‍🔧 Tecnico in loco</span></label>
+          </div>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <!-- Note -->
+        <div class="form-section-title">📝 Note aggiuntive</div>
+        <div class="form-group full">
+          <label>Descrivi il tuo evento o aggiungi richieste specifiche</label>
+          <textarea name="note" placeholder="Raccontaci il tuo progetto: artisti, budget indicativo, esigenze particolari..."></textarea>
+        </div>
+
+      </div><!-- /form-grid -->
+
+      <button type="submit" class="btn-submit">📩 Invia Richiesta di Preventivo</button>
+    </form>
+  </div>
+</div>
+
+<!-- Footer social -->
+<div class="footer-social">
+  <div class="social-icons">
+    <a href="https://www.instagram.com/artemusic_sound_light" target="_blank" title="Instagram">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/artemusicsoundlight" target="_blank" title="Facebook">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    </a>
+  </div>
+  <p>© 2025 Artemusic Sound & Light – Manduria (TA)</p>
+</div>
+
+<script>
+  const hamburger  = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+</script>
+</body>
+</html>
