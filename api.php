@@ -34,11 +34,14 @@ if (preg_match('#/documenti/#i', $requestUri)) {
     exit('Accesso negato');
 }
 
-// Sessione sicura
+// Sessione sicura – rileva HTTPS automaticamente
+$isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+           || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+           || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443);
 session_set_cookie_params([
     'lifetime' => 86400,      // 24 ore
     'path'     => '/',
-    'secure'   => false,      // true se HTTPS
+    'secure'   => $isHttps,   // true su HTTPS (one.com, Render, ecc.)
     'httponly' => true,
     'samesite' => 'Lax'
 ]);
@@ -433,7 +436,10 @@ function getRole(): ?string {
     // 1. Cookie di sessione
     if (!empty($_SESSION['role'])) return $_SESSION['role'];
     // 2. Bearer token (header Authorization)
+    // Prova tutte le fonti (Apache shared hosting può strippare l'header)
     $auth = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+    if (!$auth) $auth = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
+    if (!$auth) $auth = $_SERVER['HTTP_X_HTTP_AUTHORIZATION'] ?? '';
     if (!$auth && function_exists('apache_request_headers')) {
         $headers = apache_request_headers();
         $auth = $headers['Authorization'] ?? '';

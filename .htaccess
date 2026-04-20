@@ -13,6 +13,9 @@ RedirectMatch 403 ^/data/
 # ── Redirige /api/* → api.php ──
 RewriteEngine On
 
+# Passa Authorization header a PHP (necessario per Bearer token su Apache shared hosting)
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 # Consenti accesso diretto a file statici esistenti (HTML, CSS, JS, immagini, font)
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteCond %{REQUEST_URI} !^/api/
