@@ -412,31 +412,38 @@
 // ────────────────────────────────────────────
 //  STATE
 // ────────────────────────────────────────────
-let currentRole  = null;       // 'admin' | 'user'
-let currentPath  = '';         // percorso relativo nella cartella documenti
-let modalMode    = null;       // 'mkdir' | 'rename'
-let renameTarget = null;       // path del file da rinominare
-let _savedPw = '';  // password salvata per ri-autenticazione automatica
+let currentRole  = null;
+let currentPath  = '';
+let modalMode    = null;
+let renameTarget = null;
+let _authToken   = localStorage.getItem('_art_tok') || '';
 
 // ────────────────────────────────────────────
-//  HELPER: fetch con cookie di sessione PHP
+//  HELPER: fetch con Bearer token da localStorage
 // ────────────────────────────────────────────
 function apiFetch(url, opts={}){
-  opts.credentials = 'include';  // invia sempre i cookie di sessione
+  opts.credentials = 'include';
   opts.headers = opts.headers || {};
+  if(_authToken) opts.headers['Authorization'] = 'Bearer ' + _authToken;
   return fetch(url, opts);
 }
 
 async function ensureSession(){
-  if(!_savedPw) return false;
+  const pw = localStorage.getItem('_art_pw');
+  if(!pw) return false;
   try{
     const r = await fetch('/api.php/login',{
       method:'POST', credentials:'include',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({password:_savedPw})
+      body: JSON.stringify({password:pw})
     });
     const d = await r.json();
-    return d.ok || false;
+    if(d.ok){
+      _authToken = d.token || '';
+      localStorage.setItem('_art_tok', _authToken);
+      return true;
+    }
+    return false;
   } catch(e){ return false; }
 }
 
@@ -444,6 +451,7 @@ async function ensureSession(){
 //  INIT – controlla se già loggato
 // ────────────────────────────────────────────
 (async () => {
+  if(!_authToken) return;
   try {
     const r = await apiFetch('/api.php/me');
     const d = await r.json();
@@ -451,6 +459,17 @@ async function ensureSession(){
       currentRole = d.role;
       showFM();
       loadFiles(currentPath);
+    } else {
+      // Token scaduto – ri-login automatico
+      const ok = await ensureSession();
+      if(ok){
+        const r2 = await apiFetch('/api.php/me');
+        const d2 = await r2.json();
+        if(d2.ok){ currentRole = d2.role; showFM(); loadFiles(''); }
+      } else {
+        localStorage.removeItem('_art_tok');
+        localStorage.removeItem('_art_pw');
+      }
     }
   } catch(e) {}
 })();
@@ -469,14 +488,17 @@ async function doLogin(){
   err.textContent = '';
   if (!pw) { err.textContent = 'Inserisci la password'; return; }
   try {
-    const r  = await fetch('/api.php/login', { credentials:'include',
-      method:'POST', headers:{'Content-Type':'application/json'},
+    const r = await fetch('/api.php/login', {
+      method:'POST', credentials:'include',
+      headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ password: pw })
     });
-    const d  = await r.json();
+    const d = await r.json();
     if (d.ok) {
-      currentRole = d.role;
-      _savedPw    = pw;
+      currentRole  = d.role;
+      _authToken   = d.token || '';
+      localStorage.setItem('_art_tok', _authToken);
+      localStorage.setItem('_art_pw',  pw);
       showFM();
       loadFiles('');
     } else {
@@ -489,6 +511,8 @@ async function doLogin(){
 
 async function doLogout(){
   await apiFetch('/api.php/logout', { method:'POST' });
+  localStorage.removeItem('_art_tok');
+  localStorage.removeItem('_art_pw');
   location.reload();
 }
 
@@ -674,7 +698,8 @@ async function uploadFiles(files){
       };
       xhr.onerror = () => reject(new Error('Errore di rete'));
       xhr.open('POST', '/api.php/upload');
-      xhr.withCredentials = true;  // invia cookie di sessione PHP
+      xhr.withCredentials = true;
+      if(_authToken) xhr.setRequestHeader('Authorization', 'Bearer ' + _authToken);
       xhr.send(formData);
     });
     showToast(`✅ ${files.length} file caricati`, 'ok');
