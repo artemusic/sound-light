@@ -434,7 +434,7 @@ function apiFetch(url, opts={}){
 async function ensureSession(){
   if(!_savedPw) return false;
   try{
-    const r = await fetch('/api/login',{
+    const r = await fetch('/api.php/login',{
       method:'POST', credentials:'include',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({password:_savedPw})
@@ -450,7 +450,7 @@ async function ensureSession(){
 // ────────────────────────────────────────────
 (async () => {
   try {
-    const r = await apiFetch('/api/me');
+    const r = await apiFetch('/api.php/me');
     const d = await r.json();
     if (d.ok) {
       currentRole = d.role;
@@ -474,7 +474,7 @@ async function doLogin(){
   err.textContent = '';
   if (!pw) { err.textContent = 'Inserisci la password'; return; }
   try {
-    const r  = await fetch('/api/login', { credentials:'include',
+    const r  = await fetch('/api.php/login', { credentials:'include',
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ password: pw })
     });
@@ -494,7 +494,7 @@ async function doLogin(){
 }
 
 async function doLogout(){
-  await apiFetch('/api/logout', { method:'POST' });
+  await apiFetch('/api.php/logout', { method:'POST' });
   location.reload();
 }
 
@@ -528,7 +528,7 @@ async function loadFiles(relPath){
   currentPath = relPath || '';
   renderBreadcrumb();
   try {
-    const r = await apiFetch('/api/files?path=' + encodeURIComponent(currentPath));
+    const r = await apiFetch('/api.php/files?path=' + encodeURIComponent(currentPath));
     const d = await r.json();
     if (!d.ok) { showToast('Errore caricamento: ' + d.message, 'err'); return; }
     renderGrid(d.entries);
@@ -615,7 +615,7 @@ function renderBreadcrumb(){
 //  DOWNLOAD
 // ────────────────────────────────────────────
 function downloadFile(filePath, name){
-  const url = '/api/download?path=' + encodeURIComponent(filePath);
+  const url = '/api.php/download?path=' + encodeURIComponent(filePath);
   const a = document.createElement('a');
   a.href = url; a.download = name; a.style.display = 'none';
   document.body.appendChild(a); a.click(); a.remove();
@@ -625,7 +625,7 @@ function downloadFile(filePath, name){
 //  SHARE via WhatsApp / Email (usa token temporaneo)
 // ────────────────────────────────────────────
 async function getShareUrl(filePath){
-  const r = await apiFetch('/api/share', {
+  const r = await apiFetch('/api.php/share', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ path: filePath })
   });
@@ -679,7 +679,7 @@ async function uploadFiles(files){
         else reject(new Error('Upload fallito: ' + xhr.status));
       };
       xhr.onerror = () => reject(new Error('Errore di rete'));
-      xhr.open('POST', '/api/upload');
+      xhr.open('POST', '/api.php/upload');
       xhr.withCredentials = true;
       if(_authToken) xhr.setRequestHeader('Authorization', 'Bearer ' + _authToken);
       xhr.send(formData);
@@ -742,13 +742,13 @@ async function modalConfirm(){
   closeModal();
 
   if (modalMode === 'mkdir') {
-    let r = await apiFetch('/api/mkdir', {
+    let r = await apiFetch('/api.php/mkdir', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ path: currentPath, name: val })
     });
     if (r.status === 401 || r.status === 403) {
       await ensureSession();
-      r = await apiFetch('/api/mkdir', {
+      r = await apiFetch('/api.php/mkdir', {
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ path: currentPath, name: val })
       });
@@ -759,7 +759,7 @@ async function modalConfirm(){
   }
 
   if (modalMode === 'rename') {
-    let r = await apiFetch('/api/rename', {
+    let r = await apiFetch('/api.php/rename', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ path: renameTarget, newName: val })
     });
@@ -774,7 +774,7 @@ async function modalConfirm(){
 // ────────────────────────────────────────────
 async function deleteItem(filePath, name){
   if (!confirm(`Eliminare definitivamente "${name}"?`)) return;
-  const r = await apiFetch('/api/delete?path=' + encodeURIComponent(filePath), { method:'DELETE' });
+  const r = await apiFetch('/api.php/delete?path=' + encodeURIComponent(filePath), { method:'DELETE' });
   const d = await r.json();
   if (d.ok) { showToast('🗑 Eliminato', 'ok'); loadFiles(currentPath); }
   else      { showToast('Errore: ' + d.message, 'err'); }

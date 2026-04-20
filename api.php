@@ -57,9 +57,24 @@ header('X-Content-Type-Options: nosniff');
 // ══════════════════════════════════════════════
 $method = $_SERVER['REQUEST_METHOD'];
 $path   = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-// Rimuovi prefisso /api dalla path
-$route  = preg_replace('#^/api#', '', $path);
-$route  = rtrim($route, '/');
+
+// Supporta sia /api/login (via .htaccess rewrite) che /api.php/login (PATH_INFO) che ?route=/login
+// one.com shared hosting: mod_rewrite potrebbe non funzionare, usiamo PATH_INFO
+$route = '';
+if (!empty($_SERVER['PATH_INFO'])) {
+    // Chiamata tipo /api.php/login
+    $route = rtrim($_SERVER['PATH_INFO'], '/');
+} elseif (!empty($_GET['route'])) {
+    // Fallback: /api.php?route=/login
+    $route = '/' . ltrim($_GET['route'], '/');
+    $route = rtrim($route, '/');
+} else {
+    // Via .htaccess rewrite: /api/login
+    $route = preg_replace('#^/api\.php#', '', $path);
+    $route = preg_replace('#^/api#', '', $route);
+    $route = rtrim($route, '/');
+}
+if (empty($route)) $route = '/';
 
 // Body JSON
 $rawBody = file_get_contents('php://input');
