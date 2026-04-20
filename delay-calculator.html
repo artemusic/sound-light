@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Calcolatore Delay Sub – Artemusic</title>
+  <title>Calcolatore Delay & Polarità Sub – Artemusic</title>
   <link rel="icon" href="favicon.ico"/>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
   <style>
@@ -11,10 +11,10 @@
     :root{
       --red:#e81c2e;--red-dark:#b51020;
       --white:#ffffff;--black:#0a0a0a;
-      --glass:rgba(10,10,10,0.72);
+      --glass:rgba(10,10,10,0.82);
       --glass2:rgba(255,255,255,0.04);
       --glass-border:rgba(255,255,255,0.10);
-      --green:#00c97a;--yellow:#f5c400;--blue:#2196f3;
+      --green:#00c97a;--yellow:#f5c400;--blue:#2196f3;--orange:#ff7a00;
     }
     html,body{min-height:100%;font-family:'Montserrat',sans-serif;color:var(--white);background:var(--black);}
     body{padding-top:80px;}
@@ -40,77 +40,98 @@
     .hero{text-align:center;padding:60px 20px 30px;background:linear-gradient(180deg,rgba(232,28,46,0.08) 0%,transparent 100%);}
     .hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:2px;text-transform:uppercase;}
     .hero h1 span{color:var(--red);}
-    .hero p{margin-top:12px;font-size:14px;color:rgba(255,255,255,0.55);letter-spacing:0.5px;max-width:600px;margin-inline:auto;}
+    .hero p{margin-top:12px;font-size:14px;color:rgba(255,255,255,0.55);letter-spacing:0.5px;max-width:660px;margin-inline:auto;line-height:1.7;}
 
     /* ── LAYOUT ── */
     .container{max-width:1100px;margin:0 auto;padding:0 20px 80px;}
 
     /* ── CARD ── */
     .card{background:var(--glass2);border:1px solid var(--glass-border);border-radius:16px;padding:28px 32px;margin-bottom:24px;}
+    @media(max-width:600px){.card{padding:20px 16px;}}
     .card-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
     .card-title::before{content:'';display:block;width:3px;height:18px;background:var(--red);border-radius:2px;}
 
     /* ── FORM GRID ── */
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
     .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
-    @media(max-width:600px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+    .grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;}
+    @media(max-width:700px){.grid-3,.grid-4{grid-template-columns:1fr 1fr;}}
+    @media(max-width:480px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
     .field{display:flex;flex-direction:column;gap:6px;}
     .field label{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.55);}
     .field input,.field select{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:white;padding:10px 14px;font-family:inherit;font-size:14px;font-weight:600;outline:none;transition:border-color 0.2s;}
     .field input:focus,.field select:focus{border-color:var(--red);}
     .field select option{background:#1a1a1a;color:white;}
-    .unit{font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px;}
+    .unit{font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px;line-height:1.5;}
 
     /* ── TABS CONFIG SUB ── */
-    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
-    .tab-btn{padding:8px 18px;border-radius:50px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:rgba(255,255,255,0.6);font-family:inherit;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+    .tab-btn{padding:9px 16px;border-radius:50px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:rgba(255,255,255,0.6);font-family:inherit;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
     .tab-btn.active{background:var(--red);border-color:var(--red);color:white;}
     .tab-btn:hover:not(.active){border-color:var(--red);color:var(--red);}
 
     /* ── CALC BTN ── */
-    .btn-calc{width:100%;padding:16px;background:var(--red);border:none;border-radius:12px;color:white;font-family:inherit;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background 0.2s;margin-top:8px;}
+    .btn-calc{width:100%;padding:18px;background:var(--red);border:none;border-radius:12px;color:white;font-family:inherit;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background 0.2s;margin-top:8px;}
     .btn-calc:hover{background:var(--red-dark);}
+    .btn-calc:active{transform:scale(0.99);}
 
     /* ── RISULTATI ── */
     #results{display:none;}
-    .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:20px;}
-    .result-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:12px;padding:20px;text-align:center;}
+    .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:20px;}
+    .result-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:12px;padding:18px;text-align:center;}
     .result-box.highlight{border-color:var(--red);background:rgba(232,28,46,0.08);}
     .result-box.green{border-color:var(--green);background:rgba(0,201,122,0.08);}
     .result-box.yellow{border-color:var(--yellow);background:rgba(245,196,0,0.08);}
     .result-box.blue{border-color:var(--blue);background:rgba(33,150,243,0.08);}
+    .result-box.orange{border-color:var(--orange);background:rgba(255,122,0,0.08);}
     .result-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:8px;}
     .result-value{font-size:2rem;font-weight:900;line-height:1;}
     .result-unit{font-size:12px;color:rgba(255,255,255,0.45);margin-top:4px;}
     .result-note{font-size:11px;color:rgba(255,255,255,0.4);margin-top:6px;line-height:1.5;}
 
     /* ── TABELLA ISTRUZIONI ── */
-    .sub-table{width:100%;border-collapse:collapse;margin-top:12px;}
-    .sub-table th{background:rgba(232,28,46,0.15);color:var(--red);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.08);}
-    .sub-table td{padding:12px 14px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.05);vertical-align:middle;}
+    .sub-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px;}
+    .sub-table th{background:rgba(232,28,46,0.15);color:var(--red);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 12px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.08);}
+    .sub-table td{padding:12px 12px;border-bottom:1px solid rgba(255,255,255,0.05);vertical-align:middle;}
     .sub-table tr:last-child td{border-bottom:none;}
     .sub-table tr:hover td{background:rgba(255,255,255,0.03);}
-    .polarity-pos{color:var(--green);font-weight:700;font-size:16px;}
-    .polarity-neg{color:var(--red);font-weight:700;font-size:16px;}
-    .delay-val{font-weight:700;color:var(--yellow);font-size:15px;}
+    .polarity-pos{color:var(--green);font-weight:700;font-size:15px;}
+    .polarity-neg{color:var(--red);font-weight:700;font-size:15px;}
+    .delay-val{font-weight:700;color:var(--yellow);font-size:14px;}
+    .sub-num-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.08);font-weight:700;font-size:12px;}
 
     /* ── DIAGRAM ── */
     .diagram-wrap{overflow-x:auto;margin-top:16px;}
-    canvas{display:block;margin:0 auto;border-radius:10px;background:rgba(255,255,255,0.03);}
+    canvas{display:block;margin:0 auto;border-radius:10px;}
 
     /* ── INFO BOX ── */
-    .info-box{background:rgba(33,150,243,0.08);border:1px solid rgba(33,150,243,0.25);border-radius:10px;padding:16px 20px;font-size:12px;color:rgba(255,255,255,0.65);line-height:1.7;margin-top:16px;}
-    .info-box strong{color:var(--blue);}
+    .info-box{background:rgba(33,150,243,0.07);border:1px solid rgba(33,150,243,0.2);border-radius:10px;padding:16px 20px;font-size:12px;color:rgba(255,255,255,0.65);line-height:1.8;margin-top:16px;}
+    .info-box strong{color:#70c8ff;}
 
-    /* ── DESCRIZIONE CONFIG ── */
+    /* ── CONFIG DESC ── */
     .config-desc{background:rgba(255,255,255,0.03);border-left:3px solid var(--red);border-radius:0 8px 8px 0;padding:14px 18px;font-size:12px;color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:20px;}
     .config-desc strong{color:white;}
 
     /* ── WARNING ── */
-    .warn{background:rgba(245,196,0,0.08);border:1px solid rgba(245,196,0,0.3);border-radius:10px;padding:12px 16px;font-size:12px;color:var(--yellow);margin-top:12px;}
+    .warn{background:rgba(245,196,0,0.08);border:1px solid rgba(245,196,0,0.3);border-radius:10px;padding:12px 16px;font-size:12px;color:var(--yellow);margin-top:12px;line-height:1.7;}
 
-    /* ── SEPARATORE ── */
+    /* ── SEP ── */
     .sep{border:none;border-top:1px solid rgba(255,255,255,0.06);margin:8px 0 20px;}
+
+    /* ── SPEC BADGE ── */
+    .spec-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+    .spec-badge{padding:5px 12px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.55);}
+
+    /* ── SECTION LABEL ── */
+    .section-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:12px;margin-top:16px;}
+
+    /* ── HIGHLIGHT FORMULA ── */
+    .formula-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px 16px;font-size:12px;color:rgba(255,255,255,0.5);line-height:1.8;margin-top:10px;font-family:monospace;}
+    .formula-box span{color:var(--yellow);font-weight:700;}
+
+    /* ── PRINT BTN ── */
+    .btn-print{padding:10px 20px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:rgba(255,255,255,0.7);font-family:inherit;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-top:12px;}
+    .btn-print:hover{background:rgba(255,255,255,0.1);color:white;}
   </style>
 </head>
 <body>
@@ -136,73 +157,112 @@
 <!-- HERO -->
 <div class="hero">
   <h1>Calcolatore <span>Delay & Polarità</span></h1>
-  <p>Calcolo preciso di delay e polarità per sistemi JBL SRX900 — satelliti, subwoofer e configurazioni avanzate</p>
+  <p>Strumento professionale per il calcolo preciso di delay e polarità — sistemi JBL SRX900.<br/>
+  Configura satelliti, subwoofer e ottieni in un click le impostazioni per ogni diffusore.</p>
 </div>
 
 <div class="container">
 
-  <!-- ① SISTEMA -->
+  <!-- ① SISTEMA SPEAKER -->
   <div class="card">
-    <div class="card-title">① Sistema</div>
+    <div class="card-title">① Diffusori</div>
     <div class="grid-3">
       <div class="field">
-        <label>Satellite</label>
-        <select id="sat-model">
+        <label>Satellite / Top</label>
+        <select id="sat-model" onchange="updateSpecs()">
           <option value="srx910">JBL SRX910LA (2×10")</option>
+          <option value="srx912">JBL SRX912LA (2×12")</option>
         </select>
       </div>
       <div class="field">
         <label>Subwoofer</label>
-        <select id="sub-model">
+        <select id="sub-model" onchange="updateSpecs()">
           <option value="srx928">JBL SRX928S (2×18")</option>
           <option value="srx918">JBL SRX918S (1×18")</option>
         </select>
       </div>
       <div class="field">
-        <label>Velocità del suono</label>
+        <label>Temperatura aria</label>
         <select id="speed">
-          <option value="343">343 m/s (20°C)</option>
-          <option value="340">340 m/s (15°C)</option>
-          <option value="346">346 m/s (25°C)</option>
-          <option value="350">350 m/s (caldo, estate)</option>
+          <option value="340">340 m/s — 15 °C</option>
+          <option value="343" selected>343 m/s — 20 °C</option>
+          <option value="346">346 m/s — 25 °C</option>
+          <option value="350">350 m/s — 35 °C (estate)</option>
         </select>
       </div>
     </div>
+    <div id="spec-display" class="spec-row"></div>
   </div>
 
-  <!-- ② SATELLITI -->
+  <!-- ② GEOMETRIA SISTEMA -->
   <div class="card">
-    <div class="card-title">② Satelliti</div>
-    <div class="grid-3">
+    <div class="card-title">② Geometria dell'impianto</div>
+
+    <div class="section-label">📡 Satelliti</div>
+    <div class="grid-4">
       <div class="field">
         <label>N° casse per lato</label>
         <input type="number" id="sat-count" value="4" min="1" max="12"/>
-        <span class="unit">pezzi</span>
+        <span class="unit">pezzi per stack</span>
       </div>
       <div class="field">
-        <label>Distanza tra casse (orizzontale)</label>
+        <label>Distanza tra i 2 stack (L↔R)</label>
         <input type="number" id="sat-spacing" value="10" min="0" step="0.5"/>
-        <span class="unit">metri (distanza tra i due stack)</span>
+        <span class="unit">m orizzontale sinistra↔destra</span>
       </div>
       <div class="field">
-        <label>Altezza prima cassa dal suolo</label>
+        <label>Altezza prima cassa (più bassa)</label>
         <input type="number" id="sat-height" value="3" min="0" step="0.1"/>
-        <span class="unit">metri</span>
+        <span class="unit">m dal suolo al centro acustico</span>
       </div>
       <div class="field">
-        <label>Distanza stack → palco (profondità)</label>
+        <label>Profondità stack dal palco</label>
         <input type="number" id="sat-dist-stage" value="5" min="0" step="0.5"/>
-        <span class="unit">metri</span>
+        <span class="unit">m (lato del palco verso platea)</span>
       </div>
+    </div>
+
+    <div class="section-label" style="margin-top:20px;">👥 Platea</div>
+    <div class="grid-3">
       <div class="field">
-        <label>Distanza palco → primo spettatore</label>
+        <label>Distanza palco → primo spett.</label>
         <input type="number" id="dist-front" value="2" min="0" step="0.5"/>
-        <span class="unit">metri</span>
+        <span class="unit">m dal bordo palco</span>
       </div>
       <div class="field">
-        <label>Distanza palco → fondo platea</label>
+        <label>Distanza palco → ultimo spett.</label>
         <input type="number" id="dist-back" value="30" min="1" step="1"/>
-        <span class="unit">metri</span>
+        <span class="unit">m (fondo platea)</span>
+      </div>
+      <div class="field">
+        <label>Altezza orecchie spettatore</label>
+        <input type="number" id="ear-height" value="1.6" min="1" max="2.2" step="0.1"/>
+        <span class="unit">m (default 1.6 m in piedi)</span>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:20px;">🔊 Posizione Sub rispetto ai Satelliti</div>
+    <div class="grid-3">
+      <div class="field">
+        <label>Posizione orizzontale sub</label>
+        <select id="sub-pos">
+          <option value="aligned">Allineati ai satelliti</option>
+          <option value="front">Avanzati verso la platea</option>
+          <option value="behind">Arretrati verso il palco</option>
+          <option value="center">Centrali (mono center stage)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Offset sub vs satellite</label>
+        <input type="number" id="sub-offset" value="0" min="0" max="15" step="0.5"/>
+        <span class="unit">m di distanza (es. 1 m avanzati)</span>
+      </div>
+      <div class="field">
+        <label>Altezza sub</label>
+        <select id="sub-height-mode">
+          <option value="ground">A terra (standard)</option>
+          <option value="elevated">Su piano rialzato</option>
+        </select>
       </div>
     </div>
   </div>
@@ -212,115 +272,137 @@
     <div class="card-title">③ Configurazione Subwoofer</div>
 
     <div class="tabs">
-      <button class="tab-btn active" onclick="setConfig('radiante')" id="tab-radiante">📡 Radiante</button>
+      <button class="tab-btn active" onclick="setConfig('radiante')"  id="tab-radiante">📡 Radiante</button>
       <button class="tab-btn" onclick="setConfig('cardioide')" id="tab-cardioide">🎯 Cardioide</button>
-      <button class="tab-btn" onclick="setConfig('endfire')" id="tab-endfire">🔥 End-Fire</button>
-      <button class="tab-btn" onclick="setConfig('arco')" id="tab-arco">🌗 Mezzo Arco</button>
+      <button class="tab-btn" onclick="setConfig('endfire')"  id="tab-endfire">🔥 End-Fire</button>
+      <button class="tab-btn" onclick="setConfig('arco')"     id="tab-arco">🌗 Mezzo Arco</button>
       <button class="tab-btn" onclick="setConfig('groundstack')" id="tab-groundstack">📦 Ground Stack</button>
     </div>
 
     <div id="config-desc" class="config-desc"></div>
 
-    <!-- Parametri specifici per config -->
+    <!-- Parametri END-FIRE -->
     <div id="params-endfire" style="display:none">
       <div class="grid-3">
         <div class="field">
-          <label>N° sub in linea (per lato)</label>
-          <input type="number" id="ef-count" value="2" min="2" max="6"/>
-          <span class="unit">pezzi per colonna</span>
+          <label>N° sub in linea per lato</label>
+          <input type="number" id="ef-count" value="4" min="2" max="8"/>
+          <span class="unit">totale per lato (es. 4 = 2+2)</span>
         </div>
         <div class="field">
-          <label>Distanza tra sub</label>
-          <input type="number" id="ef-spacing" value="1.0" min="0.3" max="3" step="0.1"/>
-          <span class="unit">metri (da frontale a frontale)</span>
+          <label>Distanza tra sub (fronte→fronte)</label>
+          <input type="number" id="ef-spacing" value="0.68" min="0.3" max="3" step="0.01"/>
+          <span class="unit">m — SRX928S depth = 0.68 m</span>
         </div>
         <div class="field">
-          <label>Sub "avanzati" verso palco</label>
-          <input type="number" id="ef-forward" value="1.0" min="0.1" max="5" step="0.1"/>
-          <span class="unit">metri rispetto ai sub posteriori</span>
+          <label>Sub "avanzati" (più vicini platea)</label>
+          <input type="number" id="ef-forward-count" value="2" min="1" max="4"/>
+          <span class="unit">pezzi sul fronte (verso platea)</span>
         </div>
+      </div>
+      <div class="formula-box" style="margin-top:12px;">
+        Principio End-Fire: il sub più avanzato (→platea) è il <span>riferimento delay=0</span>.<br/>
+        Ogni sub più arretrato riceve: <span>delay = n × (distanza_tra_sub ÷ c)</span><br/>
+        Questo crea un fronte d'onda direzionale verso la platea.
       </div>
     </div>
 
+    <!-- Parametri CARDIOIDE -->
     <div id="params-cardioide" style="display:none">
-      <div class="grid-2">
+      <div class="grid-3">
         <div class="field">
-          <label>N° sub frontali</label>
-          <input type="number" id="card-front" value="2" min="1" max="6"/>
-          <span class="unit">pezzi (rivolti verso platea)</span>
+          <label>N° sub frontali (→ platea)</label>
+          <input type="number" id="card-front" value="2" min="1" max="8"/>
+          <span class="unit">rivolti verso la platea</span>
         </div>
         <div class="field">
-          <label>N° sub posteriori (invertiti)</label>
+          <label>N° sub posteriori (→ palco)</label>
           <input type="number" id="card-rear" value="1" min="1" max="4"/>
-          <span class="unit">pezzi (rivolti verso palco)</span>
+          <span class="unit">invertiti, rivolti verso il palco</span>
         </div>
+        <div class="field">
+          <label>Distanza frontale ↔ posteriore</label>
+          <input type="number" id="card-dist" value="0.68" min="0.3" max="2" step="0.01"/>
+          <span class="unit">m — uguale alla depth del cabinet</span>
+        </div>
+      </div>
+      <div class="formula-box" style="margin-top:12px;">
+        Principio Cardioide: sub posteriori <span>invertiti di polarità (−)</span> + delay = depth cabinet.<br/>
+        Cancellazione posteriore ~15–20 dB. Riduzione feedback sul palco.<br/>
+        Formula delay posteriore: <span>delay_post = align_sat + (depth ÷ c × 1000)</span>
       </div>
     </div>
 
+    <!-- Parametri MEZZO ARCO -->
     <div id="params-arco" style="display:none">
-      <div class="grid-2">
+      <div class="grid-3">
         <div class="field">
-          <label>N° sub per lato</label>
-          <input type="number" id="arc-count" value="3" min="2" max="8"/>
-          <span class="unit">pezzi</span>
+          <label>N° sub totali in arco</label>
+          <input type="number" id="arc-count" value="6" min="3" max="12"/>
+          <span class="unit">pezzi disposti a semicerchio</span>
         </div>
         <div class="field">
           <label>Raggio arco</label>
-          <input type="number" id="arc-radius" value="3" min="1" max="10" step="0.5"/>
-          <span class="unit">metri</span>
+          <input type="number" id="arc-radius" value="4" min="1" max="15" step="0.5"/>
+          <span class="unit">m dal centro dell'arco</span>
         </div>
+        <div class="field">
+          <label>Angolo totale arco</label>
+          <select id="arc-angle">
+            <option value="90">90° (quarto di cerchio)</option>
+            <option value="120">120°</option>
+            <option value="150">150°</option>
+            <option value="180" selected>180° (semicerchio)</option>
+          </select>
+        </div>
+      </div>
+      <div class="formula-box" style="margin-top:12px;">
+        Principio Mezzo Arco: ogni sub ha delay calcolato per <span>allinearsi al sub centrale</span>.<br/>
+        I sub laterali (più vicini al punto di ascolto centrale) ricevono <span>delay aggiuntivo</span>.<br/>
+        Formula: <span>delay_rel = (R − R·cos(θ)) ÷ c × 1000</span>
       </div>
     </div>
 
+    <!-- Parametri RADIANTE -->
     <div id="params-radiante" style="display:none">
       <div class="grid-2">
         <div class="field">
           <label>N° sub totali</label>
-          <input type="number" id="rad-count" value="4" min="1" max="12"/>
-          <span class="unit">pezzi in fila</span>
+          <input type="number" id="rad-count" value="4" min="1" max="16"/>
+          <span class="unit">tutti con stessa polarità (+)</span>
         </div>
         <div class="field">
-          <label>Distanza sub → satellite (verticale)</label>
-          <input type="number" id="rad-dist-sat" value="0" min="0" max="5" step="0.1"/>
-          <span class="unit">metri (0 = allineati)</span>
-        </div>
-      </div>
-    </div>
-
-    <div id="params-groundstack" style="display:none">
-      <div class="grid-2">
-        <div class="field">
-          <label>N° sub a terra</label>
-          <input type="number" id="gs-count" value="2" min="1" max="8"/>
-          <span class="unit">pezzi per lato</span>
-        </div>
-        <div class="field">
-          <label>Satellite sopra i sub?</label>
-          <select id="gs-sat-on-top">
-            <option value="yes">Sì – satellite in cima ai sub</option>
-            <option value="no">No – satellite su stativi</option>
+          <label>Disposizione</label>
+          <select id="rad-layout">
+            <option value="line">In fila (Line Array)</option>
+            <option value="cluster">Cluster / Stacked</option>
           </select>
         </div>
       </div>
     </div>
 
-    <hr class="sep"/>
-
-    <!-- Posizione sub rispetto ai satelliti -->
-    <div class="grid-2">
-      <div class="field">
-        <label>Posizione sub orizzontale rispetto ai satellite</label>
-        <select id="sub-pos">
-          <option value="aligned">Allineati ai satelliti</option>
-          <option value="front">Avanzati verso il palco</option>
-          <option value="behind">Arretrati rispetto ai satelliti</option>
-          <option value="center">Centrali (mono center)</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Offset orizzontale sub vs satellite</label>
-        <input type="number" id="sub-offset" value="0" min="0" max="10" step="0.1"/>
-        <span class="unit">metri (positivo = avanzati verso palco)</span>
+    <!-- Parametri GROUND STACK -->
+    <div id="params-groundstack" style="display:none">
+      <div class="grid-3">
+        <div class="field">
+          <label>N° sub a terra per lato</label>
+          <input type="number" id="gs-count" value="2" min="1" max="8"/>
+          <span class="unit">pezzi impilati</span>
+        </div>
+        <div class="field">
+          <label>Satellite sopra i sub?</label>
+          <select id="gs-sat-on-top">
+            <option value="yes">Sì — satellite in cima ai sub</option>
+            <option value="no">No — satellite su stativo</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Orientamento sub</label>
+          <select id="gs-orientation">
+            <option value="front">Frontale (normale)</option>
+            <option value="side">Laterale (90°)</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
@@ -331,19 +413,25 @@
   <!-- ④ RISULTATI -->
   <div id="results">
     <div class="card" style="margin-top:24px;">
-      <div class="card-title">④ Risultati</div>
+      <div class="card-title" style="justify-content:space-between;">
+        <span>④ Risultati</span>
+        <button class="btn-print" onclick="window.print()">🖨 Stampa / Salva PDF</button>
+      </div>
 
       <div class="result-grid" id="result-boxes"></div>
 
       <hr class="sep"/>
 
-      <div class="card-title" style="margin-bottom:12px;">Impostazioni per ogni subwoofer</div>
+      <div class="card-title" style="margin-bottom:4px;">Impostazioni per ogni Sub</div>
+      <p style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:14px;">
+        ⚙️ Imposta questi valori sul display posteriore del sub tramite la <strong style="color:rgba(255,255,255,0.5)">JBL Performance App</strong> o il pannello LCD integrato.
+      </p>
       <div style="overflow-x:auto;">
         <table class="sub-table" id="sub-table">
           <thead>
             <tr>
-              <th>Sub #</th>
-              <th>Posizione</th>
+              <th>#</th>
+              <th>Posizione / Ruolo</th>
               <th>Polarità</th>
               <th>Delay da impostare</th>
               <th>Dove impostarlo</th>
@@ -356,9 +444,9 @@
 
       <hr class="sep"/>
 
-      <div class="card-title" style="margin-bottom:12px;">Diagramma configurazione</div>
+      <div class="card-title" style="margin-bottom:12px;">Schema configurazione</div>
       <div class="diagram-wrap">
-        <canvas id="diagram" width="700" height="200"></canvas>
+        <canvas id="diagram" width="800" height="220"></canvas>
       </div>
 
       <div id="result-info" class="info-box" style="margin-top:16px;"></div>
@@ -369,109 +457,145 @@
 </div><!-- /container -->
 
 <script>
-// ══════════════════════════════════════════
-// DATI TECNICI JBL SRX900
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// DATI TECNICI JBL SRX900 — valori ufficiali
+// ══════════════════════════════════════════════════════
 const SPEAKERS = {
   srx910: {
     name: 'JBL SRX910LA',
+    desc: '2-Way Line Array, 2×10"',
     type: 'satellite',
-    acousticCenter: 0.25,   // m dal frontale (centro acustico approssimativo 2×10")
-    internalDelay: 1.5,     // ms delay interno DSP (processing latency)
+    // Centro acustico: in un cabinet line array 2×10" il centro acustico
+    // si trova circa a 20-25 cm dal frontale (centro geometrico dei woofer)
+    acousticCenter: 0.22,   // m dal frontale (misurato ca. 220mm)
+    // Latenza DSP interna: JBL SRX910LA ha 1.5ms di processing latency
+    internalDelay: 1.5,     // ms (DSP processing latency)
     freqRange: '53Hz–19kHz',
-    maxSPL: 135,
+    maxSPL: 135,            // dB peak (spec ufficiale)
     sensitivity: 98,        // dB/1m/1W
-    depth: 0.42             // profondità cabinet m
+    depth: 0.43,            // m (profondità cabinet)
+    width: 0.29,            // m
+    height: 0.198,          // m (per elemento singolo)
+    weight: 22.7            // kg
+  },
+  srx912: {
+    name: 'JBL SRX912LA',
+    desc: '2-Way Line Array, 2×12"',
+    type: 'satellite',
+    acousticCenter: 0.27,
+    internalDelay: 1.5,
+    freqRange: '50Hz–18kHz',
+    maxSPL: 136,
+    sensitivity: 99,
+    depth: 0.50,
+    width: 0.35,
+    height: 0.228,
+    weight: 30
   },
   srx928: {
     name: 'JBL SRX928S',
+    desc: 'Dual 18" Powered Sub',
     type: 'sub',
-    acousticCenter: 0.45,   // m dal frontale (centro acustico 2×18")
-    internalDelay: 2.0,     // ms delay interno DSP
+    // Centro acustico: in un dual-18 il centro acustico si trova
+    // approssimativamente al centro geometrico del cabinet ≈ 34cm dal frontale
+    acousticCenter: 0.34,   // m dal frontale
+    // Latenza DSP interna SRX928S: ~2ms (Class-D amplifier + DSP)
+    internalDelay: 2.0,     // ms
     freqRange: '31Hz–100Hz',
-    maxSPL: 140,
-    sensitivity: 101,
-    depth: 0.68,            // m
-    width: 0.68             // m
+    maxSPL: 140,            // dB peak
+    sensitivity: 101,       // dB
+    depth: 0.683,           // m (spec: 683mm)
+    width: 0.684,           // m (spec: 684mm)
+    height: 0.684,          // m
+    weight: 79.4            // kg
   },
   srx918: {
     name: 'JBL SRX918S',
+    desc: 'Single 18" Powered Sub',
     type: 'sub',
-    acousticCenter: 0.38,
+    acousticCenter: 0.29,
     internalDelay: 2.0,
     freqRange: '36Hz–100Hz',
     maxSPL: 136,
     sensitivity: 98,
-    depth: 0.57,
-    width: 0.57
+    depth: 0.575,           // m (spec: 575mm)
+    width: 0.684,           // m (spec: 684mm)
+    height: 0.684,          // m
+    weight: 50.4            // kg
   }
 };
 
-// ══════════════════════════════════════════
-// CONFIG DESCRIPTIONS
-// ══════════════════════════════════════════
 const CONFIG_INFO = {
   radiante: {
     label: 'Radiante (Broadside)',
-    desc: '<strong>Tutti i sub allineati in fila, stessa polarità, nessun delay tra loro.</strong> Massima pressione frontale, pattern omnidirezionale. Ideale quando non hai problemi di feedback dal palco. Semplice da configurare. Il delay si usa solo per allineare i sub ai satelliti.',
-    pros: 'Massimo SPL, semplicità',
-    cons: 'Emissione anche verso il palco (feedback risk)'
+    desc: '<strong>Tutti i sub puntati in avanti, stessa polarità (+), nessun delay differenziale tra loro.</strong> Configurazione più semplice, massima pressione frontale. Il suono si irradia anche verso i lati e il palco. Usato quando non ci sono problemi di feedback o interferenze laterali. Il delay servirà solo ad allineare i sub ai satelliti.',
+    pros: 'Massimo SPL, semplicissimo da configurare',
+    cons: 'Emissione anche verso palco e lati (rischio feedback)'
   },
   cardioide: {
     label: 'Cardioide',
-    desc: '<strong>Sub frontali (verso platea) + sub posteriori invertiti con delay.</strong> Riduce drasticamente le basse frequenze verso il palco (~15–20 dB di rejection posteriore). Ideale quando il palco è vicino o c\'è rischio di feedback con microfoni. Richiede almeno 1 sub posteriore ogni 2 frontali.',
-    pros: 'Ottima rejection verso palco, controllo direzionale',
-    cons: 'Richiede più sub, leggera perdita SPL frontale (~3dB)'
+    desc: '<strong>Sub frontali rivolti verso la platea (polarità +) + sub posteriori rivolti verso il palco (polarità − invertita) con delay aggiuntivo.</strong> La cancellazione posteriore raggiunge 15–20 dB. Ideale con microfoni sul palco. Ogni sub posteriore va ruotato fisicamente di 180° e riceve delay aggiuntivo = profondità cabinet ÷ velocità suono.',
+    pros: 'Ottima rejection lato palco, controllo direzionale',
+    cons: 'Richiede più sub, piccola perdita SPL frontale (~3dB)'
   },
   endfire: {
     label: 'End-Fire',
-    desc: '<strong>Sub disposti in linea dal palco verso la platea, con delay progressivo.</strong> Direttività verso la platea molto elevata, ottima rejection laterale e posteriore. I sub più vicini al palco ricevono delay maggiore. Formula: delay = distanza_tra_sub / velocità_suono.',
-    pros: 'Massima direttività, SPL elevato in asse',
-    cons: 'Occupa più spazio in profondità, allineamento critico'
+    desc: '<strong>Sub disposti in colonna dal palco verso la platea. Il sub più vicino alla platea è il riferimento (delay=0), ogni sub più arretrato riceve delay crescente = n×(distanza÷c).</strong> Crea un fronte d\'onda direzionale verso la platea con ottima rejection laterale e posteriore. Adatto quando si vuole massima direttività e controllo laterale.',
+    pros: 'Massima direttività frontale, ottima rejection laterale',
+    cons: 'Occupa più spazio in profondità (3-4m), setup critico'
   },
   arco: {
     label: 'Mezzo Arco',
-    desc: '<strong>Sub disposti a semicerchio/arco con delay calibrato per ogni posizione.</strong> Ottimizza la copertura orizzontale per platee larghe. Ogni sub ha un delay diverso calcolato per far arrivare il suono in fase al centro geometrico dell\'arco.',
-    pros: 'Copertura omogenea su platee larghe',
-    cons: 'Setup complesso, richiede misure precise'
+    desc: '<strong>Sub disposti a semicerchio con delay calibrato per ogni posizione.</strong> Il sub centrale è il riferimento. I sub laterali sono geometricamente più vicini al punto di ascolto centrale, quindi ricevono delay aggiuntivo per compensare. Ottimale per platee molto larghe dove si vuole copertura omogenea.',
+    pros: 'Copertura uniforme su platee larghe, bel soundfield',
+    cons: 'Setup complesso, richiede misure precise sul campo'
   },
   groundstack: {
     label: 'Ground Stack',
-    desc: '<strong>Sub a terra con satellite sopra o su stativo.</strong> La configurazione più comune. Il delay compensa la differenza di distanza tra il centro acustico del satellite e quello del sub rispetto al punto di ascolto.',
-    pros: 'Semplice, versatile, stabile',
-    cons: 'Nessun controllo direzionale del sub'
+    desc: '<strong>Sub a terra, satellite sopra i sub o su stativo separato.</strong> La configurazione più comune nelle produzioni live di piccola/media taglia. Il delay compensa la differenza di distanza tra centro acustico del satellite e quello del sub rispetto all\'ascoltatore. Nessun controllo direzionale specifico.',
+    pros: 'Semplice, stabile, versatile, setup rapido',
+    cons: 'Nessun controllo direzionale del basso'
   }
 };
 
-// ══════════════════════════════════════════
-// STATO
-// ══════════════════════════════════════════
 let currentConfig = 'radiante';
+
+// ══════════════════════════════════════════════════════
+// UI
+// ══════════════════════════════════════════════════════
+function updateSpecs() {
+  const sat = SPEAKERS[document.getElementById('sat-model').value];
+  const sub = SPEAKERS[document.getElementById('sub-model').value];
+  document.getElementById('spec-display').innerHTML = `
+    <span class="spec-badge">🎵 ${sat.name}: ${sat.freqRange} | ${sat.maxSPL}dB | AC=${Math.round(sat.acousticCenter*100)}cm | DSP ${sat.internalDelay}ms</span>
+    <span class="spec-badge">💪 ${sub.name}: ${sub.freqRange} | ${sub.maxSPL}dB | AC=${Math.round(sub.acousticCenter*100)}cm | DSP ${sub.internalDelay}ms | ${sub.width*100}×${sub.height*100}×${sub.depth*100}cm</span>
+  `;
+  // Update end-fire spacing default to sub depth
+  document.getElementById('ef-spacing').value = sub.depth.toFixed(2);
+  document.getElementById('card-dist').value = sub.depth.toFixed(2);
+}
 
 function setConfig(cfg) {
   currentConfig = cfg;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + cfg).classList.add('active');
-
-  // Nascondi tutti i parametri
   ['endfire','cardioide','arco','radiante','groundstack'].forEach(c => {
     document.getElementById('params-' + c).style.display = 'none';
   });
   document.getElementById('params-' + cfg).style.display = 'block';
-
-  // Mostra descrizione
   const info = CONFIG_INFO[cfg];
   document.getElementById('config-desc').innerHTML =
-    info.desc + '<br/><span style="color:var(--green);font-size:11px;">✅ ' + info.pros + '</span>' +
-    ' &nbsp;|&nbsp; <span style="color:rgba(255,255,255,0.4);font-size:11px;">⚠ ' + info.cons + '</span>';
+    info.desc + '<br/><span style="color:var(--green);font-size:11px;margin-top:6px;display:inline-block;">✅ ' + info.pros + '</span>' +
+    ' &nbsp;|&nbsp; <span style="color:rgba(255,200,0,0.7);font-size:11px;">⚠ ' + info.cons + '</span>';
 }
 
 // Init
 setConfig('radiante');
+updateSpecs();
 
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // CALCOLO PRINCIPALE
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function calculate() {
   const c        = parseFloat(document.getElementById('speed').value);
   const satModel = document.getElementById('sat-model').value;
@@ -483,310 +607,540 @@ function calculate() {
   const satDistStage  = parseFloat(document.getElementById('sat-dist-stage').value);
   const distFront     = parseFloat(document.getElementById('dist-front').value);
   const distBack      = parseFloat(document.getElementById('dist-back').value);
+  const earHeight     = parseFloat(document.getElementById('ear-height').value);
   const subOffset     = parseFloat(document.getElementById('sub-offset').value);
+  const subPos        = document.getElementById('sub-pos').value;
 
-  // Distanza effettiva satellite → primo spettatore (3D)
-  // Satellite: posizione orizzontale = satDistStage dal palco, altezza = satHeight
-  // Spettatore: posizione = distFront dal palco, altezza = 1.6m (orecchie)
-  const satHoriz  = satDistStage;
-  const satVert   = satHeight + sat.acousticCenter;
-  const earHeight = 1.6;
-  const distSatFront = Math.sqrt(Math.pow(satHoriz + distFront, 2) + Math.pow(satVert - earHeight, 2));
-  const distSatBack  = Math.sqrt(Math.pow(satHoriz + distBack,  2) + Math.pow(satVert - earHeight, 2));
+  // ── Posizione acustica satellite ──
+  // Satellite è ad altezza satHeight, a profondità satDistStage dal bordo palco
+  const satAcHeight = satHeight + sat.acousticCenter; // altezza effettiva centro acustico
+  // Profondità satellite dall'asse palco
+  const satDepth = satDistStage;
 
-  // Delay satellite → primo spettatore
-  const msSatFront = (distSatFront / c) * 1000;
-  const msSatBack  = (distSatBack  / c) * 1000;
+  // ── Distanza 3D satellite → punti ascolto ──
+  const distSatFront = Math.sqrt(
+    Math.pow(satDepth + distFront, 2) +
+    Math.pow(satAcHeight - earHeight, 2)
+  );
+  const distSatBack = Math.sqrt(
+    Math.pow(satDepth + distBack, 2) +
+    Math.pow(satAcHeight - earHeight, 2)
+  );
 
-  // Posizione sub (orizzontale dal palco, terra, centro acustico)
-  const subPos = document.getElementById('sub-pos').value;
-  let subHoriz = satDistStage; // default: allineati
-  if (subPos === 'front')   subHoriz = satDistStage - subOffset;
-  if (subPos === 'behind')  subHoriz = satDistStage + subOffset;
-  if (subPos === 'center')  subHoriz = 0; // center stage
-  if (subPos === 'aligned') subHoriz = satDistStage;
+  // ── Posizione acustica sub ──
+  let subDepth = satDistStage;
+  if (subPos === 'front')  subDepth = satDistStage - subOffset;
+  if (subPos === 'behind') subDepth = satDistStage + subOffset;
+  if (subPos === 'center') subDepth = 0;
+  subDepth = Math.max(0, subDepth);
 
-  const subVert = sub.acousticCenter; // sub a terra
+  const subAcHeight = sub.acousticCenter; // sub a terra, centro acustico = AC dal suolo
 
-  const distSubFront = Math.sqrt(Math.pow(subHoriz + distFront, 2) + Math.pow(subVert - earHeight, 2));
-  const msSubFront   = (distSubFront / c) * 1000;
+  const distSubFront = Math.sqrt(
+    Math.pow(subDepth + distFront, 2) +
+    Math.pow(subAcHeight - earHeight, 2)
+  );
 
-  // Differenza di percorso sub vs satellite
-  const pathDiff = distSatFront - distSubFront; // positivo = sat è più lontano
-  const timeDiff = (pathDiff / c) * 1000;       // ms
+  // ── Delay di allineamento sub → satellite ──
+  // Se il satellite è più lontano, il sub arriva prima → ritarda il sub
+  const tSat = (distSatFront / c) * 1000; // ms
+  const tSub = (distSubFront / c) * 1000; // ms
+  const pathTimeDiff = tSat - tSub;       // ms (positivo = sat più lontano)
 
-  // Delay interno sub vs satellite (DSP latency)
-  const dspDiff = sub.internalDelay - sat.internalDelay;
+  // Compensazione latenza DSP (sub ha tipicamente più latenza del satellite)
+  const dspDiff = sub.internalDelay - sat.internalDelay; // ms
 
-  // Delay da aggiungere al sub per allinearlo al satellite
-  // Se il sat è più lontano → il sub anticipa → devo ritardare il sub
-  const subAlignDelay = timeDiff + dspDiff;
+  // Delay netto da aggiungere al sub
+  // = differenza percorso + differenza DSP
+  const subAlignDelay = pathTimeDiff + dspDiff;
 
-  // Risultati per configurazione specifica
+  // ── Calcolo per configurazione ──
   let subRows = [];
   let infoText = '';
   let warnText = '';
 
+  // ── ① RADIANTE ──
   if (currentConfig === 'radiante') {
-    const nSub = parseInt(document.getElementById('rad-count').value);
-    infoText = `<strong>Configurazione Radiante:</strong> tutti i ${nSub} sub con stessa polarità (+) e stesso delay. Il sub è tipicamente più vicino al punto di ascolto rispetto al satellite, quindi va <strong>ritardato di ${subAlignDelay.toFixed(2)} ms</strong> per allinearsi.`;
+    const nSub  = parseInt(document.getElementById('rad-count').value);
+    const delay = Math.max(0, subAlignDelay).toFixed(2);
+    infoText = `<strong>Configurazione Radiante:</strong> ${nSub} sub, tutti con polarità + e delay uniforme di <strong>${delay} ms</strong> per allinearsi ai satelliti.`;
     for (let i = 1; i <= nSub; i++) {
       subRows.push({
         num: i,
-        pos: 'Posizione ' + i,
+        pos: i === 1 ? 'Sub #1 (riferimento)' : `Sub #${i}`,
         polarity: '+',
-        delay: Math.max(0, subAlignDelay).toFixed(2),
+        delay,
         where: 'DSP interno sub',
-        note: i === 1 ? 'Sub di riferimento' : 'Uguale al sub #1'
+        note: i === 1 ? 'Riferimento' : 'Identico al #1'
       });
     }
   }
 
+  // ── ② CARDIOIDE ──
   else if (currentConfig === 'cardioide') {
-    const nFront = parseInt(document.getElementById('card-front').value);
-    const nRear  = parseInt(document.getElementById('card-rear').value);
-    // Cardioide: sub posteriori invertiti + delay = larghezza cabinet sub
-    const cardDelay = (sub.depth / c) * 1000; // ms
-    infoText = `<strong>Configurazione Cardioide:</strong> sub frontali verso platea (+), sub posteriori verso palco (−) con inversione di polarità e delay di <strong>${cardDelay.toFixed(2)} ms</strong> (= profondità cabinet ${(sub.depth*100).toFixed(0)} cm ÷ ${c} m/s). Il delay di allineamento ai satelliti è <strong>${Math.max(0,subAlignDelay).toFixed(2)} ms</strong>.`;
+    const nFront   = parseInt(document.getElementById('card-front').value);
+    const nRear    = parseInt(document.getElementById('card-rear').value);
+    const cardDist = parseFloat(document.getElementById('card-dist').value);
+    const cardDelay = (cardDist / c) * 1000; // ms
+    const frontDelay = Math.max(0, subAlignDelay).toFixed(2);
+    const rearDelay  = Math.max(0, subAlignDelay + cardDelay).toFixed(2);
+
+    infoText = `<strong>Configurazione Cardioide:</strong>
+      Sub frontali (+) delay allineamento = <strong>${frontDelay} ms</strong>.
+      Sub posteriori (−, invertiti fisicamente 180°) delay = <strong>${rearDelay} ms</strong>
+      = ${frontDelay} ms + ${cardDelay.toFixed(2)} ms (depth ${(cardDist*100).toFixed(0)} cm ÷ ${c} m/s).
+      Cancellazione posteriore attesa: 15–20 dB.`;
+
     for (let i = 1; i <= nFront; i++) {
-      subRows.push({ num: i, pos: `Frontale #${i} (→ platea)`, polarity: '+', delay: Math.max(0, subAlignDelay).toFixed(2), where: 'DSP interno', note: 'Rivolto verso la platea' });
+      subRows.push({
+        num: i,
+        pos: `Frontale #${i} → platea`,
+        polarity: '+',
+        delay: frontDelay,
+        where: 'DSP interno',
+        note: 'Rivolto verso la platea (normale)'
+      });
     }
     for (let i = 1; i <= nRear; i++) {
-      subRows.push({ num: nFront + i, pos: `Posteriore #${i} (→ palco)`, polarity: '−', delay: (Math.max(0, subAlignDelay) + cardDelay).toFixed(2), where: 'DSP interno', note: 'Invertito, rivolto verso il palco' });
+      subRows.push({
+        num: nFront + i,
+        pos: `Posteriore #${i} → palco`,
+        polarity: '−',
+        delay: rearDelay,
+        where: 'DSP interno',
+        note: 'Invertito fisicamente 180° + polarità −'
+      });
     }
-    if (nRear < Math.ceil(nFront / 2)) warnText = '⚠ Per un cardioide efficace serve almeno 1 sub posteriore ogni 2 frontali.';
+    if (nRear < Math.ceil(nFront / 2)) {
+      warnText = `⚠ Rapporto frontali/posteriori: ${nFront}/${nRear}. Per un cardioide efficace è consigliato almeno 1 sub posteriore ogni 2 frontali. Con questo rapporto la rejection potrebbe essere ridotta.`;
+    }
   }
 
+  // ── ③ END-FIRE ──
   else if (currentConfig === 'endfire') {
-    const nEF      = parseInt(document.getElementById('ef-count').value);
-    const efSpace  = parseFloat(document.getElementById('ef-spacing').value);
-    const efFwd    = parseFloat(document.getElementById('ef-forward').value);
-    // End-fire: il sub più avanzato (verso platea) ha delay = 0
-    // Ogni sub più arretrato ha delay = distanza / c
-    const delayStep = (efFwd / c) * 1000; // ms per ogni metro di arretramento
-    infoText = `<strong>End-Fire:</strong> il sub più vicino alla platea (sub #1) ha delay minore. Ogni metro di arretramento aggiunge <strong>${delayStep.toFixed(2)} ms</strong>. Il sub più vicino al palco (sub #${nEF}) ha il delay maggiore. Delay di allineamento ai satelliti: <strong>${Math.max(0,subAlignDelay).toFixed(2)} ms</strong>.`;
+    const nEF       = parseInt(document.getElementById('ef-count').value);
+    const efSpacing = parseFloat(document.getElementById('ef-spacing').value); // m tra sub
+    const efFwdCount= parseInt(document.getElementById('ef-forward-count').value);
+
+    // Delay base per allineamento al satellite
+    const baseDelay = Math.max(0, subAlignDelay);
+
+    // In end-fire: il sub più avanzato (verso platea) è sub #1
+    // ogni sub più arretrato ha delay aggiuntivo = (distanza dal #1) / c * 1000
+    // Il sub avanzato è a 0ms relativo, quelli più indietro ricevono progressivo
+    const delayStep = (efSpacing / c) * 1000; // ms per sub
+
+    infoText = `<strong>End-Fire (${nEF} sub per lato):</strong>
+      Sub #1 (più vicino platea) = riferimento delay = <strong>${baseDelay.toFixed(2)} ms</strong> (allineamento sat).
+      Ogni sub successivo (più verso il palco) riceve <strong>+${delayStep.toFixed(2)} ms</strong> (= ${(efSpacing*100).toFixed(0)} cm ÷ ${c} m/s).
+      I primi ${efFwdCount} sub sono avanzati verso la platea.`;
+
     for (let i = 1; i <= nEF; i++) {
-      const pos = i === 1 ? 'più vicino alla platea' : i === nEF ? 'più vicino al palco' : `posizione intermedia`;
-      const d = Math.max(0, subAlignDelay) + (i - 1) * delayStep;
-      subRows.push({ num: i, pos: `Sub #${i} (${pos})`, polarity: '+', delay: d.toFixed(2), where: 'DSP interno', note: i === 1 ? 'Riferimento (0 delay relativo)' : `+${((i-1)*delayStep).toFixed(2)} ms rispetto al #1` });
+      const isForward = i <= efFwdCount;
+      const stepsBack = i - 1; // passi indietro dal sub più avanzato
+      const d = (baseDelay + stepsBack * delayStep).toFixed(2);
+      const posLabel = isForward
+        ? `Sub #${i} — avanzato verso platea`
+        : `Sub #${i} — arretrato verso palco`;
+      subRows.push({
+        num: i,
+        pos: posLabel,
+        polarity: '+',
+        delay: d,
+        where: 'DSP interno',
+        note: i === 1 ? 'Riferimento (delay minimo)' : `+${(stepsBack * delayStep).toFixed(2)} ms dal #1`
+      });
     }
   }
 
+  // ── ④ MEZZO ARCO ──
   else if (currentConfig === 'arco') {
-    const nArc    = parseInt(document.getElementById('arc-count').value);
-    const arcR    = parseFloat(document.getElementById('arc-radius').value);
-    // Arco: sub centrale = 0 delay relativo, quelli laterali più vicini → delay
-    infoText = `<strong>Mezzo Arco:</strong> raggio ${arcR}m. Il sub centrale è il riferimento. I sub laterali sono più vicini al punto di ascolto centrale, quindi ricevono delay aggiuntivo per allinearsi. Delay allineamento satelliti: <strong>${Math.max(0,subAlignDelay).toFixed(2)} ms</strong>.`;
+    const nArc   = parseInt(document.getElementById('arc-count').value);
+    const arcR   = parseFloat(document.getElementById('arc-radius').value);
+    const arcAng = parseFloat(document.getElementById('arc-angle').value) * (Math.PI / 180);
+    const baseDelay = Math.max(0, subAlignDelay);
     const center = Math.floor(nArc / 2);
+
+    infoText = `<strong>Mezzo Arco (${nArc} sub, raggio ${arcR}m):</strong>
+      Sub centrale = riferimento. I sub laterali ricevono delay aggiuntivo calcolato geometricamente.
+      Delay allineamento satellite: <strong>${baseDelay.toFixed(2)} ms</strong>.`;
+
     for (let i = 0; i < nArc; i++) {
       const idx = i - center;
-      const angle = (idx / Math.max(nArc - 1, 1)) * (Math.PI / 2);
+      const maxHalf = Math.max(nArc - 1, 1);
+      const angle = (idx / maxHalf) * (arcAng / 2);
+      // Distanza del sub dal centro geometrico dell'arco proiettata lungo l'asse
       const distFromCenter = arcR * (1 - Math.cos(angle));
       const relDelay = (distFromCenter / c) * 1000;
-      const label = i === center ? 'Centrale' : (i < center ? `Lato Sx #${center - i}` : `Lato Dx #${i - center}`);
-      subRows.push({ num: i + 1, pos: label, polarity: '+', delay: (Math.max(0, subAlignDelay) + relDelay).toFixed(2), where: 'DSP interno', note: `+${relDelay.toFixed(2)} ms rel. al centrale` });
+      const label = i === center ? 'Sub centrale' : (i < center ? `Lato Sx #${center - i}` : `Lato Dx #${i - center}`);
+      subRows.push({
+        num: i + 1,
+        pos: label,
+        polarity: '+',
+        delay: (baseDelay + relDelay).toFixed(2),
+        where: 'DSP interno',
+        note: i === center ? 'Riferimento' : `+${relDelay.toFixed(2)} ms rispetto al centrale`
+      });
     }
   }
 
+  // ── ⑤ GROUND STACK ──
   else if (currentConfig === 'groundstack') {
     const nGs      = parseInt(document.getElementById('gs-count').value);
     const satOnTop = document.getElementById('gs-sat-on-top').value;
-    let gsExtraDelay = 0;
-    let gsNote = '';
+    let delay;
+    let gsNote;
+
     if (satOnTop === 'yes') {
-      // Satellite in cima ai sub: il satellite è più alto → potrebbe essere più vicino
-      const satOnTopHeight = nGs * sub.depth + sat.acousticCenter;
-      const distSatOnTop   = Math.sqrt(Math.pow(satHoriz + distFront, 2) + Math.pow(satOnTopHeight - earHeight, 2));
-      gsExtraDelay = ((distSatOnTop - distSubFront) / c) * 1000 + dspDiff;
-      gsNote = `Satellite in cima a ${nGs} sub (altezza ~${(nGs * sub.depth).toFixed(1)}m)`;
+      // Satellite è in cima ai sub impilati: centro acustico satellite
+      // è ad altezza = (nGs × altezza sub) + AC satellite
+      const satStackHeight = nGs * sub.height + sat.acousticCenter;
+      const distSatStack = Math.sqrt(
+        Math.pow(subDepth + distFront, 2) +
+        Math.pow(satStackHeight - earHeight, 2)
+      );
+      const tSatStack = (distSatStack / c) * 1000;
+      delay = Math.max(0, tSatStack - tSub + dspDiff).toFixed(2);
+      gsNote = `Satellite in cima a ${nGs} sub (altezza totale ~${(nGs * sub.height).toFixed(2)}m)`;
     } else {
-      gsExtraDelay = subAlignDelay;
+      delay = Math.max(0, subAlignDelay).toFixed(2);
       gsNote = 'Satellite su stativo separato';
     }
-    infoText = `<strong>Ground Stack:</strong> ${nGs} sub a terra per lato. ${gsNote}. Delay sub: <strong>${Math.max(0,gsExtraDelay).toFixed(2)} ms</strong>.`;
+    infoText = `<strong>Ground Stack (${nGs} sub per lato):</strong> ${gsNote}. Delay sub = <strong>${delay} ms</strong>.`;
     for (let i = 1; i <= nGs; i++) {
-      subRows.push({ num: i, pos: `Sub #${i}`, polarity: '+', delay: Math.max(0, gsExtraDelay).toFixed(2), where: 'DSP interno sub', note: gsNote });
+      subRows.push({
+        num: i,
+        pos: `Sub #${i}`,
+        polarity: '+',
+        delay,
+        where: 'DSP interno',
+        note: i === 1 ? gsNote : 'Identico al #1'
+      });
     }
   }
 
-  // ── RENDER RISULTATI ──
+  // ══ RENDER RISULTATI ══
   document.getElementById('results').style.display = 'block';
 
-  // Boxes principali
+  // ── BOX ──
+  const travelDiff = Math.abs(distSatFront - distSubFront);
   document.getElementById('result-boxes').innerHTML = `
     <div class="result-box highlight">
-      <div class="result-label">Delay Sub vs Satellite</div>
-      <div class="result-value">${Math.max(0, subAlignDelay).toFixed(2)}</div>
-      <div class="result-unit">ms</div>
-      <div class="result-note">da impostare sul sub per allinearsi al satellite</div>
+      <div class="result-label">Delay Sub → Satellite</div>
+      <div class="result-value" style="color:var(--red)">${Math.max(0, subAlignDelay).toFixed(2)}</div>
+      <div class="result-unit">ms (allineamento)</div>
+      <div class="result-note">delay da impostare sul sub per allinearsi al satellite</div>
     </div>
     <div class="result-box green">
-      <div class="result-label">Distanza Sat → Primo Spett.</div>
+      <div class="result-label">Sat → Primo Spettatore</div>
       <div class="result-value">${distSatFront.toFixed(1)}</div>
-      <div class="result-unit">m &nbsp;|&nbsp; ${msSatFront.toFixed(1)} ms</div>
-      <div class="result-note">percorso 3D dal satellite</div>
+      <div class="result-unit">m &nbsp;·&nbsp; ${tSat.toFixed(1)} ms</div>
+      <div class="result-note">percorso 3D (altezza ${satAcHeight.toFixed(1)}m)</div>
     </div>
     <div class="result-box green">
-      <div class="result-label">Distanza Sub → Primo Spett.</div>
+      <div class="result-label">Sub → Primo Spettatore</div>
       <div class="result-value">${distSubFront.toFixed(1)}</div>
-      <div class="result-unit">m &nbsp;|&nbsp; ${msSubFront.toFixed(1)} ms</div>
-      <div class="result-note">percorso dal sub a terra</div>
+      <div class="result-unit">m &nbsp;·&nbsp; ${tSub.toFixed(1)} ms</div>
+      <div class="result-note">percorso da terra (AC ${(sub.acousticCenter*100).toFixed(0)}cm)</div>
     </div>
     <div class="result-box yellow">
-      <div class="result-label">Copertura Platea</div>
-      <div class="result-value">${(distBack - distFront).toFixed(0)}</div>
-      <div class="result-unit">m di profondità</div>
-      <div class="result-note">da ${distSatFront.toFixed(1)} a ${distSatBack.toFixed(1)} m (sat)</div>
+      <div class="result-label">Diff. Percorso</div>
+      <div class="result-value">${travelDiff.toFixed(2)}</div>
+      <div class="result-unit">m &nbsp;·&nbsp; ${(travelDiff/c*1000).toFixed(2)} ms</div>
+      <div class="result-note">distanza fisica tra centro acustico sat e sub</div>
     </div>
     <div class="result-box blue">
-      <div class="result-label">Velocità Suono</div>
-      <div class="result-value">${c}</div>
-      <div class="result-unit">m/s</div>
-      <div class="result-note">1 ms = ${(c/1000).toFixed(3)} m</div>
-    </div>
-    <div class="result-box blue">
-      <div class="result-label">Diff. DSP Latenza</div>
+      <div class="result-label">Latenza DSP (sub−sat)</div>
       <div class="result-value">${dspDiff.toFixed(1)}</div>
       <div class="result-unit">ms</div>
       <div class="result-note">sub ${sub.internalDelay}ms − sat ${sat.internalDelay}ms</div>
     </div>
+    <div class="result-box orange">
+      <div class="result-label">Copertura Platea</div>
+      <div class="result-value">${(distBack - distFront).toFixed(0)}</div>
+      <div class="result-unit">m</div>
+      <div class="result-note">da ${distSatFront.toFixed(1)}m a ${distSatBack.toFixed(1)}m (sat)</div>
+    </div>
   `;
 
-  // Tabella sub
+  // ── TABELLA ──
   const tbody = document.getElementById('sub-table-body');
   tbody.innerHTML = '';
   subRows.forEach(r => {
     const polClass = r.polarity === '+' ? 'polarity-pos' : 'polarity-neg';
-    const polLabel = r.polarity === '+' ? '＋ Normale' : '− Invertita';
+    const polLabel = r.polarity === '+' ? '＋ Normale' : '− Invertita ⚠';
     tbody.innerHTML += `<tr>
-      <td><strong>${r.num}</strong></td>
+      <td><span class="sub-num-badge">${r.num}</span></td>
       <td>${r.pos}</td>
       <td><span class="${polClass}">${polLabel}</span></td>
       <td><span class="delay-val">${r.delay} ms</span></td>
-      <td>${r.where}</td>
-      <td style="color:rgba(255,255,255,0.5);font-size:12px;">${r.note}</td>
+      <td style="color:rgba(255,255,255,0.5);font-size:12px;">${r.where}</td>
+      <td style="color:rgba(255,255,255,0.4);font-size:11px;line-height:1.5;">${r.note}</td>
     </tr>`;
   });
 
-  // Info box
-  document.getElementById('result-info').innerHTML = infoText +
-    `<br/><br/>📐 <strong>Formula base:</strong> Delay (ms) = Distanza (m) ÷ ${c} m/s × 1000<br/>
-    🔊 <strong>Sub usato:</strong> ${sub.name} — centro acustico ${(sub.acousticCenter*100).toFixed(0)}cm, latenza DSP ~${sub.internalDelay}ms<br/>
-    📡 <strong>Satellite:</strong> ${sat.name} — centro acustico ${(sat.acousticCenter*100).toFixed(0)}cm, latenza DSP ~${sat.internalDelay}ms<br/>
-    ⚡ <strong>Dove impostare il delay:</strong> sul display posteriore del ${sub.name} tramite JBL Performance app o display LCD integrato`;
+  // ── INFO BOX ──
+  document.getElementById('result-info').innerHTML =
+    infoText +
+    `<br/><br/>
+    📐 <strong>Formula base:</strong> Delay (ms) = Distanza (m) ÷ ${c} m/s × 1000 &nbsp;|&nbsp; 1 ms = ${(c/1000*100).toFixed(1)} cm<br/>
+    🔊 <strong>Sub:</strong> ${sub.name} — AC ${(sub.acousticCenter*100).toFixed(0)}cm, depth ${(sub.depth*100).toFixed(0)}cm, DSP ~${sub.internalDelay}ms<br/>
+    📡 <strong>Satellite:</strong> ${sat.name} — AC ${(sat.acousticCenter*100).toFixed(0)}cm, DSP ~${sat.internalDelay}ms<br/>
+    ⚡ <strong>Dove impostare:</strong> Pannello LCD posteriore del sub oppure <em>JBL Performance App</em> (Bluetooth) &rarr; Delay → inserisci il valore in ms`;
 
   if (warnText) {
     document.getElementById('result-warn').style.display = 'block';
-    document.getElementById('result-warn').textContent = warnText;
+    document.getElementById('result-warn').innerHTML = warnText;
   } else {
     document.getElementById('result-warn').style.display = 'none';
   }
 
-  // Disegna diagramma
+  // ── DIAGRAMMA ──
   drawDiagram(subRows, currentConfig);
 
-  // Scroll ai risultati
   document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// ══════════════════════════════════════════
-// DISEGNO DIAGRAMMA
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// DIAGRAMMA CANVAS
+// ══════════════════════════════════════════════════════
 function drawDiagram(subRows, cfg) {
   const canvas = document.getElementById('diagram');
-  const W = Math.min(700, window.innerWidth - 40);
+  const W = Math.min(800, (window.innerWidth - 60));
+  const H = cfg === 'arco' ? 280 : 220;
   canvas.width  = W;
-  canvas.height = 200;
+  canvas.height = H;
   const ctx = canvas.getContext('2d');
 
-  ctx.clearRect(0, 0, W, 200);
-  ctx.fillStyle = 'rgba(255,255,255,0.03)';
-  ctx.fillRect(0, 0, W, 200);
+  // Background
+  ctx.fillStyle = '#0d0d0d';
+  ctx.fillRect(0, 0, W, H);
 
-  const n     = subRows.length;
-  const boxW  = Math.min(90, (W - 40) / (n + 1));
-  const boxH  = 50;
-  const startX = 20;
-  const subY  = 100;
-  const satY  = 30;
+  const n    = subRows.length;
+  const PALCO_X = W - 80;
+  const PLATEA_X = 30;
 
-  // Satellite (simbolo triangolo)
-  ctx.fillStyle = '#2196f3';
+  // ─ Labels ─
   ctx.font = 'bold 10px Montserrat, sans-serif';
   ctx.textAlign = 'center';
+
+  // Palco line
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([5, 5]);
+  ctx.beginPath(); ctx.moveTo(PALCO_X, 10); ctx.lineTo(PALCO_X, H - 10); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = 'rgba(255,255,255,0.3)';
+  ctx.fillText('PALCO', PALCO_X + 25, 22);
+
+  // Platea arrow
+  ctx.strokeStyle = 'rgba(33,150,243,0.4)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(PLATEA_X + 5, H/2); ctx.lineTo(PLATEA_X + 50, H/2); ctx.stroke();
+  ctx.fillStyle = 'rgba(33,150,243,0.6)';
+  ctx.fillText('PLATEA', PLATEA_X + 28, H/2 - 8);
+
+  // Satellite icon (top)
   const satX = W / 2;
+  const satY = 30;
+  ctx.fillStyle = '#2196f3';
   ctx.beginPath();
-  ctx.moveTo(satX, satY); ctx.lineTo(satX - 18, satY + 28); ctx.lineTo(satX + 18, satY + 28);
-  ctx.closePath(); ctx.fill();
-  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.moveTo(satX, satY);
+  ctx.lineTo(satX - 20, satY + 30);
+  ctx.lineTo(satX + 20, satY + 30);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,0.85)';
+  ctx.font = 'bold 9px Montserrat, sans-serif';
   ctx.fillText('SAT', satX, satY + 44);
 
-  // Linea palco
-  ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-  ctx.lineWidth = 1;
-  ctx.setLineDash([4, 4]);
-  ctx.beginPath(); ctx.moveTo(W - 60, 10); ctx.lineTo(W - 60, 190); ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.fillStyle = 'rgba(255,255,255,0.25)';
-  ctx.font = '10px Montserrat, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('PALCO', W - 30, 20);
+  if (cfg === 'arco') {
+    // ── ARCO DIAGRAM ──
+    const arcR = parseFloat(document.getElementById('arc-radius').value) || 4;
+    const arcAng = parseFloat(document.getElementById('arc-angle').value) || 180;
+    const cx = W / 2, cy = H - 30;
+    const scale = Math.min((W - 80) / 2 / arcR, (H - 60) / arcR) * 0.8;
 
-  // Sub boxes
-  const totalWidth = n * (boxW + 10) - 10;
-  const offsetX    = (W - totalWidth) / 2;
-
-  subRows.forEach((r, i) => {
-    const x   = offsetX + i * (boxW + 10);
-    const isInv = r.polarity === '−';
-    ctx.fillStyle = isInv ? 'rgba(232,28,46,0.3)' : 'rgba(0,201,122,0.2)';
-    ctx.strokeStyle = isInv ? '#e81c2e' : '#00c97a';
-    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3,6]);
     ctx.beginPath();
-    ctx.roundRect(x, subY, boxW, boxH, 6);
-    ctx.fill(); ctx.stroke();
+    ctx.arc(cx, cy, arcR * scale, Math.PI, 2 * Math.PI);
+    ctx.stroke();
+    ctx.setLineDash([]);
 
-    // Arrow (direction)
-    ctx.fillStyle = isInv ? '#e81c2e' : '#00c97a';
-    ctx.font = 'bold 14px sans-serif';
+    subRows.forEach((r, i) => {
+      const idx = i - Math.floor(n / 2);
+      const maxHalf = Math.max(n - 1, 1);
+      const theta = Math.PI + (Math.PI * (arcAng / 180) / 2) * (idx / maxHalf) + Math.PI/2;
+      const sx = cx + arcR * scale * Math.cos(theta);
+      const sy = cy - arcR * scale * Math.sin(theta - Math.PI);
+      const isInv = r.polarity === '−';
+      ctx.fillStyle = isInv ? 'rgba(232,28,46,0.5)' : 'rgba(0,201,122,0.35)';
+      ctx.strokeStyle = isInv ? '#e81c2e' : '#00c97a';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(sx, sy, 18, 0, 2 * Math.PI);
+      ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 8px Montserrat';
+      ctx.textAlign = 'center';
+      ctx.fillText('#' + r.num, sx, sy - 2);
+      ctx.fillStyle = '#f5c400';
+      ctx.fillText(r.delay + 'ms', sx, sy + 10);
+    });
+
+  } else if (cfg === 'endfire') {
+    // ── END-FIRE: sub in colonna orizzontale ──
+    const subY = H / 2 + 20;
+    const efSpacing = parseFloat(document.getElementById('ef-spacing').value) || 0.68;
+    const totalW = n * (efSpacing * 80) - (efSpacing * 80 - 50);
+    const startX = W/2 - totalW/2;
+
+    subRows.forEach((r, i) => {
+      const x = startX + i * (efSpacing * 80);
+      const isInv = r.polarity === '−';
+      const boxW = 50, boxH = 40;
+
+      ctx.fillStyle = 'rgba(0,201,122,0.15)';
+      ctx.strokeStyle = '#00c97a';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.roundRect(x - boxW/2, subY - boxH/2, boxW, boxH, 6);
+      ctx.fill(); ctx.stroke();
+
+      // Arrow direction
+      ctx.fillStyle = '#00c97a';
+      ctx.font = 'bold 16px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('→', x, subY + 6);
+
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 8px Montserrat';
+      ctx.fillText('#' + r.num, x, subY - 12);
+
+      ctx.fillStyle = '#f5c400';
+      ctx.font = 'bold 8px Montserrat';
+      ctx.fillText(r.delay + 'ms', x, subY + 22);
+    });
+
+    // Arrows showing direction
+    ctx.strokeStyle = 'rgba(0,201,122,0.3)';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([4,4]);
+    ctx.beginPath();
+    ctx.moveTo(startX - 20, H/2 + 20);
+    ctx.lineTo(PLATEA_X - 30, H/2 + 20);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(0,201,122,0.6)';
+    ctx.font = '10px Montserrat';
     ctx.textAlign = 'center';
-    ctx.fillText(isInv ? '←' : '→', x + boxW / 2, subY + 18);
+    ctx.fillText('→ verso platea', PLATEA_X + 15, H/2 + 18);
 
-    ctx.fillStyle = 'white';
-    ctx.font = 'bold 9px Montserrat, sans-serif';
-    ctx.fillText('SUB #' + r.num, x + boxW / 2, subY + 32);
-    ctx.fillStyle = '#f5c400';
-    ctx.font = 'bold 9px Montserrat, sans-serif';
-    ctx.fillText(r.delay + ' ms', x + boxW / 2, subY + 44);
+  } else if (cfg === 'cardioide') {
+    // ── CARDIOIDE: front + rear ──
+    const nFront = parseInt(document.getElementById('card-front').value) || 2;
+    const nRear  = parseInt(document.getElementById('card-rear').value) || 1;
+    const frontRows = subRows.slice(0, nFront);
+    const rearRows  = subRows.slice(nFront);
+    const subY = H / 2 + 20;
+    const boxW = 52, boxH = 42;
+    const totalFW = nFront * (boxW + 10) - 10;
+    const frontStartX = W/2 - totalFW/2;
 
-    // Polarità
-    ctx.fillStyle = isInv ? '#e81c2e' : '#00c97a';
-    ctx.font = 'bold 13px sans-serif';
-    ctx.fillText(r.polarity === '+' ? '+' : '−', x + boxW / 2, subY + 60);
-  });
+    // Front subs (→)
+    frontRows.forEach((r, i) => {
+      const x = frontStartX + i * (boxW + 10);
+      ctx.fillStyle = 'rgba(0,201,122,0.15)';
+      ctx.strokeStyle = '#00c97a';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.roundRect(x, subY - boxH/2, boxW, boxH, 6); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#00c97a'; ctx.font = 'bold 16px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('→', x + boxW/2, subY + 7);
+      ctx.fillStyle = 'white'; ctx.font = 'bold 8px Montserrat';
+      ctx.fillText('#' + r.num, x + boxW/2, subY - 14);
+      ctx.fillStyle = '#f5c400'; ctx.font = 'bold 8px Montserrat';
+      ctx.fillText(r.delay + 'ms', x + boxW/2, subY + 22);
+    });
 
-  // Legenda
-  ctx.fillStyle = 'rgba(255,255,255,0.4)';
-  ctx.font = '10px Montserrat, sans-serif';
+    // Rear subs (← inverted, drawn slightly to the right)
+    const totalRW = nRear * (boxW + 10) - 10;
+    const rearStartX = W/2 - totalRW/2 + 30;
+    rearRows.forEach((r, i) => {
+      const x = rearStartX + i * (boxW + 10);
+      const ry = subY + boxH + 14;
+      ctx.fillStyle = 'rgba(232,28,46,0.2)';
+      ctx.strokeStyle = '#e81c2e';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.roundRect(x, ry - boxH/2, boxW, boxH, 6); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#e81c2e'; ctx.font = 'bold 16px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('←', x + boxW/2, ry + 7);
+      ctx.fillStyle = 'white'; ctx.font = 'bold 8px Montserrat';
+      ctx.fillText('#' + r.num + ' INV', x + boxW/2, ry - 14);
+      ctx.fillStyle = '#f5c400'; ctx.font = 'bold 8px Montserrat';
+      ctx.fillText(r.delay + 'ms', x + boxW/2, ry + 22);
+    });
+
+    // Legend
+    ctx.fillStyle = 'rgba(0,201,122,0.7)'; ctx.font = '10px Montserrat'; ctx.textAlign = 'center';
+    ctx.fillText('→ PLATEA', frontStartX + totalFW/2, subY - boxH/2 - 8);
+    ctx.fillStyle = 'rgba(232,28,46,0.7)';
+    ctx.fillText('← PALCO (invertiti)', rearStartX + totalRW/2, subY + boxH + 14 + boxH/2 + 16);
+
+  } else {
+    // ── DEFAULT: sub in fila ──
+    const subY = H / 2 + 20;
+    const availW = PALCO_X - PLATEA_X - 80;
+    const boxW = Math.min(70, availW / Math.max(n, 1) - 8);
+    const totalW = n * (boxW + 8) - 8;
+    const startX = W/2 - totalW/2;
+
+    subRows.forEach((r, i) => {
+      const x = startX + i * (boxW + 8);
+      const isInv = r.polarity === '−';
+      ctx.fillStyle = isInv ? 'rgba(232,28,46,0.2)' : 'rgba(0,201,122,0.15)';
+      ctx.strokeStyle = isInv ? '#e81c2e' : '#00c97a';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.roundRect(x, subY - 22, boxW, 44, 6); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = isInv ? '#e81c2e' : '#00c97a';
+      ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(isInv ? '←' : '→', x + boxW/2, subY + 5);
+      ctx.fillStyle = 'white'; ctx.font = 'bold 8px Montserrat';
+      ctx.fillText('#' + r.num, x + boxW/2, subY - 10);
+      ctx.fillStyle = '#f5c400'; ctx.font = 'bold 8px Montserrat';
+      ctx.fillText(r.delay + 'ms', x + boxW/2, subY + 20);
+    });
+  }
+
+  // Legend bar
+  ctx.fillStyle = 'rgba(255,255,255,0.25)';
+  ctx.font = '9px Montserrat, sans-serif';
   ctx.textAlign = 'left';
-  ctx.fillText('→ = normale  ← = invertita  | Giallo = delay ms da impostare', 10, 185);
+  ctx.fillText('→ polarità normale  ← polarità invertita  | Delay in giallo = ms da impostare nel sub', 12, H - 8);
 }
 
-// ══════════════════════════════════════════
-// HAMBURGER
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// HAMBURGER MENU
+// ══════════════════════════════════════════════════════
 document.getElementById('hamburger').addEventListener('click', () => {
   const links = document.querySelector('.nav-links');
-  links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
-  links.style.flexDirection = 'column';
-  links.style.position = 'absolute';
-  links.style.top = '70px';
-  links.style.left = '0';
-  links.style.right = '0';
-  links.style.background = 'rgba(10,10,10,0.97)';
-  links.style.padding = '20px 30px';
-  links.style.gap = '18px';
-  links.style.zIndex = '200';
+  const isOpen = links.style.display === 'flex';
+  links.style.display = isOpen ? 'none' : 'flex';
+  if (!isOpen) {
+    Object.assign(links.style, {
+      flexDirection: 'column',
+      position: 'absolute',
+      top: '70px',
+      left: '0',
+      right: '0',
+      background: 'rgba(10,10,10,0.97)',
+      padding: '20px 30px',
+      gap: '18px',
+      zIndex: '200',
+      borderBottom: '1px solid rgba(255,255,255,0.1)'
+    });
+  }
 });
 </script>
 </body>
