@@ -755,11 +755,13 @@ function closeModal(){
 }
 
 async function modalConfirm(){
-  const val = document.getElementById('modal-input').value.trim();
+  const val  = document.getElementById('modal-input').value.trim();
   if (!val) return;
+  const mode = modalMode;        // salva prima di closeModal
+  const tgt  = renameTarget;
   closeModal();
 
-  if (modalMode === 'mkdir') {
+  if (mode === 'mkdir') {
     let r = await apiFetch('/api.php/mkdir', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ path: currentPath, name: val })
@@ -776,10 +778,10 @@ async function modalConfirm(){
     else      { showToast('Errore: ' + d.message, 'err'); }
   }
 
-  if (modalMode === 'rename') {
+  if (mode === 'rename') {
     let r = await apiFetch('/api.php/rename', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ path: renameTarget, newName: val })
+      body: JSON.stringify({ path: tgt, newName: val })
     });
     const d = await r.json();
     if (d.ok) { showToast('✅ Rinominato', 'ok'); loadFiles(currentPath); }
