@@ -448,19 +448,37 @@ exit;
 // ══════════════════════════════════════════════
 
 function getRole(): ?string {
-    // 1. Cookie di sessione
+    // 1. Cookie di sessione (più affidabile su shared hosting)
     if (!empty($_SESSION['role'])) return $_SESSION['role'];
-    // 2. Bearer token (header Authorization)
-    // Prova tutte le fonti (Apache shared hosting può strippare l'header)
-    $auth = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
-    if (!$auth) $auth = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
-    if (!$auth) $auth = $_SERVER['HTTP_X_HTTP_AUTHORIZATION'] ?? '';
-    if (!$auth && function_exists('apache_request_headers')) {
-        $headers = apache_request_headers();
-        $auth = $headers['Authorization'] ?? '';
+
+    // 2. Token dal body JSON o POST (fallback per Apache che strippa Authorization)
+    global $body;
+    $token = '';
+
+    // 2a. Dal body JSON: {"_token":"..."}
+    if (!$token && !empty($body['_token'])) $token = $body['_token'];
+
+    // 2b. Da parametro GET: ?_token=...
+    if (!$token && !empty($_GET['_token'])) $token = $_GET['_token'];
+
+    // 2c. Dal cookie _art_token
+    if (!$token && !empty($_COOKIE['_art_token'])) $token = $_COOKIE['_art_token'];
+
+    // 2d. Header Authorization (funziona solo se Apache non lo strippa)
+    if (!$token) {
+        $auth = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+        if (!$auth) $auth = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
+        if (!$auth) $auth = $_SERVER['HTTP_X_HTTP_AUTHORIZATION'] ?? '';
+        if (!$auth && function_exists('apache_request_headers')) {
+            $headers = apache_request_headers();
+            $auth = $headers['Authorization'] ?? '';
+        }
+        if (str_starts_with($auth, 'Bearer ')) {
+            $token = substr($auth, 7);
+        }
     }
-    if (str_starts_with($auth, 'Bearer ')) {
-        $token  = substr($auth, 7);
+
+    if ($token) {
         $tokens = readTokens();
         if (isset($tokens[$token]) && $tokens[$token]['expires'] > time()) {
             return $tokens[$token]['role'];

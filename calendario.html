@@ -678,9 +678,18 @@ function togglePw(){
 // Helper: fetch con cookie + Bearer token (risolve proxy HTTPS)
 function apiFetch(url, opts={}){
   opts.credentials = 'include';
+  opts.headers = opts.headers || {};
   if(_authToken){
-    opts.headers = opts.headers || {};
     opts.headers['Authorization'] = 'Bearer ' + _authToken;
+    // Fallback per Apache shared hosting che strippa Authorization
+    document.cookie = '_art_token=' + _authToken + '; path=/; SameSite=Lax';
+    if(opts.body){
+      try{
+        const b = JSON.parse(opts.body);
+        b._token = _authToken;
+        opts.body = JSON.stringify(b);
+      } catch(e){}
+    }
   }
   return fetch(url, opts);
 }
