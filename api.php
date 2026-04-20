@@ -34,19 +34,27 @@ if (preg_match('#/documenti/#i', $requestUri)) {
     exit('Accesso negato');
 }
 
-// Sessione sicura – rileva HTTPS automaticamente
-$isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-           || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
-           || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443);
-session_set_cookie_params([
-    'lifetime' => 86400,      // 24 ore
-    'path'     => '/',
-    'secure'   => $isHttps,   // true su HTTPS (one.com, Render, ecc.)
-    'httponly' => true,
-    'samesite' => 'Lax'
-]);
+// Sessione – compatibile con one.com shared hosting
+ini_set('session.cookie_lifetime', 86400);
+ini_set('session.cookie_path', '/');
+ini_set('session.cookie_httponly', 1);
+ini_set('session.use_strict_mode', 1);
+ini_set('session.cookie_samesite', 'None');
+ini_set('session.cookie_secure', 1);
+ini_set('session.gc_maxlifetime', 86400);
 session_name('artemusic_sess');
 session_start();
+
+// Rinnova il cookie ad ogni richiesta per mantenerlo vivo
+if (!empty($_SESSION['role'])) {
+    setcookie(session_name(), session_id(), [
+        'expires'  => time() + 86400,
+        'path'     => '/',
+        'secure'   => true,
+        'httponly' => true,
+        'samesite' => 'None'
+    ]);
+}
 
 // Headers CORS / JSON
 header('Content-Type: application/json; charset=utf-8');

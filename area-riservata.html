@@ -416,28 +416,14 @@ let currentRole  = null;       // 'admin' | 'user'
 let currentPath  = '';         // percorso relativo nella cartella documenti
 let modalMode    = null;       // 'mkdir' | 'rename'
 let renameTarget = null;       // path del file da rinominare
-let _authToken   = '';         // Bearer token (fallback al cookie per proxy HTTPS)
-let _savedPw     = '';         // password salvata per ri-autenticazione automatica
+let _savedPw = '';  // password salvata per ri-autenticazione automatica
 
 // ────────────────────────────────────────────
-//  HELPER: fetch con cookie + Bearer token
+//  HELPER: fetch con cookie di sessione PHP
 // ────────────────────────────────────────────
 function apiFetch(url, opts={}){
-  opts.credentials = 'include';
+  opts.credentials = 'include';  // invia sempre i cookie di sessione
   opts.headers = opts.headers || {};
-  if(_authToken){
-    opts.headers['Authorization'] = 'Bearer ' + _authToken;
-    // Fallback per Apache shared hosting che strippa Authorization
-    document.cookie = '_art_token=' + _authToken + '; path=/; SameSite=Lax';
-    // Aggiungi token nel body JSON se è una richiesta con body
-    if(opts.body){
-      try{
-        const b = JSON.parse(opts.body);
-        b._token = _authToken;
-        opts.body = JSON.stringify(b);
-      } catch(e){}
-    }
-  }
   return fetch(url, opts);
 }
 
@@ -450,8 +436,7 @@ async function ensureSession(){
       body: JSON.stringify({password:_savedPw})
     });
     const d = await r.json();
-    if(d.ok){ _authToken = d.token || ''; return true; }
-    return false;
+    return d.ok || false;
   } catch(e){ return false; }
 }
 
@@ -490,9 +475,8 @@ async function doLogin(){
     });
     const d  = await r.json();
     if (d.ok) {
-      currentRole  = d.role;
-      _savedPw     = pw;
-      _authToken   = d.token || '';
+      currentRole = d.role;
+      _savedPw    = pw;
       showFM();
       loadFiles('');
     } else {
@@ -690,8 +674,7 @@ async function uploadFiles(files){
       };
       xhr.onerror = () => reject(new Error('Errore di rete'));
       xhr.open('POST', '/api.php/upload');
-      xhr.withCredentials = true;
-      if(_authToken) xhr.setRequestHeader('Authorization', 'Bearer ' + _authToken);
+      xhr.withCredentials = true;  // invia cookie di sessione PHP
       xhr.send(formData);
     });
     showToast(`✅ ${files.length} file caricati`, 'ok');
